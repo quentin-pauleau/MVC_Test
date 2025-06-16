@@ -1,0 +1,31 @@
+<?php
+namespace Feature\EntityToDatabase\DatabaseConverters;
+
+class DatabaseConverterFloat extends DatabaseConverter
+{
+	private const DEFAULT_VALUE = 0;
+
+
+	/**
+	 * Import the value from the database
+	 * @param $data
+	 * @return float
+	 */
+	public function Import($data): bool {
+		return boolval($data);
+	}
+
+
+	/**
+	 * Export the value to the database
+	 * @param $data
+	 * @param bool $isNullable
+	 * @return float|string
+	 */
+	public function Export($data, bool $isNullable = false): int|string {
+		if ($data === null)
+			return $isNullable ? self::DATABASE_NULL : self::DEFAULT_VALUE;
+
+		return boolval($data) ? 1 : 0;
+	}
+}
