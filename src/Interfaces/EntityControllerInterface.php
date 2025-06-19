@@ -27,8 +27,20 @@ interface EntityControllerInterface
 	public function Details(): Response;
 
 	/**
+	 * Details of an entity
+	 * @return void
+	 */
+	public function Edit(): Response;
+
+	/**
 	 * Create a new entity
 	 * @return void
 	 */
 	public function New(): Response;
+
+	/**
+	 * Details of an entity
+	 * @return void
+	 */
+	public function Delete(): Response;
 }

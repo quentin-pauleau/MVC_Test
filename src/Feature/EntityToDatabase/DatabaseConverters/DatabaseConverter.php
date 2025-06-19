@@ -1,9 +1,13 @@
 <?php
 namespace Feature\EntityToDatabase\DatabaseConverters;
 
+use Traits\StaticClass;
+
 
 abstract class DatabaseConverter
 {
+	use StaticClass;
+
 	protected const DATABASE_NULL = 'NULL';
 
 	/**
@@ -11,7 +15,7 @@ abstract class DatabaseConverter
 	 * @param $data
 	 * @return mixed
 	 */
-	abstract public function Import($data): mixed;
+	abstract public static function Import($data): mixed;
 
 
 	/**
@@ -20,5 +24,5 @@ abstract class DatabaseConverter
 	 * @param bool $isNullable
 	 * @return mixed
 	 */
-	abstract public function Export($data, bool $isNullable = false): mixed;
+	abstract public static function Export($data, bool $isNullable = false): mixed;
 }

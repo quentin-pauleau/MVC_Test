@@ -3,7 +3,7 @@ namespace Feature\EntityToDatabase\DatabaseConverters;
 
 class DatabaseConverterFloat extends DatabaseConverter
 {
-	private const DEFAULT_VALUE = 0;
+	private const DATABASE_DEFAULT = 0;
 
 
 	/**
@@ -11,8 +11,8 @@ class DatabaseConverterFloat extends DatabaseConverter
 	 * @param $data
 	 * @return float
 	 */
-	public static function Import($data): bool {
-		return boolval($data);
+	public static function Import($data): float {
+		return intval($data);
 	}
 
 
@@ -22,10 +22,10 @@ class DatabaseConverterFloat extends DatabaseConverter
 	 * @param bool $isNullable
 	 * @return float|string
 	 */
-	public static function Export($data, bool $isNullable = false): int|string {
+	public static function Export($data, bool $isNullable = false): float|string {
 		if ($data === null)
-			return $isNullable ? self::DATABASE_NULL : self::DEFAULT_VALUE;
+			return $isNullable ? self::DATABASE_NULL : self::DATABASE_DEFAULT;
 
-		return boolval($data) ? 1 : 0;
+		return intval($data);
 	}
 }

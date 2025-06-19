@@ -1,8 +1,10 @@
 <?php
 namespace Utils\Database\QueryBuilder;
 
+use Feature\DatabaseQueryBuilder\Interface\DatabaseSelectionQueryInterface;
 
-class DatabaseSelectionQuery extends DatabaseQuery
+
+class DatabaseSelectionQuery implements DatabaseSelectionQueryInterface
 {
 	/**
 	 * All selected fields as :
@@ -18,74 +20,51 @@ class DatabaseSelectionQuery extends DatabaseQuery
 
 	/**
 	 * Tables where the selection occures
+	 * 
+	 * @var array<string, bool>
 	 */
 	public array $ordering = [];
 
 
-	public function Select(): DatabaseSelectionQuery {
-		$this->query = 'SELECT ';
-		return $this;
-	}
-
-
-	public function AddField(string $field, string $table, ?string $alias = null): DatabaseSelectionQuery {
-		$this->tables[$table] = $table;
-		$this->fields["$table.$field"] = $alias;
-		return $this;
-	}
-
-
-	public function RemoveField(string ...$field): DatabaseSelectionQuery {
-		foreach ($field as $f)
-			array_splice($this->fields, array_search($f, $this->fields));
+	public function Select(string ...$fields): static {
+		foreach ($fields as $field)
+			if (!in_array($field, $this->fields))
+				$this->fields[] = $field;
 		
 		return $this;
 	}
 
-
-	public function From(string ...$tables): DatabaseSelectionQuery {
+	public function From(string ...$tables): static {
 		$this->tables = $tables;
 		return $this;
 	}
 
 
-	public function AddTable(string ...$table): DatabaseSelectionQuery {
-		array_push($this->tables, ...$table);
+	public function GroupBy(): static {
+		return $this;
+	}
+
+	public function Having(): static {
+		return $this;
+	}
+
+	public function Limit(int $limit): static {
 		return $this;
 	}
 
 
-	public function RemoveTable(string ...$table): DatabaseSelectionQuery {
-		foreach ($table as $t)
-			array_splice($this->tables, array_search($t, $this->tables));
-		
+	public function Where(): static {
 		return $this;
 	}
 
 
-	public function OrderBy(int $level): DatabaseSelectionQuery {
-		$this->tables;
+	public function OrderBy(string $field, bool $isAscending = true): static {
+		$this->ordering[$field] = $isAscending;
 		return $this;
 	}
 
+	
 	public function Build(): string {
-		$this->query .= implode(', ', array_map(
-			function ($field, $alias) {
-				return $alias ? "$field AS $alias" : $field;
-			},
-			array_keys($this->fields),
-			$this->fields
-		));
-
-		if (!empty($this->tables))
-			$this->query .= ' FROM ' . implode(', ', $this->tables);
-
-		if (!empty($this->ordering))
-			$this->query .= ' ORDER BY ' . implode(', ', $this->ordering);
-
-		// if (isset($this->limit))
-		// 	$this->query .= " LIMIT {$this->limit['start']},{$this->limit['end']}";
-
-		return $this->query;
+		return '';
 	}
 }

@@ -15,8 +15,6 @@ final class Router {
 		
 		$action = $Request->Query->Get('action');
 
-		
-
 		return;
 	}
 

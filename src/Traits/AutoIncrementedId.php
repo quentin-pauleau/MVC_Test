@@ -8,4 +8,14 @@ namespace Traits;
 trait AutoIncrementedId
 {
 	public ?int $id = null;
+
+	public function GetId(): ?int
+	{
+		return $this->id;
+	}
+
+	public function SetId(int $id): void
+	{
+		$this->id = $id;
+	}
 }

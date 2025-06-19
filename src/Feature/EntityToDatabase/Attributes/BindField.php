@@ -16,9 +16,9 @@ final class BindField {
 
 	/**
 	 * Type of the field in the table
-	 * @var int
+	 * @var string
 	 */
-	public int $type;
+	public string $type;
 
 	public bool $isNullable = false;
 

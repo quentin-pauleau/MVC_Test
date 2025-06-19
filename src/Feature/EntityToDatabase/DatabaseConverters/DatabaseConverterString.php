@@ -12,7 +12,7 @@ class DatabaseConverterString extends DatabaseConverter
 	 * @param bool $convertToUTF8
 	 * @return string
 	 */
-	public function Import($data, $convertToUTF8 = true): string {
+	public static function Import($data, $convertToUTF8 = true): string {
 		if ($convertToUTF8)
 			return Convert_encoding_to_utf8(strval($data));
 		
@@ -26,7 +26,7 @@ class DatabaseConverterString extends DatabaseConverter
 	 * @param bool $isNullable
 	 * @return string
 	 */
-	public function Export($data, bool $isNullable = false, bool $convertToIso = true): string {
+	public static function Export($data, bool $isNullable = false, bool $convertToIso = true): string {
 		if ($data === null)
 			return $isNullable ? self::DATABASE_NULL : self::DEFAULT_VALUE;
 

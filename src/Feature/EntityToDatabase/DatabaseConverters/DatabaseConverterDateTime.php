@@ -18,7 +18,7 @@ class DatabaseConverterString extends DatabaseConverter
 	 * @param bool $convertToUTF8
 	 * @return string
 	 */
-	public function Import($data, $asImmuable = false): DateTime|DateTimeImmutable {
+	public static function Import($data, $asImmuable = false): DateTime|DateTimeImmutable {
 		if ($asImmuable)
 			return DateTimeImmutable::createFromFormat(self::DATE_FORMAT, $data);
 
@@ -32,7 +32,7 @@ class DatabaseConverterString extends DatabaseConverter
 	 * @param bool $isNullable
 	 * @return string
 	 */
-	public function Export($data, bool $isNullable = false): string {
+	public static function Export($data, bool $isNullable = false): string {
 		if ($data === null)
 			return $isNullable ? self::DATABASE_NULL : self::DEFAULT_VALUE;
 

@@ -14,7 +14,7 @@ class DatabaseConverterUUID extends DatabaseConverter
 	 * @param bool $convertToUTF8
 	 * @return string
 	 */
-	public function Import($data): UUID {
+	public static function Import($data): UUID {
 		return UUID::FromString(Convert_encoding_to_utf8(strval($data)));
 	}
 
@@ -25,7 +25,7 @@ class DatabaseConverterUUID extends DatabaseConverter
 	 * @param bool $isNullable
 	 * @return string
 	 */
-	public function Export($data, bool $isNullable = false): string {
+	public static function Export($data, bool $isNullable = false): string {
 		if ($data === null)
 			return $isNullable ? self::DATABASE_NULL : self::DEFAULT_VALUE;
 		

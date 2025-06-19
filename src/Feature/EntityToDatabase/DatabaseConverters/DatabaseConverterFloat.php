@@ -11,7 +11,7 @@ class DatabaseConverterFloat extends DatabaseConverter
 	 * @param $data
 	 * @return float
 	 */
-	public function Import($data): float {
+	public static function Import($data): float {
 		return intval($data);
 	}
 
@@ -22,7 +22,7 @@ class DatabaseConverterFloat extends DatabaseConverter
 	 * @param bool $isNullable
 	 * @return float|string
 	 */
-	public function Export($data, bool $isNullable = false): float|string {
+	public static function Export($data, bool $isNullable = false): float|string {
 		if ($data === null)
 			return $isNullable ? self::DATABASE_NULL : self::DEFAULT_VALUE;
 

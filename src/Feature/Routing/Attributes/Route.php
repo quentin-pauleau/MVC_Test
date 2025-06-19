@@ -11,7 +11,6 @@ class Route
 
 
 	/**
-	 * @
 	 * By default all of them
 	 * @var RequestMethods[]|null
 	 */

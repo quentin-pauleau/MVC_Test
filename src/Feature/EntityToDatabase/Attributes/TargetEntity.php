@@ -13,4 +13,9 @@ final class TargetEntity {
 	 * @var string
 	 */
 	public string $entity;
+
+
+	public function __construct(string $entity) {
+		$this->entity = $entity;
+	}
 }
