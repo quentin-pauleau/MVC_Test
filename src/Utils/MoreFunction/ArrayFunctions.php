@@ -14,7 +14,7 @@
 /**
  * Return a duplicate version of the given array
  * @param array $array
- * @return void
+ * @return array
  */
 function array_duplicate(array $array, bool $clone_objects = false): array {
 	$data = [];
@@ -32,9 +32,8 @@ function array_duplicate(array $array, bool $clone_objects = false): array {
 		return $data;
 	}
 
-	foreach($array as $k => $v) {
+	foreach($array as $k => $v)
 		$data[$k] = $v;
-	}
 
 	return $data;
 }

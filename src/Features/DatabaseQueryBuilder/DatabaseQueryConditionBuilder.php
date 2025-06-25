@@ -32,6 +32,7 @@ abstract class DatabaseQueryConditionBuilder
 	}
 
 
+	#region Like Conditions
 	public function Like(string $field, string $value): static {
 		return $this->addCondition($field, "LIKE", $value);
 	}
@@ -42,22 +43,110 @@ abstract class DatabaseQueryConditionBuilder
 	}
 
 
+	public function Contains(string $field, string $value): static {
+		return $this->addCondition($field, "LIKE", "%$value%");
+	}
+	
+
+	public function NotContains(string $field, string $value): static {
+		return $this->addCondition($field, "NOT LIKE", "%$value%");
+	}
+
+
+	public function StartWith(string $field, string $value, ?int $minLength = null): static {
+		if ($minLength !== null)
+			for ($i = strlen($value); $i < $minLength; ++$i)
+				$value .= "_";
+		
+		return $this->addCondition($field, "LIKE", "$value%");
+	}
+	
+
+	public function NotStartWith(string $field, string $value, int $minLength): static {
+		if ($minLength !== null)
+			for ($i = strlen($value); $i < $minLength; ++$i)
+				$value .= "_";
+		
+		return $this->addCondition($field, "NOT LIKE", "$value%");
+	}
+
+	
+	public function EndWith(string $field, string $value, int $minLength): static {
+		if ($minLength !== null)
+			for ($i = strlen($value); $i < $minLength; ++$i)
+				$value = "_$value";
+		
+		return $this->addCondition($field, "LIKE", "%$value");
+	}
+	
+
+	public function NotEndWith(string $field, string $value, int $minLength): static {
+		if ($minLength !== null)
+			for ($i = strlen($value); $i < $minLength; ++$i)
+				$value = "_$value";
+		
+		return $this->addCondition($field, "NOT LIKE", "%$value");
+	}
+
+	#endregion Like Conditions
+
+
+	#region Greater/Less Conditions
+
 	public function GreaterThan(string $field, int|float|DateTimeInterface $value): static {
+		if ($value instanceof DateTimeInterface)
+			$value = $value->format('Y-m-d H:i:s');
+
 		return $this->addCondition($field, ">", $value);
 	}
 
 	public function GreaterThanOrEquals(string $field, int|float|DateTimeInterface $value): static {
+		if ($value instanceof DateTimeInterface)
+			$value = $value->format('Y-m-d H:i:s');
+
 		return $this->addCondition($field, ">=", $value);
 	}
 
 	
 	public function LessThan(string $field, int|float|DateTimeInterface $value): static {
+		if ($value instanceof DateTimeInterface)
+			$value = $value->format('Y-m-d H:i:s');
+
 		return $this->addCondition($field, "<", $value);
 	}
 
 	public function LessThanOrEquals(string $field, int|float|DateTimeInterface $value): static {
+		if ($value instanceof DateTimeInterface)
+			$value = $value->format('Y-m-d H:i:s');
+
 		return $this->addCondition($field, "<=", $value);
 	}
+
+	public function Between(string $field, int|float|DateTimeInterface $start, int|float|DateTimeInterface $end): static {
+		if ($start instanceof DateTimeInterface)
+			$start = $start->format('Y-m-d H:i:s');
+
+		if ($end instanceof DateTimeInterface)
+			$end = $end->format('Y-m-d H:i:s');
+		
+		$this->conditions[$this->count] = "{$field} BETWEEN {$start} AND {$end}";
+
+		return $this;
+	}
+
+	public function NotBetween(string $field, int|float|DateTimeInterface $start, int|float|DateTimeInterface $end): static {
+		if ($start instanceof DateTimeInterface)
+			$start = $start->format('Y-m-d H:i:s');
+		
+		if ($end instanceof DateTimeInterface)
+			$end = $end->format('Y-m-d H:i:s');
+		
+		// $field, "NOT BETWEEN", "$start AND $end");
+
+		return $this;
+	}
+
+	#region Greater/Less Conditions
 
 	public function In(string $field, array|DatabaseSelectionQuery $options): static {
 		if (is_array($options))
