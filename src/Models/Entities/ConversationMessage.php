@@ -7,7 +7,7 @@ use Models\ModelConversationMessage;
 use Models\ModelConversationParticipant;
 use Traits\CreatedAt;
 use Traits\UniqueId;
-use Utils\UUID;
+use Core\UUID;
 
 
 /**

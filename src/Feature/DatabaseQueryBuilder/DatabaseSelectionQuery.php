@@ -1,5 +1,5 @@
 <?php
-namespace Utils\Database\QueryBuilder;
+namespace Core\Database\QueryBuilder;
 
 use Feature\DatabaseQueryBuilder\Interface\DatabaseSelectionQueryInterface;
 

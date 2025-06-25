@@ -10,12 +10,12 @@ use Models\ModelCDEClientH;
 use Models\ModelEtatModel;
 use Models\ModelUser;
 
-use Utils\Responses\HTMLResponse;
-use Utils\Responses\Response;
-use Utils\Responses\RouteRedirectionResponse;
+use Core\Responses\HTMLResponse;
+use Core\Responses\Response;
+use Core\Responses\RouteRedirectionResponse;
 
-use Utils\Session\ErrorHelper;
-use Utils\Session\UserHelper;
+use Core\Session\ErrorHelper;
+use Core\Session\UserHelper;
 
 
 class ServiceSuivisCDEClient

@@ -25,17 +25,17 @@ use Services\ServicesConversation\ServiceConversationThread;
 use Services\ServicesConversation\FormServiceConversationMessage;
 use Traits\Singleton;
 
-use Utils\Database\Database;
-use Utils\Requests\Request;
-use Utils\Responses\HTMLResponse;
-use Utils\Responses\RewindRedirectionResponse;
-use Utils\Responses\Response;
+use Core\Database\Database;
+use Core\Requests\Request;
+use Core\Responses\HTMLResponse;
+use Core\Responses\RewindRedirectionResponse;
+use Core\Responses\Response;
 
-use Utils\Responses\RouteRedirectionResponse;
-use Utils\Responses\URIRedirectionResponse;
-use Utils\Session\DataHelper;
-use Utils\Session\ErrorHelper;
-use Utils\Session\UserHelper;
+use Core\Responses\RouteRedirectionResponse;
+use Core\Responses\URIRedirectionResponse;
+use Core\Session\DataHelper;
+use Core\Session\ErrorHelper;
+use Core\Session\UserHelper;
 
 class ControllerConversation extends Controller
 {

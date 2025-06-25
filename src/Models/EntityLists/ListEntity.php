@@ -2,7 +2,7 @@
 namespace Models\EntityLists;
 
 use Models\Entities\Entity;
-use Utils\Generics\ListGeneric;
+use Core\Generics\ListGeneric;
 
 abstract class ListEntity extends ListGeneric
 {

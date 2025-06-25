@@ -11,7 +11,7 @@ use Models\Entities\DegresUrgence;
 use Interfaces\ConversationSubjectInterface;
 
 use Traits\CreatedAt;
-use Utils\UUID;
+use Core\UUID;
 
 
 /**

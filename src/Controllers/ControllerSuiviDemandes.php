@@ -29,16 +29,16 @@ use Models\ModelDemandeDiverse;
 use Services\ServiceCDEFournisseur;
 use Services\ServiceDemandeDiverse;
 
-use Utils\Requests\Request;
-use Utils\Responses\RewindRedirectionResponse;
-use Utils\Responses\RouteRedirectionResponse;
-use Utils\Responses\URIRedirectionResponse;
-use Utils\Session\DataHelper;
-use Utils\Session\UserHelper;
-use Utils\Session\ErrorHelper;
+use Core\Requests\Request;
+use Core\Responses\RewindRedirectionResponse;
+use Core\Responses\RouteRedirectionResponse;
+use Core\Responses\URIRedirectionResponse;
+use Core\Session\DataHelper;
+use Core\Session\UserHelper;
+use Core\Session\ErrorHelper;
 
-use Utils\Responses\HTMLResponse;
-use Utils\Responses\Response;
+use Core\Responses\HTMLResponse;
+use Core\Responses\Response;
 
 use Models\EntityLists\ListEtatModel;
 use Models\EntityLists\ListFournisseur;

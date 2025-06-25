@@ -11,7 +11,7 @@ use Controllers\Actions\ActionsMenu;
 use Controllers\ControllerMenu;
 use Enums\ComparaisonOpperators;
 use Enums\SuivisViewTypes;
-use Utils\Session\UserHelper;
+use Core\Session\UserHelper;
 
 if (!isset($errors) || !is_array($errors)) {
 

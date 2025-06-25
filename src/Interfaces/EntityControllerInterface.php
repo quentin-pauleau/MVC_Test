@@ -1,7 +1,7 @@
 <?php
 namespace Interfaces;
 
-use Utils\Responses\Response;
+use Core\Responses\Response;
 
 /**
  * Interface for controller managing entities

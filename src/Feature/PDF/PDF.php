@@ -18,7 +18,7 @@ use Feature\PDF\Enums\PDFOrientations as Orientations;
 use Feature\PDF\Enums\PDFUnits as Units;
 use Feature\PDF\Enums\PDFSizes as Sizes;
 
-use Utils\UUID;
+use Core\UUID;
 
 
 class PDF implements FileInterface

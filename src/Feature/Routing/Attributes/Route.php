@@ -2,7 +2,7 @@
 namespace Feature\Routing\Attributes;
 
 use Attribute;
-use Utils\Requests\RequestMethods;
+use Core\Requests\RequestMethods;
 
 #[Attribute]
 class Route

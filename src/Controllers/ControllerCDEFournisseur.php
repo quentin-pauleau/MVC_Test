@@ -11,15 +11,15 @@ use Services\ServicesCDEFour\ServiceSuivisCDEFour;
 use Traits\Singleton;
 use Interfaces\EntityControllerInterface;
 
-use Utils\Requests\Request;
+use Core\Requests\Request;
 
-use Utils\Responses\Response;
-use Utils\Responses\HTMLResponse;
-use Utils\Responses\RouteRedirectionResponse;
-use Utils\Responses\URIRedirectionResponse;
+use Core\Responses\Response;
+use Core\Responses\HTMLResponse;
+use Core\Responses\RouteRedirectionResponse;
+use Core\Responses\URIRedirectionResponse;
 
-use Utils\Session\DataHelper;
-use Utils\Session\ErrorHelper;
+use Core\Session\DataHelper;
+use Core\Session\ErrorHelper;
 
 
 final class ControllerCDEFournisseur extends Controller implements EntityControllerInterface

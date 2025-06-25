@@ -9,14 +9,14 @@ use Exception;
 use Models\ModelUser;
 
 use Traits\Singleton;
-use Utils\Database\DatabaseException;
-use Utils\Requests\Request;
-use Utils\Responses\HTMLResponse;
-use Utils\Responses\Response;
-use Utils\Responses\RouteRedirectionResponse;
-use Utils\Session\DataHelper;
-use Utils\Session\UserHelper;
-use Utils\Session\ErrorHelper;
+use Core\Database\DatabaseException;
+use Core\Requests\Request;
+use Core\Responses\HTMLResponse;
+use Core\Responses\Response;
+use Core\Responses\RouteRedirectionResponse;
+use Core\Session\DataHelper;
+use Core\Session\UserHelper;
+use Core\Session\ErrorHelper;
 
 final class ControllerMenu extends Controller
 {

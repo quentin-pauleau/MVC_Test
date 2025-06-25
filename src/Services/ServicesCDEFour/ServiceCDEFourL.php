@@ -16,7 +16,7 @@ use Models\ModelEtatModel;
 use Models\ModelFournisseur;
 
 use UnexpectedValueException;
-use Utils\Session\ErrorHelper;
+use Core\Session\ErrorHelper;
 
 
 /**

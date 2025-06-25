@@ -13,7 +13,7 @@ use Controllers\ControllerConversation;
 use Models\Entities\CDEFourH;
 use Models\Entities\ConversationThread;
 use Components\EntityComponents\CDEFourLComponents;
-use Utils\Session\DataHelper;
+use Core\Session\DataHelper;
 
 if (!isset($CDEFourH) || !($CDEFourH instanceof CDEFourH)) {
 	$errors['view_CDEFourH'] = 'La "commande stock" est indéfinie ou invalide';

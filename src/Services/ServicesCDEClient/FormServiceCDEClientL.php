@@ -3,8 +3,8 @@ namespace Services\ServicesCDEClient;
 
 use Interfaces\FormServiceInterface;
 use Models\Entities\CDEClientL;
-use Utils\Requests\Request;
-use Utils\Session\ErrorHelper;
+use Core\Requests\Request;
+use Core\Session\ErrorHelper;
 
 /**
  * FormServiceCDEClientL

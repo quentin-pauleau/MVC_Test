@@ -12,7 +12,7 @@ use Controllers\ControllerConversation;
 use Models\Entities\CDEFourH;
 use Models\Entities\ConversationThread;
 use Models\EntityLists\ListEtatModel;
-use Utils\Session\DataHelper;
+use Core\Session\DataHelper;
 
 if (!isset($CDEFourH) || !($CDEFourH instanceof CDEFourH)) {
 	$errors['view_CDEFourH'] = 'the "demande client" is undefined or invalid';

@@ -11,7 +11,7 @@ use Models\Entities\ConversationThread;
 use Models\Entities\DemandeDiverse;
 use Models\EntityLists\ListEtatModel;
 use Models\EntityLists\ListUser;
-use Utils\Session\DataHelper;
+use Core\Session\DataHelper;
 
 if (!isset($DemandeDiverse) || !($DemandeDiverse instanceof DemandeDiverse)) {
 	$errors['view_DemandeDiverse'] = 'La demande diverse est indéfinie ou invalide';

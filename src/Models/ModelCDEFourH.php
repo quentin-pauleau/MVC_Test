@@ -9,10 +9,10 @@ use Traits\Singleton;
 use Models\Entities\CDEFourH;
 use Models\EntityLists\ListCDEFourH;
 
-use Utils\Database\DatabaseException;
-use Utils\Database\DatabaseQueryParam;
-use Utils\Database\ListDatabaseQueryParam;
-use Utils\UUID;
+use Core\Database\DatabaseException;
+use Core\Database\DatabaseQueryParam;
+use Core\Database\ListDatabaseQueryParam;
+use Core\UUID;
 
 
 /**

@@ -3,7 +3,7 @@
 use Components\ButtonComponents\ButtonComponent;
 use Components\EntityComponents\DemandeCongesComponents;
 use Models\Entities\DemandeConges;
-use Utils\Session\DataHelper;
+use Core\Session\DataHelper;
 
 if ($DemandeConges === null || !($DemandeConges instanceof DemandeConges)) {
 	throw new Exception();

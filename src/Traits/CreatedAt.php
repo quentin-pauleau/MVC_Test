@@ -3,7 +3,7 @@
 namespace Traits;
 
 use DateTime;
-use Utils\Database\Database;
+use Core\Database\Database;
 
 /**
  * Represents an object that has a date defining when the object was created.

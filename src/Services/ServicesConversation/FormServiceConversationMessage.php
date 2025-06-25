@@ -3,8 +3,8 @@ namespace Services\ServicesConversation;
 
 use Interfaces\FormServiceInterface;
 use Models\Entities\ConversationMessage;
-use Utils\Requests\Request;
-use Utils\Session\ErrorHelper;
+use Core\Requests\Request;
+use Core\Session\ErrorHelper;
 
 
 class FormServiceConversationMessage implements FormServiceInterface

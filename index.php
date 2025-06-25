@@ -10,7 +10,7 @@ error_reporting(E_ALL);
 ini_set('display_errors', '1');
 
 // Require the needed files
-require_once "src/Utils/MoreFunctions.php";
+require_once "src/Core/MoreFunctions.php";
 
 spl_autoload_register(function ($class): void {
 	$file = __DIR__ .'/src/'.str_replace('\\', '/', $class) . '.php';
@@ -18,7 +18,7 @@ spl_autoload_register(function ($class): void {
 		require_once $file;
 });
 
-use Utils\Core;
+use Core\Core;
 
 // Initialise the app
 Core::Init();

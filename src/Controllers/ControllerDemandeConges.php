@@ -20,17 +20,17 @@ use Models\Entities\User;
 use Models\ModelTypeConges;
 use Models\ModelUser;
 
-use Utils\Requests\Request;
+use Core\Requests\Request;
 
-use Utils\Responses\Response;
-use Utils\Responses\HTMLResponse;
-use Utils\Responses\RouteRedirectionResponse;
-use Utils\Responses\URIRedirectionResponse;
-use Utils\Responses\RewindRedirectionResponse;
+use Core\Responses\Response;
+use Core\Responses\HTMLResponse;
+use Core\Responses\RouteRedirectionResponse;
+use Core\Responses\URIRedirectionResponse;
+use Core\Responses\RewindRedirectionResponse;
 
-use Utils\Session\DataHelper;
-use Utils\Session\ErrorHelper;
-use Utils\Session\UserHelper;
+use Core\Session\DataHelper;
+use Core\Session\ErrorHelper;
+use Core\Session\UserHelper;
 
 
 final class ControllerDemandeConges extends Controller implements EntityControllerInterface

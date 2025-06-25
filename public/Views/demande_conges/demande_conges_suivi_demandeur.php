@@ -3,7 +3,7 @@
 use Components\ButtonComponents\ButtonComponent;
 use Components\CardComponents\ErrorCardComponent;
 use Components\EntityComponents\DemandeCongesComponents;
-use Utils\Session\DataHelper;
+use Core\Session\DataHelper;
 
 ?>
 

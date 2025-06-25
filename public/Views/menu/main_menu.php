@@ -8,7 +8,7 @@ use Controllers\Actions\ActionsFormDemandeConges;
 use Controllers\ControllerDemandeConges;
 use Controllers\ControllerFormDemandeConges;
 use Models\Entities\User;
-use Utils\Session\UserHelper;
+use Core\Session\UserHelper;
 
 use Controllers\ControllerFormCDEClient;
 use Controllers\Actions\ActionsFormCDEClient;

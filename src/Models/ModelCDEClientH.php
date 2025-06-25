@@ -12,10 +12,10 @@ use Models\Model;
 use Models\Entities\CDEClientH;
 use Models\EntityLists\ListCDEClientH;
 
-use Utils\Database\DatabaseQueryParam;
-use Utils\Database\ListDatabaseQueryParam;
-use Utils\Database\DatabaseException;
-use Utils\UUID;
+use Core\Database\DatabaseQueryParam;
+use Core\Database\ListDatabaseQueryParam;
+use Core\Database\DatabaseException;
+use Core\UUID;
 
 
 /**

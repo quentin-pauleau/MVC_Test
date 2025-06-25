@@ -3,7 +3,7 @@ namespace Models;
 
 use Models\EntityLists\ListEntity;
 use Models\Entities\Entity;
-use Utils\Database\Database;
+use Core\Database\Database;
 
 abstract class Model
 {

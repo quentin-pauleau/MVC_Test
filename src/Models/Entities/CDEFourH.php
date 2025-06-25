@@ -16,7 +16,7 @@ use Interfaces\ConversationSubjectInterface;
 
 use Traits\CreatedAt;
 use Traits\UniqueId;
-use Utils\UUID;
+use Core\UUID;
 
 /**
  * Cette classe représente une commande fournisseur / commande stock

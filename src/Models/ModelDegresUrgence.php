@@ -11,9 +11,9 @@ use Models\Model;
 use Models\Entities\DegresUrgence;
 use Models\EntityLists\ListDegresUrgence;
 
-use Utils\Database\DatabaseException;
-use Utils\Database\DatabaseQueryParam;
-use Utils\Database\ListDatabaseQueryParam;
+use Core\Database\DatabaseException;
+use Core\Database\DatabaseQueryParam;
+use Core\Database\ListDatabaseQueryParam;
 
 class ModelDegresUrgence extends Model
 {

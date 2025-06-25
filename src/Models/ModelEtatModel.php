@@ -11,9 +11,9 @@ use Models\Model;
 use Models\Entities\EtatModel;
 use Models\EntityLists\ListEtatModel;
 
-use Utils\Database\ListDatabaseQueryParam;
-use Utils\Database\DatabaseQueryParam;
-use Utils\Database\DatabaseException;
+use Core\Database\ListDatabaseQueryParam;
+use Core\Database\DatabaseQueryParam;
+use Core\Database\DatabaseException;
 
 class ModelEtatModel extends Model
 {

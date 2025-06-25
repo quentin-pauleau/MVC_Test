@@ -2,7 +2,7 @@
 namespace Components\DropdownComponents;
 
 use Components\DropdownComponents\AbstractDropdownElement;
-use Utils\Generics\ListGeneric;
+use Core\Generics\ListGeneric;
 
 class ListAbstractDropdownElement extends ListGeneric
 {

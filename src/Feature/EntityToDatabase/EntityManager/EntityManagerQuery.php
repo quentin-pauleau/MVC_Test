@@ -2,7 +2,7 @@
 namespace Feature\EntityToDatabase\EntityManager;
 
 use Feature\EntityToDatabase\EntutyManager\EntityManager;
-use Utils\Database\ListDatabaseQueryParam;
+use Core\Database\ListDatabaseQueryParam;
 
 class EntityManagerQuery
 {
