@@ -4,8 +4,8 @@ namespace Services\ServicesCDEClient;
 use Exception;
 use Interfaces\FormServiceInterface;
 use Models\Entities\CDEClientH;
-use Utils\Requests\Request;
-use Utils\Session\ErrorHelper;
+use Core\Requests\Request;
+use Core\Session\ErrorHelper;
 
 
 class FormServiceCDEClientH implements FormServiceInterface

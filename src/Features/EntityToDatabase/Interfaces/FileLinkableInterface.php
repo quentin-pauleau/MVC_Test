@@ -1,7 +1,7 @@
 <?php
 namespace Feature\EntityToDatabase\Interfaces;
 
-use Utils\UUID;
+use Core\UUID;
 
 
 interface FileLinkableInterface

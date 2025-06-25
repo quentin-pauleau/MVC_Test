@@ -10,8 +10,8 @@ use Models\ModelTypeConges;
 use Services\ServicesDemandeConges\FormServiceDemandeConges;
 use Services\ServicesDemandeConges\ServiceDemandeConges;
 
-use Utils\Database\Database;
-use Utils\Database\DatabaseException;
+use Core\Database\Database;
+use Core\Database\DatabaseException;
 
 use Controllers\Controller;
 use Controllers\Actions\ActionsFormDemandeConges;
@@ -19,16 +19,16 @@ use Controllers\Actions\ActionsFormDemandeConges;
 use Controllers\ControllerMenu;
 use Controllers\Actions\ActionsMenu;
 
-use Utils\Requests\Request;
+use Core\Requests\Request;
 
-use Utils\Responses\HTMLResponse;
-use Utils\Responses\RedirectionResponse;
-use Utils\Responses\Response;
-use Utils\Responses\RouteRedirectionResponse;
+use Core\Responses\HTMLResponse;
+use Core\Responses\RedirectionResponse;
+use Core\Responses\Response;
+use Core\Responses\RouteRedirectionResponse;
 
-use Utils\Session\DataHelper;
-use Utils\Session\ErrorHelper;
-use Utils\Session\UserHelper;
+use Core\Session\DataHelper;
+use Core\Session\ErrorHelper;
+use Core\Session\UserHelper;
 
 use Models\Entities\DemandeConges;
 use Models\ModelDemandeConges;

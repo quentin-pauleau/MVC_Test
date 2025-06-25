@@ -1,6 +1,6 @@
 <?php 
 
-use Utils\Session\DataHelper;
+use Core\Session\DataHelper;
 use Models\Entities\CDEClientH;
 use Models\EntityLists\ListUser;
 use Models\EntityLists\ListEtatModel;

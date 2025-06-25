@@ -9,9 +9,9 @@ use Traits\Singleton;
 use Models\Entities\ConversationMessageNotif;
 use Models\EntityLists\ListConversationMessageNotif;
 
-use Utils\Database\DatabaseException;
-use Utils\Database\DatabaseQueryParam;
-use Utils\Database\ListDatabaseQueryParam;
+use Core\Database\DatabaseException;
+use Core\Database\DatabaseQueryParam;
+use Core\Database\ListDatabaseQueryParam;
 
 
 /**

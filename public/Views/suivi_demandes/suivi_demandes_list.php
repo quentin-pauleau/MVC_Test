@@ -10,7 +10,7 @@ use Controllers\Actions\ActionsMenu;
 use Models\EntityLists\ListEtatModel;
 use Models\EntityLists\ListFournisseur;
 use Models\EntityLists\ListUser;
-use Utils\Session\UserHelper;
+use Core\Session\UserHelper;
 
 // filtering values
 if (!isset($ListClientState) || !($ListClientState instanceof ListEtatModel)) {

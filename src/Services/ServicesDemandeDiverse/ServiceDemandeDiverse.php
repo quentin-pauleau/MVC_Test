@@ -13,8 +13,8 @@ use Models\Entities\DemandeDiverse;
 use Services\ServicesConversation\ServiceConversationThread;
 use Services\ServicesState\ServiceState;
 use Services\ServicesUser\ServiceUser;
-use Utils\Requests\Request;
-use Utils\Session\ErrorHelper;
+use Core\Requests\Request;
+use Core\Session\ErrorHelper;
 
 
 class ServiceDemandeDiverse implements ServiceInterface

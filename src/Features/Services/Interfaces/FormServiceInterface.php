@@ -1,8 +1,8 @@
 <?php
 namespace Feature\Services\Interfaces;
 
-use Utils\Requests\Request;
-use Utils\Responses\HTMLResponse;
+use Core\Requests\Request;
+use Core\Responses\HTMLResponse;
 
 /**
  * A interface for form handling services

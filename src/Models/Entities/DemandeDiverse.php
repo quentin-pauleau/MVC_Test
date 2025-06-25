@@ -9,7 +9,7 @@ use Interfaces\ConversationSubjectInterface;
 
 use Traits\CreatedAt;
 use Traits\UniqueId;
-use Utils\UUID;
+use Core\UUID;
 
 
 /**

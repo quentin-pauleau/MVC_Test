@@ -11,9 +11,9 @@ use Models\Model;
 use Models\Entities\Group;
 use Models\EntityLists\ListGroup;
 
-use Utils\Database\DatabaseQueryParam;
-use Utils\Database\ListDatabaseQueryParam;
-use Utils\Database\DatabaseException;
+use Core\Database\DatabaseQueryParam;
+use Core\Database\ListDatabaseQueryParam;
+use Core\Database\DatabaseException;
 
 
 class ModelGroup extends Model

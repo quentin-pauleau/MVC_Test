@@ -11,9 +11,9 @@ use Models\Model;
 use Models\Entities\TypeLivraison;
 use Models\EntityLists\ListTypeLivraison;
 
-use Utils\Database\ListDatabaseQueryParam;
-use Utils\Database\DatabaseQueryParam;
-use Utils\Database\DatabaseException;
+use Core\Database\ListDatabaseQueryParam;
+use Core\Database\DatabaseQueryParam;
+use Core\Database\DatabaseException;
 
 class ModelTypeLivraison extends Model
 {

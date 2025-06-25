@@ -10,7 +10,7 @@ use Controllers\ControllerConversation;
 use Models\Entities\CDEClientH;
 use Models\Entities\ConversationThread;
 use Models\EntityLists\ListEtatModel;
-use Utils\Session\DataHelper;
+use Core\Session\DataHelper;
 
 if (!isset($CDEClientH) || !($CDEClientH instanceof CDEClientH)) {
 	$errors['view_CDEClient'] = 'the "demande client" is undefined or invalid';

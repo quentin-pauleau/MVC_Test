@@ -22,11 +22,11 @@ use Traits\Singleton;
 use Models\ModelCDEClientH;
 use Models\ModelCDEFourH;
 use Models\ModelDemandeDiverse;
-use Utils\Database\Database;
-use Utils\Requests\Request;
-use Utils\Responses\Response;
-use Utils\Responses\StringResponse;
-use Utils\Session\UserHelper;
+use Core\Database\Database;
+use Core\Requests\Request;
+use Core\Responses\Response;
+use Core\Responses\StringResponse;
+use Core\Session\UserHelper;
 
 class ControllerDebug extends Controller
 {

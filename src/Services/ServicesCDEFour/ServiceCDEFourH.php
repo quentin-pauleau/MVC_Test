@@ -20,7 +20,7 @@ use Models\ModelUser;
 
 use Services\ServicesState\ServiceState;
 use UnexpectedValueException;
-use Utils\Session\ErrorHelper;
+use Core\Session\ErrorHelper;
 
 
 /**

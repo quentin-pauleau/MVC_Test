@@ -1,8 +1,8 @@
 <?php
 namespace Components\CardComponents;
 
-use Utils\Session\ErrorHelper;
-use Utils\Session\UserHelper;
+use Core\Session\ErrorHelper;
+use Core\Session\UserHelper;
 
 class ErrorCardComponent
 {

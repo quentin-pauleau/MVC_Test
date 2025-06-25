@@ -18,7 +18,7 @@ use Models\ModelUser;
 use Services\ServicesConversation\ServiceConversationParticipant;
 use Services\ServicesState\ServiceState;
 use Services\ServicesUser\ServiceUser;
-use Utils\Session\ErrorHelper;
+use Core\Session\ErrorHelper;
 
 
 class ServiceCDEClientH implements ServiceInterface

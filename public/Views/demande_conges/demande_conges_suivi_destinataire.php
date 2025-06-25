@@ -4,7 +4,7 @@ use Components\ButtonComponents\ButtonComponent;
 use Components\CardComponents\ErrorCardComponent;
 use Components\EntityComponents\DemandeCongesComponents;
 use Models\Entities\DemandeConges;
-use Utils\Session\DataHelper;
+use Core\Session\DataHelper;
 
 if (!isset($DemandeConges) || !($DemandeConges instanceof DemandeConges)) {
 	$errors['view_DemandeConges'] = 'La demande conges est indéfinie ou invalide';

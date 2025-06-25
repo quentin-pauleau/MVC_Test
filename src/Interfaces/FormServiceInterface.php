@@ -1,7 +1,7 @@
 <?php
 namespace Interfaces;
 
-use Utils\Requests\Request;
+use Core\Requests\Request;
 
 interface FormServiceInterface extends ServiceInterface
 {

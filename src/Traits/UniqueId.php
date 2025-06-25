@@ -1,6 +1,6 @@
 <?php
 namespace Traits;
-use Utils\UUID;
+use Core\UUID;
 
 /**
  * Represent a object with a UUID, this uuid can be used to join file with data inside the 'GED'

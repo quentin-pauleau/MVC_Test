@@ -8,8 +8,8 @@ use Models\ModelUser;
 
 use Interfaces\ServiceInterface;
 use Models\Entities\DemandeConges;
-use Utils\FileHandler;
-use Utils\Session\ErrorHelper;
+use Core\FileHandler;
+use Core\Session\ErrorHelper;
 
 
 class ServiceDemandeConges implements ServiceInterface

@@ -10,9 +10,9 @@ use Models\EntityLists\ListEntity;
 use PDO;
 use ReflectionClass;
 use Feature\EntityToDatabase\EntityManager\EntityPropertyManager;
-use Utils\Database\Database;
-use Utils\Database\DatabaseQueryParam;
-use Utils\Database\ListDatabaseQueryParam;
+use Core\Database\Database;
+use Core\Database\DatabaseQueryParam;
+use Core\Database\ListDatabaseQueryParam;
 
 abstract class EntityManager
 {

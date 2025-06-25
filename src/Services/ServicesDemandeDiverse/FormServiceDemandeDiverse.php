@@ -3,8 +3,8 @@ namespace Services\ServicesDemandeDiverse;
 
 use Interfaces\FormServiceInterface;
 use Models\Entities\DemandeDiverse;
-use Utils\Requests\Request;
-use Utils\Session\ErrorHelper;
+use Core\Requests\Request;
+use Core\Session\ErrorHelper;
 
 class FormServiceDemandeDiverse implements FormServiceInterface
 {

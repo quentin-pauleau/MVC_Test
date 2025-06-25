@@ -2,10 +2,10 @@
 namespace Services;
 
 use Interfaces\ServiceInterface;
-use Utils\FileHandleing\ListUploadedFile;
-use Utils\FileHandler;
-use Utils\Session\ErrorHelper;
-use Utils\UUID;
+use Core\FileHandleing\ListUploadedFile;
+use Core\FileHandler;
+use Core\Session\ErrorHelper;
+use Core\UUID;
 
 
 /**

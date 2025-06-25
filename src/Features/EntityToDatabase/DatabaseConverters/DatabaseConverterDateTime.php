@@ -4,7 +4,7 @@ namespace Feature\EntityToDatabase\DatabaseConverters;
 use DateTime;
 use DateTimeImmutable;
 use DateTimeInterface;
-use Utils\Database\Database;
+use Core\Database\Database;
 
 class DatabaseConverterString extends DatabaseConverter
 {

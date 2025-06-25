@@ -7,8 +7,8 @@ use Models\Entities\CDEClientH;
 use Models\Entities\CDEFourH;
 use Models\Entities\DemandeDiverse;
 
-use Utils\Session\DataHelper;
-use Utils\Session\UserHelper;
+use Core\Session\DataHelper;
+use Core\Session\UserHelper;
 
 use Controllers\ControllerConversation;
 use Controllers\Actions\ActionsConversation;

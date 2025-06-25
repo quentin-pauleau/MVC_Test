@@ -13,24 +13,24 @@ use Services\ServicesCDEFour\ServiceCDEFourH;
 use Services\ServicesFournisseur\ServiceFournisseur;
 use Services\ServicesUser\ServiceUser;
 use Traits\Singleton;
-use Utils\Database\Database;
-use Utils\Database\DatabaseException;
+use Core\Database\Database;
+use Core\Database\DatabaseException;
 
 use Controllers\Controller;
 use Controllers\Actions\ActionsFormCDEFournisseur;
 use Controllers\ControllerMenu;
 use Controllers\Actions\ActionsMenu;
 
-use Utils\FileHandler;
-use Utils\Requests\Request;
-use Utils\Session\DataHelper;
-use Utils\Session\ErrorHelper;
-use Utils\Session\UserHelper;
+use Core\FileHandler;
+use Core\Requests\Request;
+use Core\Session\DataHelper;
+use Core\Session\ErrorHelper;
+use Core\Session\UserHelper;
 
-use Utils\Responses\RouteRedirectionResponse;
-use Utils\Responses\RedirectionResponse;
-use Utils\Responses\HTMLResponse;
-use Utils\Responses\Response;
+use Core\Responses\RouteRedirectionResponse;
+use Core\Responses\RedirectionResponse;
+use Core\Responses\HTMLResponse;
+use Core\Responses\Response;
 
 use Models\Entities\CDEFourH;
 use Models\Entities\CDEFourL;

@@ -1,7 +1,7 @@
 <?php
 namespace Feature\Routing;
 
-use Utils\Requests\Request;
+use Core\Requests\Request;
 
 
 /**

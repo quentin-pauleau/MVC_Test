@@ -1,7 +1,7 @@
 <?php
 namespace Feature\EntityToDatabase\DatabaseConverters;
 
-use Utils\UUID;
+use Core\UUID;
 
 class DatabaseConverterUUID extends DatabaseConverter
 {

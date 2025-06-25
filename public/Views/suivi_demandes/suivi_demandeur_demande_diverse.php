@@ -8,7 +8,7 @@ use Controllers\Actions\ActionsConversation;
 use Controllers\ControllerConversation;
 use Models\Entities\ConversationThread;
 use Models\Entities\DemandeDiverse;
-use Utils\Session\DataHelper;
+use Core\Session\DataHelper;
 
 if (!isset($DemandeDiverse) || !($DemandeDiverse instanceof DemandeDiverse)) {
 	$errors['view_DemandeDiverse'] = 'La demande diverse est indéfinie ou invalide';

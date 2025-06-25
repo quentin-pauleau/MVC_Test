@@ -1,7 +1,7 @@
 <?php
 namespace Controllers;
 
-use Utils\Responses\Response;
+use Core\Responses\Response;
 
 abstract class Controller
 {
