@@ -3,7 +3,7 @@ namespace Modules\HTMLElement\Components;
 
 use Modules\HTMLElement\Elements\Span;
 use Modules\HTMLElement\HTMLElement;
-use Utils\UUID;
+use Core\UUID;
 
 class Alert extends HTMLElement
 {
@@ -12,7 +12,7 @@ class Alert extends HTMLElement
 		<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
 	</svg>
 	HTML;
-	private const ICON_SUCESS = <<<HTML
+	private const ICON_SUCCESS = <<<HTML
 	<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 shrink-0 stroke-current" fill="none" viewBox="0 0 24 24">
 		<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
 	</svg>
@@ -32,7 +32,12 @@ class Alert extends HTMLElement
 
 
 	/**
-	 * @var "info"|"i"|"sucess"|"s"|"warning"|"w"|"error"|"e"|null
+	 * - default => to inform the user about something unimportant
+	 * - info, i => to inform the user about something important
+	 * - success, s => to inform the user that an action has been successful
+	 * - warning, w => to warn the user about a potential problem
+	 * - error, e => to inform the user that an action has failed
+	 * @var "info"|"i"|"success"|"s"|"warning"|"w"|"error"|"e"|null
 	 */
 	public string $type = 'default';
 	public bool $hasIcon = true;
@@ -42,7 +47,7 @@ class Alert extends HTMLElement
 	/**
 	 * @param string|null $id
 	 * @param HTMLElement[] $childs
-	 * @param "info"|"i"|"sucess"|"s"|"warning"|"w"|"error"|"e"|"default" $type
+	 * @param "info"|"i"|"success"|"s"|"warning"|"w"|"error"|"e"|"default" $type
 	 * @param bool $hasIcon
 	 * @param "soft"|"outline"|"dash"|"default" $style
 	 */
@@ -64,19 +69,13 @@ class Alert extends HTMLElement
 	{
 		$content = '';
 		if ($this->hasIcon)
-			$content .= match($this->type) {
-				'info', 'i' => self::ICON_INFO,
-				'sucess', 's' => self::ICON_SUCESS,
-				'warning', 'w' => self::ICON_WARNING,
-				'error', 'e' => self::ICON_ERROR,
-				default => self::ICON_INFO
-			};
+			$content .= $this->getTypeIcon();
 
 		foreach ($this->childs as $child)
 			$content .= (string)$child;
 
 		return <<<HTML
-		<div id="{$this->id}" role="alert" class="alert alert-{$this->type}">
+		<div id="{$this->id}" role="alert" class="alert {$this->getStyleClass()} {$this->getTypeClass()}">
 			{$content}
 		</div>
 		HTML;
@@ -87,9 +86,55 @@ class Alert extends HTMLElement
 		$this->hasIcon = $hasIcon;
 		return $this;
 	}
+
+	/**
+	 * Change the type of alert.
+	 * 
+	 * - default => to inform the user about something unimportant
+	 * - info, i => to inform the user about something important
+	 * - success, s => to inform the user that an action has been successful
+	 * - warning, w => to warn the user about a potential problem
+	 * - error, e => to inform the user that an action has failed
+	 * @param "info"|"i"|"success"|"s"|"warning"|"w"|"error"|"e"|"default" $type
+	 * @return Alert
+	 */
+	public function setType(string $type): self
+	{
+		$this->type = $type;
+		return $this;
+	}
+
+	private function getTypeIcon(): string {
+		return match($this->type) {
+			'info', 'i' => self::ICON_INFO,
+			'success', 's' => self::ICON_SUCCESS,
+			'warning', 'w' => self::ICON_WARNING,
+			'error', 'e' => self::ICON_ERROR,
+			default => self::ICON_INFO
+		};
+	}
 	
 
-	public static function CreateDefault(string $type, string $message): self {
+	private function getStyleClass(): string {
+		return match($this->style) {
+			'soft' => 'alert-soft',
+			'outline' => 'alert-outline',
+			'dash' => 'alert-dashed',
+			default => ''
+		};
+	}
+
+	private function getTypeClass(): string {
+		return match($this->style) {
+			'info', 'i' => 'alert-info',
+			'success', 's' => 'alert-success',
+			'warning', 'w' => 'alert-warning',
+			'error', 'e' => 'alert-error',
+			default => ''
+		};
+	}
+
+	public static function NewSimple(string $type, string $message): self {
 		return new self(
 			childs: [
 				new Span(
@@ -100,9 +145,5 @@ class Alert extends HTMLElement
 			],
 			type: $type,
 		);
-		// <div role="alert" class="alert alert-info">
-		// 	
-		// 	<span>New software update available.</span>
-		// </div>
 	}
 }

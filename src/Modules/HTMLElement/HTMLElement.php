@@ -20,6 +20,12 @@ abstract class HTMLElement implements Stringable
 	abstract public function __toString(): string;
 
 	
+	public function setId(?string $id): self
+	{
+		$this->id = $id;
+		return $this;
+	}
+	
 	final public function addChild(HTMLElement ...$child): self
 	{
 		foreach ($child as $c)
