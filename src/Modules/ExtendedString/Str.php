@@ -13,10 +13,15 @@ function str(string $str): Str {
 	return new Str($str);
 }
 
-class Str implements Stringable, Countable 
+class Str implements Stringable, Countable
 {
 	public const EMPTY = '';
 	private string $str;
+
+	public function getLength(): int {
+		return count($this);
+	}
+
 
 	public function __construct(string $str) {
 		$this->str = $str;
@@ -32,6 +37,10 @@ class Str implements Stringable, Countable
 
 	public function __toString(): string {
 		return $this->str;
+	}
+
+	public function __clone(): void {
+		$this->str = (string)$this->str;
 	}
 
 

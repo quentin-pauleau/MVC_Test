@@ -1,44 +1,39 @@
 <?php
-namespace Feature\EntityToDatabase\EntutyManager;
+namespace Modules\ORM\RecordManager;
 
 use Exception;
-use Feature\EntityToDatabase\Attributes\BindField;
-use Feature\EntityToDatabase\Attributes\BindTable;
-use Feature\EntityToDatabase\EntityManager\EntityManagerQuery;
-use Models\Entities\Entity;
-use Models\EntityLists\ListEntity;
 use PDO;
 use ReflectionClass;
-use Feature\EntityToDatabase\EntityManager\EntityPropertyManager;
 use Core\Database\Database;
 use Core\Database\DatabaseQueryParam;
 use Core\Database\ListDatabaseQueryParam;
+use Feature\EntityToDatabase\Attributes\BindField;
 
-abstract class EntityManager
+final class RecordManager
 {
 	protected static Database $connection;
 
-	protected string $entityClass;
-	protected string $listEntityClass;
+	protected string $recordClass;
+	protected string $listrecordClass;
 	protected string $tableName;
 
 	/**
-	 * @var EntityPropertyManager[]
+	 * @var RecordPropertyManager[]
 	 */
 	protected array $fields;
 	protected string $idField;
 
-	protected function __construct(string $entityClass)
+	protected function __construct(string $recordClass)
 	{
-		//* set the targeted entity class
-		if (array_search(Entity::class, class_parents($entityClass)))
-			throw new Exception('The entity must be a subclass of Entity');	
+		//* set the targeted record class
+		if (array_search(DatabaseRecord::class, class_parents($recordClass)))
+			throw new Exception('The record must be a subclass of record');	
 
-		self::$entityClass = $entityClass;
+		self::$recordClass = $recordClass;
 
 		//* set the table binding
-		$reflection = new ReflectionClass($this->entityClass);
-		self::$tableName = $reflection->getAttributes(BindTable::class)[0]->getArguments()[0];
+		$reflection = new ReflectionClass($this->recordClass);
+		self::$tableName = $reflection->getAttributes(DatabaseRecord::class)[0]->getArguments()[0];
 		self::$tableName = strtolower(self::$tableName);
 
 		//* set the id field
@@ -52,15 +47,15 @@ abstract class EntityManager
 			if (count($field) == 0)
 				continue; //* property isnt bind to a field in the database
 
-			$this->fields[] = new EntityPropertyManager(
-				$this->entityClass,
+			$this->fields[] = new RecordPropertyManager(
+				$this->recordClass,
 				$property->getName(),
 			);
 		}
 	}
 
 	/**
-	 * @return EntityPropertyManager[]
+	 * @return recordPropertyManager[]
 	 */
 	public function GetFields(): array {
 		return $this->fields;
@@ -92,54 +87,54 @@ abstract class EntityManager
 		return $selection;
 	}
 
-	public function GetFieldUpdateParameters(Entity $Entity): ListDatabaseQueryParam {
+	public function GetFieldUpdateParameters(DatabaseRecord $record): ListDatabaseQueryParam {
 		$params = new ListDatabaseQueryParam();
 
 		foreach ($this->fields as $field)
 			$params->Add(
 				new DatabaseQueryParam(
 					':'.$field->GetFieldName(),
-					$field->ExportValue($Entity)
+					$field->ExportValue($record)
 				)
 			);
 
 		return $params;
 	}
 
-	public function NewEntity(array $item): Entity {
-		$Entity = new $this->entityClass;
+	public function NewRecord(array $item): DatabaseRecord {
+		$record = new $this->recordClass;
 
 		foreach ($this->fields as $field)
 			if (isset($item[$field->GetFieldName()]))
-				$field->ImportValue($Entity, $item[$field->GetFieldName()]);
+				$field->ImportValue($record, $item[$field->GetFieldName()]);
 
-		return $Entity;
+		return $record;
 	}
 
-	public function NewList(array $items): ListEntity {
-		$List = new $this->listEntityClass;
+	public function NewList(array $items): array {
+		$list = [];
 
 		foreach ($items as $item)
-			$List->Add(self::NewEntity($item));
+			$list[] = self::Newrecord($item);
 
-		return $List;
+		return $list;
 	}
 
 
-	public function CreateQuery(): EntityManagerQuery {
-		return new EntityManagerQuery($this);
+	public function CreateQuery(): recordManagerQuery {
+		return new recordManagerQuery($this);
 	}
 
 
 	#region Reading operations
 
 	/**
-	 * Find the entity matching the id in the context
+	 * Find the record matching the id in the context
 	 * @param int $id
-	 * @throws Exception If there is no entity with the given id in the context
-	 * @return Entity
+	 * @throws Exception If there is no record with the given id in the context
+	 * @return DatabaseRecord
 	 */
-	public function ForceFind(int $id): Entity {
+	public function ForceFind(int $id): DatabaseRecord {
 		$query = <<<SQL
 		SELECT {$this->GetFieldSelection()}
 		FROM `{$this->tableName}`
@@ -154,18 +149,18 @@ abstract class EntityManager
 		);
 
 		if ($item === [])
-			throw new Exception("No entity found for the id '$id'");
+			throw new Exception("No record found for the id '$id'");
 
-		return self::NewEntity($item);
+		return self::NewRecord($item);
 	}
 
 
 	/**
-	 * Find the entity matching the id in the context
+	 * Find the record matching the id in the context
 	 * @param int $id
-	 * @return Entity|null
+	 * @return DatabaseRecord|null
 	 */
-	public function Find(int $id): Entity|null {
+	public function Find(int $id): DatabaseRecord|null {
 		$query = <<<SQL
 		SELECT {$this->GetFieldSelection()}
 		FROM `{$this->tableName}`
@@ -179,15 +174,15 @@ abstract class EntityManager
 			)
 		);
 
-		return $item != [] ? self::NewEntity($item) : null;
+		return $item != [] ? self::NewRecord($item) : null;
 	}
 
 
 	/**
 	 * Get all entities from the database
-	 * @return ListEntity
+	 * @return DatabaseRecord[]
 	 */
-	public function FindAll(): ListEntity {
+	public function FindAll(): array {
 		$query = <<<SQL
 		SELECT {$this->GetFieldSelection()}
 		FROM `{$this->tableName}`
@@ -234,9 +229,9 @@ abstract class EntityManager
 	 * - null => uses the 'IS NULL' operator
 	 * 
 	 * @param array $params
-	 * @return ListEntity Entities matching the given parameters
+	 * @return DatabaseRecord[] All records matching the given parameters
 	 */
-	public function FindMatch(array $params): ListEntity {
+	public function FindMatch(array $params): array {
 		$query = <<<SQL
 		SELECT {$this->GetFieldSelection()}
 		FROM `{$this->tableName}` 
@@ -292,16 +287,16 @@ abstract class EntityManager
 	#region Update and Inserting operations
 
 	/**
-	 * Update a given entity into the database
-	 * @param \Models\Entities\Entity $entity
+	 * Update a given record into the database
+	 * @param DatabaseRecord $record
 	 * @return void
 	 */
-	public function ForceUpdate(Entity $entity): bool {
-		if (!($entity instanceof $this->entityClass))
-			throw new Exception("The entity must be an instance of '{$this->entityClass}'");
+	public function ForceUpdate(DatabaseRecord $record): bool {
+		if (!($record instanceof $this->recordClass))
+			throw new Exception("The record must be an instance of '{$this->recordClass}'");
 
-		if (!$this->Any($entity->{$this->idField}))
-			throw new Exception("Entity to update does not exist in the context '{$this->entityClass}' with the id '{$this->idField}'");
+		if (!$this->Any($record->{$this->idField}))
+			throw new Exception("record to update does not exist in the context '{$this->recordClass}' with the id '{$this->idField}'");
 		
 		$query = <<<SQL
 		UPDATE {$this->tableName} SET
@@ -311,26 +306,26 @@ abstract class EntityManager
 
 		$result = $this->connection->Update(
 			$query,
-			$this->GetFieldUpdateParameters($entity)
+			$this->GetFieldUpdateParameters($record)
 		);
 
 		if ($result < 1)
-			throw new Exception("Failed to update the entity '{$this->entityClass}' with the id '{$this->idField}', there was not field to update");
+			throw new Exception("Failed to update the record '{$this->recordClass}' with the id '{$this->idField}', there was not field to update");
 		elseif ($result > 1)
-			throw new Exception("An unepected behavior occured while updating the entity in the context '{$this->entityClass}' with the id '{$this->idField}', {$result} entity have been updated");
+			throw new Exception("An unepected behavior occured while updating the record in the context '{$this->recordClass}' with the id '{$this->idField}', {$result} record have been updated");
 
 		return true;
 	}
 
 
 	/**
-	 * Try to update a given entity in the context
-	 * @param \Models\Entities\Entity $entity
+	 * Try to update a given record in the context
+	 * @param DatabaseRecord $record
 	 * @return void
 	 */
-	public function TryUpdate(Entity $entity): bool {
-		if (!($entity instanceof $this->entityClass))
-			throw new Exception("The entity must be an instance of '{$this->entityClass}'");
+	public function TryUpdate(DatabaseRecord $record): bool {
+		if (!($record instanceof $this->recordClass))
+			throw new Exception("The record must be an instance of '{$this->recordClass}'");
 		
 		$query = <<<SQL
 		UPDATE {$this->tableName} SET
@@ -340,24 +335,24 @@ abstract class EntityManager
 
 		$result = $this->connection->Update(
 			$query,
-			$this->GetFieldUpdateParameters($entity)
+			$this->GetFieldUpdateParameters($record)
 		);
 
 		if ($result > 1)
-			throw new Exception("An unepected behavior occured while updating the entity in the context '{$this->entityClass}' with the id '{$this->idField}', {$result} entity have been updated");
+			throw new Exception("An unepected behavior occured while updating the record in the context '{$this->recordClass}' with the id '{$this->idField}', {$result} record have been updated");
 
 		return true;
 	}
 
 
 	/**
-	 * Insert a new entity in the context
-	 * @param \Models\Entities\Entity $entity
-	 * @return int The id of the new entity
+	 * Insert a new record in the context
+	 * @param DatabaseRecord $record
+	 * @return int The id of the new record
 	 */
-	public function New(Entity $entity): int {
-		if (!($entity instanceof $this->entityClass))
-			throw new Exception("The entity must be an instance of '{$this->entityClass}'");
+	public function New(DatabaseRecord $record): int {
+		if (!($record instanceof $this->recordClass))
+			throw new Exception("The record must be an instance of '{$this->recordClass}'");
 
 		$query = <<<SQL
 		INSERT INTO {$this->tableName} 
@@ -368,7 +363,7 @@ abstract class EntityManager
 
 		$id = $this->connection->InsertOne(
 			$query,
-			$this->GetFieldUpdateParameters($entity)
+			$this->GetFieldUpdateParameters($record)
 		);
 
 		return $id;
@@ -376,23 +371,23 @@ abstract class EntityManager
 
 
 	/**
-	 * Save the changed made to entity in the context, if the entity it will be created
-	 * @param \Models\Entities\Entity $entity
+	 * Save the changed made to record in the context, if the record it will be created
+	 * @param DatabaseRecord $record
 	 * @throws \Exception
 	 * @return int
 	 */
-	public function Save(Entity $entity): int {
-		if (!($entity instanceof $this->entityClass))
-			throw new Exception("The entity must be an instance of '{$this->entityClass}'");
+	public function Save(DatabaseRecord $record): int {
+		if (!($record instanceof $this->recordClass))
+			throw new Exception("The record must be an instance of '{$this->recordClass}'");
 
-		if ($entity->id != null && $this->Any($entity->id)) {
-			$this->TryUpdate($entity);
-			return $entity->id;
+		if ($record->id != null && $this->Any($record->id)) {
+			$this->TryUpdate($record);
+			return $record->id;
 		}
 		
 		
-		$id = $this->New($entity);
-		$entity->id = $id;
+		$id = $this->New($record);
+		$record->id = $id;
 		return $id;
 	}
 
@@ -402,11 +397,11 @@ abstract class EntityManager
 
 	#region Deleting operations
 
-	public function Delete(Entity $entity): bool {
-		if (!($entity instanceof $this->entityClass))
-			throw new Exception("The entity must be an instance of '{$this->entityClass}'");
+	public function Delete(DatabaseRecord $record): bool {
+		if (!($record instanceof $this->recordClass))
+			throw new Exception("The record must be an instance of '{$this->recordClass}'");
 
-		$this->DeleteById($entity->id);
+		$this->DeleteById($record->id);
 
 		return true;
 	}
@@ -426,9 +421,9 @@ abstract class EntityManager
 		);
 
 		if ($result < 1)
-			throw new Exception("Failed to delete the entity '{$this->entityClass}' with the id '{$this->idField}', nothing has been deleted");
+			throw new Exception("Failed to delete the record '{$this->recordClass}' with the id '{$this->idField}', nothing has been deleted");
 		elseif ($result > 1)
-			throw new Exception("An unepected behavior occured while deleting the entity in the context '{$this->entityClass}' with the id '{$this->idField}', {$result} entity have been deleted");
+			throw new Exception("An unepected behavior occured while deleting the record in the context '{$this->recordClass}' with the id '{$this->idField}', {$result} record have been deleted");
 
 		return true;
 	}

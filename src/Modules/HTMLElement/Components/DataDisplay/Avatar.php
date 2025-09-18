@@ -14,8 +14,7 @@ class Avatar extends HTMLElement
 	protected int $size;
 
 	/**
-	 * 
-	 * @var "circle"|"square"|"rounded"|"heart"|"hexagon"|""
+	 * @var "circle"|"square"|"rounded"|"heart"|"hexagon"|"" $shape
 	 */
 	protected string $shape;
 
@@ -29,13 +28,27 @@ class Avatar extends HTMLElement
 	protected bool|null $presenceIndicator = null;
 
 
+	/**
+	 * Summary of __construct
+	 * @param string $id
+	 * @param string $url
+	 * @param int $size
+	 * @param "circle"|"square"|"rounded"|"heart"|"hexagon"|"" $shape
+	 * @param bool|null $presenceIndicator
+	 */
 	public function __construct(
 		string $id, 
 		string $url, 
 		int $size = 24,
+		string $shape = 'circle',
+		bool|null $presenceIndicator = null
 	)
 	{
-		
+		$this->id = $id;
+		$this->url = $url;
+		$this->size = $size;
+		$this->shape = $shape;
+		$this->presenceIndicator = $presenceIndicator;
 	}
 
 	public function __toString(): string

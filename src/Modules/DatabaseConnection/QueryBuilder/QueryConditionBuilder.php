@@ -1,12 +1,11 @@
 <?php
-namespace Feature\DatabaseQuery;
+namespace Modules\DatabaseConnection\QueryBuilder;
 
 
 use DateTimeInterface;
 use Core\Database\DatabaseQueryParam;
-use Core\Database\QueryBuilder\DatabaseSelectionQuery;
 
-abstract class DatabaseQueryCondition
+abstract class QueryConditionBuilder
 {
 	/**
 	 * 
@@ -148,7 +147,7 @@ abstract class DatabaseQueryCondition
 
 	#region Greater/Less Conditions
 
-	public function In(string $field, array|DatabaseSelectionQuery $options): static {
+	public function In(string $field, array|DatabaseSelectionQueryBuilder $options): static {
 		if (is_array($options))
 			return $this->InArray($field, $options);
 
@@ -182,9 +181,9 @@ abstract class DatabaseQueryCondition
 		return $this;
 	}
 
-	public function InSelection(string $field, DatabaseSelectionQuery $selection): static {
+	public function InSelection(string $field, SelectionQueryBuilder $selection): static {
 
-		$this->conditions[$this->count] = "{$field} IN ({$selection->Build()})";
+		$this->conditions[$this->count] = "{$field} IN ({$selection})";
 		return $this;
 	}
 

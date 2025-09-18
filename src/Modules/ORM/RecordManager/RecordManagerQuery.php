@@ -1,12 +1,11 @@
 <?php
-namespace Feature\EntityToDatabase\EntityManager;
+namespace Modules\ORM\RecordManager;
 
-use Feature\EntityToDatabase\EntutyManager\EntityManager;
 use Core\Database\ListDatabaseQueryParam;
 
-class EntityManagerQuery
+final class RecordManagerQuery
 {
-	protected EntityManager $em;
+	protected RecordManager $recordManager;
 
 	/**
 	 * @var string[]
@@ -15,8 +14,8 @@ class EntityManagerQuery
 	protected string $Where;
 	protected ListDatabaseQueryParam $params;
 
-	public function __construct(EntityManager $em) {
-		$this->em = $em;
+	public function __construct(RecordManager $recordManager) {
+		$this->recordManager = $recordManager;
 	}
 
 	public function SelectField(string ...$fields): static {
@@ -28,7 +27,7 @@ class EntityManagerQuery
 	}
 
 	public function SelectAllField(): static {
-		foreach ($this->em->GetFields() as $field)
+		foreach ($this->recordManager->GetFields() as $field)
 			if (!in_array($field, $this->SelectedFields))
 				array_push($this->SelectedFields, $field);
 		
@@ -39,7 +38,7 @@ class EntityManagerQuery
 	 * Left joint on a field based on the foreign key attribute of the property
 	 * @param string $table
 	 * @param string $on
-	 * @return EntityManagerQuery
+	 * @return self
 	 */
 	public function JoinForeign(string $table, string $on): static {
 		return $this;

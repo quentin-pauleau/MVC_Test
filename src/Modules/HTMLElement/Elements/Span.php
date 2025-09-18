@@ -21,9 +21,7 @@ class Span extends HTMLElement
 
 	public function __toString(): string
 	{
-		$content = '';
-		foreach ($this->childs as $child)
-			$content .= (string)$child;
+		$content = implode('', array_map(fn($item) => (string)$item, $this->childs));
 
 		return <<<HTML
 		<span id="{$this->id}">

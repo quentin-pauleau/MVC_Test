@@ -1,11 +1,11 @@
 <?php
-namespace Utils\Database\QueryBuilder;
+namespace Modules\DatabaseQueryBuilder;
 
 use Feature\DatabaseQueryBuilder\DatabaseQueryConditionBuilder;
 use Feature\DatabaseQueryBuilder\Interface\DatabaseSelectionQueryInterface;
 
 
-class DatabaseSelectionQuery implements DatabaseSelectionQueryInterface
+class DatabaseSelectionQueryBuilder implements DatabaseSelectionQueryInterface
 {
 	/**
 	 * All selected fields as :
@@ -47,6 +47,9 @@ class DatabaseSelectionQuery implements DatabaseSelectionQueryInterface
 
 
 	public function __construct() {}
+	public function __tostring(): string {
+		return $this->Build();
+	}
 
 	#region Query Information
 	/**
@@ -119,7 +122,7 @@ class DatabaseSelectionQuery implements DatabaseSelectionQueryInterface
 	 * @param array<string, string> $fields array "alias => field name", if no alias provided the field name is used
 	 * @param string|null $table optional table name
 	 * @example ['id', 'my_name' => 'name'] will result in SELECT id, name AS my_name
-	 * @return DatabaseSelectionQuery
+	 * @return self
 	 */
 	public function Select(array $fields, string|null $table = null): static {
 		$prefix = '';
@@ -138,7 +141,7 @@ class DatabaseSelectionQuery implements DatabaseSelectionQueryInterface
 	/**
 	 * 
 	 * @param string $table table name
-	 * @return DatabaseSelectionQuery
+	 * @return self
 	 */
 	public function SelectAll(string $table): static {
 		$this->fields[] = 'table.*';
@@ -152,7 +155,7 @@ class DatabaseSelectionQuery implements DatabaseSelectionQueryInterface
 	 * @param array<string, string> $fields array "alias => field name", if no alias provided the field name is used
 	 * @example ['id', 'my_name' => 'name'] will result in SELECT DISTINCT id, DISTINCT name AS s
 	 * @param string|null $table optional table name
-	 * @return DatabaseSelectionQuery
+	 * @return self
 	 */
 	public function SelectDistinct(array $fields, string|null $table = null): static {
 		$prefix = '';
@@ -171,7 +174,7 @@ class DatabaseSelectionQuery implements DatabaseSelectionQueryInterface
 	 * @param array<string, string> $fields array "alias => field name", if no alias provided the field name is used
 	 * @param string|null $table optional table name
 	 * @example ['id', 'my_name' => 'name'] will result in SELECT COUNT(id), COUNT(name) AS my_name
-	 * @return DatabaseSelectionQuery
+	 * @return self
 	 */
 	public function SelectCount(array $fields, string|null $table = null): static {
 		$prefix = '';
@@ -191,7 +194,7 @@ class DatabaseSelectionQuery implements DatabaseSelectionQueryInterface
 	 * @param array<string, string> $fields array "alias => field name", if no alias provided the field name is used
 	 * @param string|null $table optional table name
 	 * @example ['id', 'my_name' => 'name'] will result in SELECT MAX(id), MAX(price) AS my_price
-	 * @return DatabaseSelectionQuery
+	 * @return self
 	 */
 	public function SelectMax(array $fields, string|null $table = null): static {
 		$prefix = '';
@@ -210,7 +213,7 @@ class DatabaseSelectionQuery implements DatabaseSelectionQueryInterface
 	/**
 	 * @param array<string, string> $fields array "alias => field name", if no alias provided the field name is used
 	 * @param string|null $table optional table name
-	 * @return DatabaseSelectionQuery
+	 * @return self
 	 */
 	public function SelectAvg(array $fields, string|null $table = null): static {
 		$prefix = '';
@@ -229,7 +232,7 @@ class DatabaseSelectionQuery implements DatabaseSelectionQueryInterface
 	/**
 	 * @param array<string, string> $fields array "alias => field name", if no alias provided the field name is used
 	 * @param string $table
-	 * @return DatabaseSelectionQuery
+	 * @return self
 	 */
 	public function SelectSum(array $fields, string|null $table = null): static {
 		$prefix = '';
@@ -266,7 +269,7 @@ class DatabaseSelectionQuery implements DatabaseSelectionQueryInterface
 	 * 
 	 * @param mixed $condition
 	 * @todo implement this method
-	 * @return DatabaseSelectionQuery
+	 * @return self
 	 */
 	public function Where(?DatabaseQueryConditionBuilder $condition = null): static {
 		return $this;
@@ -288,7 +291,7 @@ class DatabaseSelectionQuery implements DatabaseSelectionQueryInterface
 
 	/**
 	 * @todo implement this method
-	 * @return DatabaseSelectionQuery
+	 * @return self
 	 */
 	public function Having(): static {
 		
@@ -300,7 +303,7 @@ class DatabaseSelectionQuery implements DatabaseSelectionQueryInterface
 	 * Limit
 	 * @param int|null $limit
 	 * @throws \Exception
-	 * @return DatabaseSelectionQuery
+	 * @return self
 	 */
 	public function Limit(int|null $limit): static {
 		if ($limit !== null && $limit < 0)
@@ -357,5 +360,9 @@ class DatabaseSelectionQuery implements DatabaseSelectionQueryInterface
 			$query .= " LIMIT {$this->limit};";
 
 		return $query;
+	}
+
+	public function Execute(): array {
+		return [];
 	}
 }

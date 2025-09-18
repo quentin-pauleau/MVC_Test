@@ -1,18 +1,16 @@
 <?php
-namespace Feature\EntityToDatabase\EntityManager;
+namespace Modules\ORM\RecordManager;
 
 use Exception;
 use Feature\EntityToDatabase\Attributes\BindField;
 use Feature\EntityToDatabase\Attributes\BindTable;
 use Feature\EntityToDatabase\Attributes\NullableField;
-use Models\Entities\Entity;
-use ReflectionAttribute;
 use ReflectionClass;
 use ReflectionProperty;
 
-final class EntityPropertyManager
+final class RecordPropertyManager
 {
-	private string $entityClass;
+	private string $recordClass;
 	private string $converterClass;
 	private string $propertyName;
 	private string|null $propertySetterName;
@@ -22,7 +20,7 @@ final class EntityPropertyManager
 	private bool $fieldIsNullable;
 
 	
-	public function GetEntityClass(): string { return $this->entityClass; }
+	public function GetEntityClass(): string { return $this->recordClass; }
 	public function GetConverterClass(): string { return $this->converterClass; }
 	public function GetPropertyName(): string { return $this->propertyName; }
 	public function GetFieldName(): string { return $this->fieldName; }
@@ -30,22 +28,22 @@ final class EntityPropertyManager
 	public function GetFieldIsNullable(): bool { return $this->fieldIsNullable; }
 
 
-	public function __construct(string $entityClass, string $propertyName) {
-		if (!is_subclass_of($entityClass, Entity::class))
-			throw new Exception("'$entityClass' does not extend 'Entity'");
+	public function __construct(string $recordClass, string $propertyName) {
+		if (!is_subclass_of($recordClass, DatabaseRecord::class))
+			throw new Exception("'$recordClass' does not extend 'Entity'");
 		
-		$this->entityClass = $entityClass;
+		$this->recordClass = $recordClass;
 
-		$Reflexion = (new ReflectionClass($entityClass))->getAttributes(BindTable::class)[0];
+		$Reflexion = (new ReflectionClass($recordClass))->getAttributes(BindTable::class)[0];
 		if (!$Reflexion)
-			throw new Exception("'$entityClass' has no bind table attribute");
+			throw new Exception("'$recordClass' has no bind table attribute");
 
 		$tableName = $Reflexion->getArguments()[0]; // 0 = table name arg
 
 		//* get property name
 		$this->propertyName = $propertyName;
 
-		$ReflectionProperty = new ReflectionProperty($this->$entityClass, $this->propertyName);
+		$ReflectionProperty = new ReflectionProperty($this->$recordClass, $this->propertyName);
 		
 		$bind = $ReflectionProperty->getAttributes(BindField::class)[0];
 
@@ -91,27 +89,27 @@ final class EntityPropertyManager
 	}
 
 
-	public function ImportValue(Entity $entity, mixed $value): bool {
-		if (!($entity instanceof $this->entityClass))
-			throw new Exception("Invalid entity type, entity must be of type '$this->entityClass'");
+	public function ImportValue(DatabaseRecord $record, mixed $value): bool {
+		if (!($record instanceof $this->recordClass))
+			throw new Exception("Invalid record type, record must be of type '$this->recordClass'");
 		
 		$value = $this->converterClass::Import($value);
 		
 		if ($this->propertyGetterName === null)
-			$entity->{$this->propertyName} = $value; 
+			$record->{$this->propertyName} = $value; 
 		else
-			$entity->{$this->propertySetterName}($value);
+			$record->{$this->propertySetterName}($value);
 		
 		return true;
 	}
 
-	public function ExportValue(Entity $entity): mixed {
-		if (!($entity instanceof $this->entityClass))
-			throw new Exception("Invalid entity type, entity must be of type '$this->entityClass'");
+	public function ExportValue(DatabaseRecord $record): mixed {
+		if (!($record instanceof $this->recordClass))
+			throw new Exception("Invalid record type, record must be of type '$this->recordClass'");
 		
 		$value = $this->propertyGetterName === null 
-			? $entity->{$this->propertyName} 
-			: $entity->{$this->propertyGetterName}();
+			? $record->{$this->propertyName} 
+			: $record->{$this->propertyGetterName}();
 		
 		return $this->converterClass::Export($value, $this->fieldIsNullable);
 	}

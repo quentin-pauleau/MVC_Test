@@ -6,14 +6,22 @@ use Modules\HTMLElement\HTMLElement;
 
 class Card extends HTMLElement
 {
-	protected ComponentSize $size;
+	protected ComponentSize $size = ComponentSize::DEFAULT;
 
 	protected bool $hasBorder = true;
 
 
 
-	public function __construct()
-	{}
+	public function __construct(
+		?string $id = null,
+		ComponentSize $size = ComponentSize::DEFAULT,
+		bool $hasBorder = true
+	)
+	{
+		$this->id = $id;
+		$this->size = $size;
+		$this->hasBorder = $hasBorder;
+	}
 
 
 	public function __toString(): string
@@ -38,7 +46,7 @@ class Card extends HTMLElement
 		};
 	}
 
-	protected function getBorderSize(): string
+	protected function getBorderSizeClass(): string
 	{
 		return $this->hasBorder ? 'card-border' : '';
 	}
@@ -50,7 +58,31 @@ class Card extends HTMLElement
 	}
 
 
-	public static function CreateSimple(): self {
+
+	public function enableBorder(): self
+	{
+		$this->hasBorder = true;
+		return $this;
+	}
+
+	public function disableBorder(): self
+	{
+		$this->hasBorder = false;
+		return $this;
+	}
+
+	public function setBorder(bool $hasBorder): self
+	{
+		$this->hasBorder = $hasBorder;
+		return $this;
+	}
+
+	public function hasBorder(): bool
+	{
+		return $this->hasBorder;
+	}
+
+	public static function createSimple(): self {
 		return new self();
 	}
 }

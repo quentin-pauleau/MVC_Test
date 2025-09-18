@@ -2,7 +2,7 @@
 namespace Modules\HTMLElement\Components\DataDisplay;
 
 
-enum ComponentSize : string
+enum ComponentShadows : string
 {
 	case DEFAULT = '';
 

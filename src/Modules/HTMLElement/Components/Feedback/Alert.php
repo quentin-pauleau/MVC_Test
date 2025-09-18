@@ -134,7 +134,7 @@ class Alert extends HTMLElement
 		};
 	}
 
-	public static function NewSimple(string $type, string $message): self {
+	public static function newSimple(string $type, string $message): self {
 		return new self(
 			childs: [
 				new Span(

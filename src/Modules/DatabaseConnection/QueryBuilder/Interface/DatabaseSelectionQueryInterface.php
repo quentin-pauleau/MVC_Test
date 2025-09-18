@@ -4,6 +4,8 @@ namespace Feature\DatabaseQueryBuilder\Interface;
 
 interface DatabaseSelectionQueryInterface extends DatabaseQueryInterface
 {
+	public function Execute(): array;
+
 	// public function Select(string ...$field): static;
 	public function From(string ...$table): static;
 	public function Where(): static;

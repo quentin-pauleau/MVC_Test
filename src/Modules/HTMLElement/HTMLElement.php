@@ -6,11 +6,24 @@ use Stringable;
 abstract class HTMLElement implements Stringable
 {
 	/**
-	 * @var self|string[]
+	 * @var self[]|string[]
 	 */
 	protected array $childs = [];
 
 	protected ?string $id = null;
+
+
+	/**
+	 * @param mixed $id
+	 * @param self[]|string[] $childs
+	 */
+	public function __construct(
+		?string $id = null,
+		array $childs = []
+	) {
+		$this->id = $id;
+		$this->childs = $childs;
+	}
 
 
 	final public function display(): void {
@@ -18,15 +31,22 @@ abstract class HTMLElement implements Stringable
 	}
 
 	abstract public function __toString(): string;
-
+	
+	
+	public function getId(): ?string
+	{
+		return $this->id;
+	}
 	
 	public function setId(?string $id): self
 	{
 		$this->id = $id;
 		return $this;
 	}
+
 	
-	final public function addChild(HTMLElement ...$child): self
+	
+	final protected function addChild(HTMLElement ...$child): self
 	{
 		foreach ($child as $c)
 			$this->childs[] = $c;
