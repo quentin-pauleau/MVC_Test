@@ -1,22 +1,22 @@
 <?php
 namespace Modules\DatabaseConnection\QueryBuilder;
 
+use Modules\DatabaseConnection\QueryBuilder\CreateQueryBuilder\CreateQueryBuilder;
 
-class DatabaseQueryBuilder extends AbstractQueryBuilder
+
+class QueryBuilder extends AbstractQueryBuilder
 {
-	
-	public function __construct() {}
 
-	public function Show(): DatabaseShowQueryBuilder {
-		return new DatabaseShowQueryBuilder;
+	public function Show(): ShowQueryBuilder {
+		return new ShowQueryBuilder($this->pdo);
 	}
 
 	public function Select() {
-		// return a selection query
+		return new SelectionQueryBuilder($this->pdo);
 	}
 
-	public function Insert() {
-		// return an insertion query
+	public function Insert(): InsertionQueryBuilder {
+		return new InsertionQueryBuilder($this->pdo);
 	}
 
 	public function Update() {
@@ -27,8 +27,8 @@ class DatabaseQueryBuilder extends AbstractQueryBuilder
 		// return a deletion query
 	}
 
-	public function Create() {
-		// return a creation query
+	public function Create(): CreateQueryBuilder {
+		return new CreateQueryBuilder($this->pdo);
 	}
 
 	public function Alter() {

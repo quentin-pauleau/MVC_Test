@@ -12,36 +12,49 @@ use PDO;
 class DatabaseField
 {
 	private string $tableName;
-	private ?DatabaseTable $tale = null;
+	private ?DatabaseTable $table = null;
 
 	private string $name;
 	private string $type;
-	private bool $isNullable;
-	private int $size;
-	private bool $isPrimaryKey;
-	private bool $isUniqueKey;
+	private ?bool $isNullable;
+	private ?int $size;
 	private mixed $defaultValue;
-	private bool $isAutoIncrement;
+
+	private ?bool $isPrimaryKey;
+	private ?bool $isUniqueKey;
+	
+	private ?bool $isAutoIncrement;
+
+	public function __toString(): string
+	{
+		return "{$this->name}({$this->type})";
+	}
 
 	public function __construct(
 		string $name, 
 		string $type, 
-		bool $isNullable, 
-		int $size,
-		bool $isPrimaryKey, 
-		bool $isUniqueKey, 
-		mixed $defaultValue,
-		bool $isAutoIncrement,
+		?bool $isNullable = null, 
+		?int $size = null,
+		?bool $isPrimaryKey = null, 
+		?bool $isUniqueKey = null, 
+		mixed $defaultValue = null,
+		?bool $isAutoIncrement = null,
+
+		?DatabaseTable $table = null,
 	)
 	{
 		$this->name = $name;
+
 		$this->type = $type;
 		$this->size = $size;
 		$this->isNullable = $isNullable;
+		$this->defaultValue = $defaultValue;
+
 		$this->isPrimaryKey = $isPrimaryKey;
 		$this->isUniqueKey = $isUniqueKey;
-		$this->defaultValue = $defaultValue;
 		$this->isAutoIncrement = $isAutoIncrement;
+
+		$this->table = $table;
 	}
 
 
@@ -93,8 +106,38 @@ class DatabaseField
 
 
 	public function GetTable(): DatabaseTable {
-		DatabaseConnection::Instance()->
+		if ($this->table === null)
+			$this->InitTable();
 
 		return $this->table;
+	}
+
+	public function InitTable(): void {
+		$this->table = DatabaseConnection::GetConnection()->Query()->Show()->Table($this->tableName);
+	}
+
+
+	public function CreationString(): string {
+		$str = "`{$this->getName()}` {$this->getType()}";
+			
+		if ($this->getSize())
+			$str .= "({$this->getSize()})";
+
+		if ($this->isNullable())
+			$str .= ' NOT NULL';
+
+		if ($this->getDefaultValue())
+			$str .= " DEFAULT '{$this->getDefaultValue()}'";
+
+		if ($this->IsPrimaryKey())
+			$str .= ' PRIMARY KEY';
+
+		if ($this->IsUniqueKey())
+			$str .= ' UNIQUE';
+
+		if ($this->isAutoIncrement())
+			$str .= ' AUTO_INCREMENT';
+
+		return $str;
 	}
 }

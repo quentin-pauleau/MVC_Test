@@ -1,10 +1,10 @@
 <?php
-namespace Modules\DatabaseQueryBuilder;
+namespace Modules\DatabaseConnection\QueryBuilder;
 
-use Feature\DatabaseQueryBuilder\DatabaseQueryConditionBuilder;
 use Feature\DatabaseQueryBuilder\Interface\DatabaseSelectionQueryInterface;
+use Modules\DatabaseConnection\DatabaseQuery;
 use Modules\DatabaseConnection\QueryBuilder\AbstractQueryBuilder;
-use Modules\DatabaseConnection\QueryBuilder\QueryConditionBuilder;
+use PDO;
 
 class SelectionQueryBuilder extends AbstractQueryBuilder implements DatabaseSelectionQueryInterface
 {
@@ -47,9 +47,64 @@ class SelectionQueryBuilder extends AbstractQueryBuilder implements DatabaseSele
 	public int|null $limit;
 
 
-	public function __construct() {}
+	public function __construct(PDO $pdo){
+		parent::__construct($pdo);
+	}
+
+	public static function FromTable(PDO $pdo, string $table, bool $selectAll = false): static {
+		$query = new static($pdo);
+
+		if ($selectAll)
+			$query->From($table);
+
+		return $query;
+	}
+
+
 	public function __tostring(): string {
-		return $this->Build();
+		//*select section
+		$query = 'SELECT ';
+
+		foreach($this->fields as $field)
+			$query .= "$field,";
+
+		$query = rtrim($query, ',');
+
+		//* from section
+		$query .= " FROM ";
+
+		foreach($this->tables as $table)
+			$query .= "$table,";
+
+		$query = rtrim($query, ',');
+
+
+		//* grouping section
+		if ($this->IsGrouped()){
+			$query .= " GROUP BY ";
+			
+			foreach($this->grouping as $groupingField)
+				$query .= "$groupingField,";
+
+			$query = rtrim($query, ',');
+
+			if ($this->having)
+				$query .= " HAVING ";
+		}
+
+		//* ordering section
+		if ($this->IsOrdered()) {
+			foreach($this->ordering as $field => $order)
+				$query .= " ORDER BY $field ".($order ? 'ASC' : 'DESC').",";
+			
+			$query = rtrim($query, ',');
+		}
+
+		//* limit section
+		if ($this->HasLimit())
+			$query .= " LIMIT {$this->limit};";
+
+		return $query;
 	}
 
 	#region Query Information
@@ -145,7 +200,7 @@ class SelectionQueryBuilder extends AbstractQueryBuilder implements DatabaseSele
 	 * @return self
 	 */
 	public function SelectAll(string $table): static {
-		$this->fields[] = 'table.*';
+		$this->fields["table.*"] = "{$table}.*";
 		$this->tables[$table] = $table;
 		
 		return $this;
@@ -181,7 +236,7 @@ class SelectionQueryBuilder extends AbstractQueryBuilder implements DatabaseSele
 		$prefix = '';
 		if ($table != null) {
 			$this->tables[$table] = $table;
-			$table = "$table.";
+			$prefix = "$table.";
 		}
 		
 		foreach ($fields as $alias => $field)
@@ -315,52 +370,8 @@ class SelectionQueryBuilder extends AbstractQueryBuilder implements DatabaseSele
 	}
 	
 
-	public function Build(): string {
-		//*select section
-		$query = 'SELECT ';
-
-		foreach($this->fields as $field)
-			$query .= "$field,";
-
-		$query = rtrim($query, ',');
-
-		//* from section
-		$query .= " FROM ";
-
-		foreach($this->tables as $table)
-			$query .= "$table,";
-
-		$query = rtrim($query, ',');
-
-
-		//* grouping section
-		if ($this->IsGrouped()){
-			$query .= " GROUP BY ";
-			
-			foreach($this->grouping as $groupingField)
-				$query .= "$groupingField,";
-
-			$query = rtrim($query, ',');
-
-			if ($this->having) {
-				$query .= " HAVING ";
-			}
-			
-		}
-
-		//* ordering section
-		if ($this->IsOrdered()) {
-			foreach($this->ordering as $field => $order)
-				$query .= " ORDER BY $field ".($order ? 'ASC' : 'DESC').",";
-			
-			$query = rtrim($query, ',');
-		}
-
-		//* limit section
-		if ($this->HasLimit())
-			$query .= " LIMIT {$this->limit};";
-
-		return $query;
+	public function Build(): DatabaseQuery {
+		return new DatabaseQuery($this->pdo, $this);
 	}
 
 	public function Execute(): array {

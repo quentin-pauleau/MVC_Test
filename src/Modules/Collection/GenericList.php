@@ -12,7 +12,7 @@ use Countable;
  * @template-contravariant int
  * @template-covariant T
  */
-class GenericList extends AbstractList
+final class GenericList extends AbstractList
 {
 	protected string $class;
 
@@ -78,9 +78,10 @@ class GenericList extends AbstractList
 	 * @param T[] $values
 	 * @return void
 	 */
-	public function Remove(): void {
-		foreach ($values as $value) {
-			$key = array_search($value, $this->values);
+	public function Remove(...$value): void {
+		foreach ($value as $v) {
+			$key = array_search($v, $this->values);
+
 			if ($key === false)
 				continue;
 			
@@ -102,7 +103,9 @@ class GenericList extends AbstractList
 	 * Remove all values in the given lists from the list
 	 * @return void
 	 */
-	abstract public function RemoveList(): void;
+	public function RemoveList(): void {
+
+	}
 
 	
 	/**
@@ -121,94 +124,9 @@ class GenericList extends AbstractList
 				array_splice($this->values, $key, 1);
 			}
 	}
-	#endregion Remove Functions
+	#endregion Remove Functionss
 
-
-	#region get functions
-	/**
-	 * Return a value at a given index
-	 * @param int $index
-	 * @return T
-	 */
-	public function Get(int $index) {
-		return $this->values[$index] ?? null;
+	public function current(): mixed {
+		return $this->values[$this->current_key] ?? null;
 	}
-
-
-	/**
-	 * Return a value at a given index
-	 * @param int $index
-	 * @return T
-	 */
-	public function GetFirst() {
-		return $this->values[0] ?? null;
-	}
-
-
-	/**
-	 * Return a value at a given index
-	 * @param int $index
-	 * @return T
-	 */
-	public function GetLast() {
-		return $this->values[count($this) - 1] ?? null;
-	}
-
-
-	/**
-	 * Return an array containing all values of the list
-	 * @return T[]
-	 */
-	public function GetAll(): array {
-		return $this->values;
-	}
-
-	/**
-	 * Summary of GetKeys
-	 * @return array
-	 */
-	public function GetKeys(): array {
-		return array_keys($this->values);
-	}
-
-	public function IsEmpty(): bool {
-		return $this->values === [];
-	}
-
-	#endregion get functions
-
-
-	public function __clone(): void {
-		$values = [];
-
-		foreach ($this->values as $value)
-			$values[] = clone $value;
-
-		$this->values = $values;
-	}
-	
-
-	#region
-
-	public function key(): int {
-		return $this->current_key;
-	}
-
-	public function next(): void {
-		$this->current_key++;
-	}
-
-	public function rewind(): void {
-		$this->current_key = array_key_first($this->values);
-	}
-
-	public function valid(): bool {
-		return isset($this->values[$this->current_key]);
-	}
-
-	public function Count(): int {
-		return count($this->values);
-	}
-
-	#endregion
 }

@@ -9,7 +9,7 @@ class DatabaseQuery
 	private PDO $pdo;
 	private string $query;
 
-	public function __construct(PDO $pdo) {
+	public function __construct(PDO $pdo, string $query) {
 		$this->pdo = $pdo;
 	}
 

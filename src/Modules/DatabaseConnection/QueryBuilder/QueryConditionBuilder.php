@@ -147,7 +147,7 @@ abstract class QueryConditionBuilder
 
 	#region Greater/Less Conditions
 
-	public function In(string $field, array|DatabaseSelectionQueryBuilder $options): static {
+	public function In(string $field, array|SelectionQueryBuilder $options): static {
 		if (is_array($options))
 			return $this->InArray($field, $options);
 

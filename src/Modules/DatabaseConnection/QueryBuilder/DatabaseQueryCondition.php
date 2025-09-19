@@ -1,10 +1,9 @@
 <?php
-namespace Feature\DatabaseQuery;
+namespace Modules\DatabaseConnection\QueryBuilder;
 
 
 use DateTimeInterface;
 use Core\Database\DatabaseQueryParam;
-use Core\Database\QueryBuilder\DatabaseSelectionQuery;
 
 abstract class DatabaseQueryCondition
 {
@@ -21,6 +20,14 @@ abstract class DatabaseQueryCondition
 	protected array $params = [];
 
 	protected int $count = 0;
+
+
+	private self $prev;
+
+
+	public function __construct(?self $prev = null) {
+		$this->prev = $prev;
+	}
 
 
 	public function Equals(string $field, mixed $value): static {
@@ -141,14 +148,14 @@ abstract class DatabaseQueryCondition
 		if ($end instanceof DateTimeInterface)
 			$end = $end->format('Y-m-d H:i:s');
 		
-		// $field, "NOT BETWEEN", "$start AND $end");
+		$this->conditions[$this->count] = "{$field} BETWEEN {$start} AND {$end}";
 
 		return $this;
 	}
 
 	#region Greater/Less Conditions
 
-	public function In(string $field, array|DatabaseSelectionQuery $options): static {
+	public function In(string $field, array|SelectionQueryBuilder $options): static {
 		if (is_array($options))
 			return $this->InArray($field, $options);
 
@@ -182,9 +189,8 @@ abstract class DatabaseQueryCondition
 		return $this;
 	}
 
-	public function InSelection(string $field, DatabaseSelectionQuery $selection): static {
-
-		$this->conditions[$this->count] = "{$field} IN ({$selection->Build()})";
+	public function InSelection(string $field, SelectionQueryBuilder $selection): static {
+		$this->conditions[$this->count] = "{$field} IN ({$selection})";
 		return $this;
 	}
 

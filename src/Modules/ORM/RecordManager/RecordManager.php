@@ -291,7 +291,8 @@ final class RecordManager
 	 * @param DatabaseRecord $record
 	 * @return void
 	 */
-	public function ForceUpdate(DatabaseRecord $record): bool {
+	public function ForceUpdate(DatabaseRecord $record): bool
+	{
 		if (!($record instanceof $this->recordClass))
 			throw new Exception("The record must be an instance of '{$this->recordClass}'");
 
@@ -323,7 +324,8 @@ final class RecordManager
 	 * @param DatabaseRecord $record
 	 * @return void
 	 */
-	public function TryUpdate(DatabaseRecord $record): bool {
+	public function TryUpdate(DatabaseRecord $record): bool
+	{
 		if (!($record instanceof $this->recordClass))
 			throw new Exception("The record must be an instance of '{$this->recordClass}'");
 		
