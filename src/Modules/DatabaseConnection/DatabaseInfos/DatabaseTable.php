@@ -52,8 +52,4 @@ class DatabaseTable
 	{
 		$this->fields = DatabaseConnection::GetConnection()->Query()->Show()->AllTableFields($this);
 	}
-
-	public function Select(): SelectionQueryBuilder {
-		return DatabaseConnection::GetConnection()->Query()->Select()::FromTable($this);
-	}
 }
