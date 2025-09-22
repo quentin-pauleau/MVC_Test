@@ -1,38 +1,39 @@
 <?php
 namespace Core\Responses;
 
+use Modules\Http\HttpHeader;
 
 /**
- * Display an php/html view, based on its path and the given data
+ * Display a php/html view, based on its path and the given data
  */
 class HTMLResponse extends Response
 {
-	/**
-	 * @var string the path of the view
-	 */
-	private string $path = '';
+    private string $path = '';
+    private array $data = [];
+    private ?HttpHeader $headers = null;
+    private int $statusCode = 200;
 
-	/**
-	 * @var array<string, mixed|iterable> the data used by the view
-	 */
-	private array $data = [];
+    public function __construct(string $path, array $data = [], ?HttpHeader $headers = null, int $statusCode = 200)
+    {
+        $this->path = $path;
+        $this->data = $data;
+        $this->headers = $headers;
+        $this->statusCode = $statusCode;
+    }
 
+    /**
+     * Unset all variables and display the template with all
+     * @return never
+     */
+    public function Process(): void {
+        $hdr = $this->headers ?? HttpHeader::Create()->Html();
+        if (!$this->headers) {
+            $hdr->Html();
+        }
+        $hdr->Send(true, $this->statusCode);
 
-	public function __construct(string $path, array $data = [])
-	{
-		$this->path = $path;
-		$this->data = $data;
-	}
-
-
-	/**
-	 * Unset all variables and display the template with all
-	 * @return never
-	 */
-	public function Process(): void {
-		extract($this->data);
-
-		require_once $this->path;
-		exit;
-	}
+        extract($this->data);
+        require_once $this->path;
+        exit;
+    }
 }

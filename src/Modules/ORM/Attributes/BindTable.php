@@ -1,5 +1,5 @@
 <?php
-namespace Feature\EntityToDatabase\Attributes;
+namespace Modules\ORM\Attributes;
 
 use Attribute;
 
@@ -10,5 +10,9 @@ use Attribute;
 #[Attribute(Attribute::TARGET_CLASS)]
 final class BindTable
 {
-	public string $name;
+	public function __construct(
+		public string $name,
+		public ?string $schema = null,
+		public ?string $alias = null,
+	) {}
 }

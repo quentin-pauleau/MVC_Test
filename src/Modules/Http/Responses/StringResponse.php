@@ -1,6 +1,8 @@
 <?php
 namespace Core\Responses;
 
+use Modules\Http\HttpHeader;
+
 /**
  * Display a text from a string
  * 
@@ -8,39 +10,34 @@ namespace Core\Responses;
  */
 class StringResponse extends Response
 {
-	/**
-	 * 
-	 * @var string
-	 */
-	private string $text = '';
+    private string $text = '';
+    private bool $is_html = true;
+    private ?HttpHeader $headers = null;
+    private int $statusCode = 200;
 
-	/**
-	 * @var bool
-	 */
-	private bool $is_html = true;
+    public function __construct(string $text, bool $is_html = true, ?HttpHeader $headers = null, int $statusCode = 200)
+    {
+        $this->text = $text;
+        $this->is_html = $is_html;
+        $this->headers = $headers;
+        $this->statusCode = $statusCode;
+    }
 
-
-	public function __construct(string $text, bool $is_html = true)
-	{
-		$this->text = $text;
-		$this->is_html = $is_html;
-	}
-
-
-	/**
-	 * Unset all variables and display the template with all
-	 * @return never
-	 */
-	public function Process(): void {
-		if ($this->is_html) {
-			header('Content-Type: text/html; charset=utf-8');
-			$this->text = htmlspecialchars($this->text);
-		}
-		else {
-			header('Content-Type: text/plain; charset=utf-8');
-		}
-		
-		echo $this->text;
-		exit;
-	}
+    /**
+     * Unset all variables and display the template with all
+     * @return never
+     */
+    public function Process(): void {
+        $hdr = $this->headers ?? HttpHeader::Create();
+        if ($this->is_html) {
+            $hdr->Html();
+            $out = htmlspecialchars($this->text);
+        } else {
+            $hdr->Text();
+            $out = $this->text;
+        }
+        $hdr->Send(true, $this->statusCode);
+        echo $out;
+        exit;
+    }
 }

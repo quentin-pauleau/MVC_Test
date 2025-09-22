@@ -1,5 +1,5 @@
 <?php
-namespace Feature\EntityToDatabase\Attributes;
+namespace Modules\ORM\Attributes;
 
 use Attribute;
 
@@ -7,24 +7,31 @@ use Attribute;
  * Bind the property to a database field
  */
 #[Attribute(Attribute::TARGET_PROPERTY)]
-final class BindField {
-	/**
-	 * Name of the field in the table
-	 * @var string
-	 */
-	public string $name;
+final class BindField
+{
+	public function __construct(
+		/**
+		 * Name of the field in the table
+		 * @var string
+		 */
+		public string $name,
 
-	/**
-	 * Type of the field in the table
-	 * @var string
-	 */
-	public string $type;
+		/**
+		 * Type of the field in the table
+		 * @var string
+		 */
+		public string $type,
 
-	public bool $isNullable = false;
+		/**
+		 * Whether or not the field is nullable
+		 * @var boolean
+		 */
+		public bool $isNullable = false,
 
-	/**
-	 * Default value for this field in the database
-	 * @var mixed
-	 */
-	public mixed $default = null;
+		/**
+		 * Default value for this field in the database
+		 * @var mixed
+		 */
+		public mixed $default = null,
+	) { }
 }

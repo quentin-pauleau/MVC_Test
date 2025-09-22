@@ -15,9 +15,9 @@ class QueryBuilder extends AbstractQueryBuilder
 		return new SelectionQueryBuilder($this->pdo);
 	}
 
-	public function Insert(): InsertionQueryBuilder {
-		return new InsertionQueryBuilder($this->pdo);
-	}
+	// public function Insert(): InsertionQueryBuilder {
+	// 	return new InsertionQueryBuilder($this->pdo);
+	// }
 
 	public function Update() {
 		// return an update query

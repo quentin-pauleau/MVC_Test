@@ -7,14 +7,14 @@ use ReflectionClass;
 use Core\Database\Database;
 use Core\Database\DatabaseQueryParam;
 use Core\Database\ListDatabaseQueryParam;
-use Feature\EntityToDatabase\Attributes\BindField;
+use Modules\ORM\Attributes\BindField;
 
 final class RecordManager
 {
 	protected static Database $connection;
+	protected static array $listRecordManagers;
 
 	protected string $recordClass;
-	protected string $listrecordClass;
 	protected string $tableName;
 
 	/**
@@ -23,18 +23,15 @@ final class RecordManager
 	protected array $fields;
 	protected string $idField;
 
+
 	protected function __construct(string $recordClass)
 	{
-		//* set the targeted record class
-		if (array_search(DatabaseRecord::class, class_parents($recordClass)))
-			throw new Exception('The record must be a subclass of record');	
-
 		self::$recordClass = $recordClass;
 
 		//* set the table binding
 		$reflection = new ReflectionClass($this->recordClass);
-		self::$tableName = $reflection->getAttributes(DatabaseRecord::class)[0]->getArguments()[0];
-		self::$tableName = strtolower(self::$tableName);
+		$this->tableName = $reflection->getAttributes(DatabaseRecord::class)[0]->getArguments()[0];
+		$this->tableName = strtolower($this->tableName);
 
 		//* set the id field
 		$this->idField = strtoupper($this->tableName).'_ID';
@@ -52,6 +49,17 @@ final class RecordManager
 				$property->getName(),
 			);
 		}
+
+		self::$listRecordManagers[$recordClass] = $this;
+	}
+
+	public static function Get(string $recordClass): self
+	{
+		//* set the targeted record class
+		if (array_search(DatabaseRecord::class, class_parents($recordClass)))
+			throw new Exception('The record must be a subclass of record');
+		
+		return self::$listRecordManagers[$recordClass] ?? new self($recordClass);
 	}
 
 	/**
@@ -93,7 +101,7 @@ final class RecordManager
 		foreach ($this->fields as $field)
 			$params->Add(
 				new DatabaseQueryParam(
-					':'.$field->GetFieldName(),
+					":{$field->GetFieldName()}",
 					$field->ExportValue($record)
 				)
 			);
@@ -134,7 +142,7 @@ final class RecordManager
 	 * @throws Exception If there is no record with the given id in the context
 	 * @return DatabaseRecord
 	 */
-	public function ForceFind(int $id): DatabaseRecord {
+	public function Find(int $id): DatabaseRecord {
 		$query = <<<SQL
 		SELECT {$this->GetFieldSelection()}
 		FROM `{$this->tableName}`
@@ -160,7 +168,7 @@ final class RecordManager
 	 * @param int $id
 	 * @return DatabaseRecord|null
 	 */
-	public function Find(int $id): DatabaseRecord|null {
+	public function TryFind(int $id): DatabaseRecord|null {
 		$query = <<<SQL
 		SELECT {$this->GetFieldSelection()}
 		FROM `{$this->tableName}`
@@ -289,15 +297,19 @@ final class RecordManager
 	/**
 	 * Update a given record into the database
 	 * @param DatabaseRecord $record
+	 * @throws Exception If the record must be an instance of the current manager's record class
+	 * @throws Exception If the record doesn't exist in the context
+	 * @throws Exception If there was not field to update
+	 * @throws Exception If the update affacted more than one record
 	 * @return void
 	 */
-	public function ForceUpdate(DatabaseRecord $record): bool
+	public function Update(DatabaseRecord $record): bool
 	{
 		if (!($record instanceof $this->recordClass))
 			throw new Exception("The record must be an instance of '{$this->recordClass}'");
 
 		if (!$this->Any($record->{$this->idField}))
-			throw new Exception("record to update does not exist in the context '{$this->recordClass}' with the id '{$this->idField}'");
+			throw new Exception("The record to update does not exist in the context '{$this->recordClass}' with the id '{$this->idField}'");
 		
 		$query = <<<SQL
 		UPDATE {$this->tableName} SET
@@ -322,6 +334,7 @@ final class RecordManager
 	/**
 	 * Try to update a given record in the context
 	 * @param DatabaseRecord $record
+	 * @throws Exception If the update affacted more than one record
 	 * @return void
 	 */
 	public function TryUpdate(DatabaseRecord $record): bool
@@ -400,6 +413,15 @@ final class RecordManager
 	#region Deleting operations
 
 	public function Delete(DatabaseRecord $record): bool {
+		if (!($record instanceof $this->recordClass))
+			throw new Exception("The record must be an instance of '{$this->recordClass}'");
+
+		$this->DeleteById($record->id);
+
+		return true;
+	}
+
+	public function TryDelete(DatabaseRecord $record): bool {
 		if (!($record instanceof $this->recordClass))
 			throw new Exception("The record must be an instance of '{$this->recordClass}'");
 

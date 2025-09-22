@@ -1,13 +1,14 @@
 <?php
 namespace Core\Responses;
 
+use Modules\Http\HttpHeader;
+
 class URIRedirectionResponse extends RedirectionResponse
 {
-	/**
-	 * Create a redirection response based of a given controller and action
-	 * @param string $uri the uri the user should be redirected to
-	 */
-	public function __construct(string $uri) {
-		$this->uri = $uri;
-	}
+    /**
+     * @param string $uri the uri the user should be redirected to
+     */
+    public function __construct(string $uri, int $statusCode = 302, ?HttpHeader $headers = null) {
+        parent::__construct($uri, $statusCode, $headers);
+    }
 }

@@ -14,13 +14,14 @@ final class Router
 	public function New(): self
 	{
 		return $instance ?? $instance = new self;
-		
+
 	}
 
 	
 
 	public function GetRoute(): callable
 	{
+		
 
 
 		return fn() => 1;
