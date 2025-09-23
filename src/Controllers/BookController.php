@@ -1,7 +1,6 @@
 <?php
 namespace Src\Controllers;
 
-use Modules\Http\Responses\ActionRedirectionResponse;
 use Modules\Http\Responses\HTMLResponse;
 use Modules\Http\Responses\Response;
 use Modules\Http\Responses\URIRedirectionResponse;
@@ -94,12 +93,16 @@ final class BookController
 
 	#[Delete('/{id}')]
 	public function delete(int $id): Response {
-		$book = Book::TryFind($id);
+		$result = (new BookService)->DeleteById($id);
 
-		if ($book === null)
-			throw new \Exception("Book not found");
-
-		$book->Delete();
+		if ($result->IsFailure())
+			return new HTMLResponse(
+				'',
+				[
+					'error' => 'Impossible to delete the book',
+					'book' => null
+				]
+			);
 
 		return new URIRedirectionResponse(
 			"/book"
