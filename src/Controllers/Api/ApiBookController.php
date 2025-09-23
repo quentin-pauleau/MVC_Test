@@ -1,73 +1,107 @@
 <?php
 namespace Src\Controllers;
 
-use Core\Responses\HTMLResponse;
-use Core\Responses\Response;
-use Core\Responses\RouteRedirectionResponse;
-use Modules\Http\HttpResponse;
+use Exception;
+use Modules\DatabaseConnection\DatabaseConnection;
+use Modules\Http\Responses\JsonResponse;
+use Modules\Http\Responses\Response;
+use Modules\Http\Responses\RouteRedirectionResponse;
+use Modules\Http\Responses\HttpResponse;
 use Modules\Routing\Controller\Controller;
 use Modules\Routing\Route\Get;
 use Modules\Routing\Route\Post;
 use Modules\Routing\Route\Patch;
 use Modules\Routing\Route\Delete;
+use Services\BookService;
 use Src\Records\Book;
 
-#[Controller('book')]
+#[Controller('api/book')]
 final class BookController
 {
 	#[Get('/')]
 	public function index(): Response {
-		$books = Book::FindAll();
+		$result = (new BookService)->ReadAll();
 
-		return HttpResponse
+		if ($result->IsFailure())
+			return HttpResponse::InternalServerError();
+
+		$books = $result->GetResult();
+
+		return new JsonResponse(
+			[
+				'books' => $books,
+			],
+		);
 	}
 
 
 	#[Get('/{id}')]
 	public function show(int $id): Response {
-		$book = Book::TryFind($id);
+		$result = (new BookService)->ReadById($id);
+
+		if ($result->IsFailure())
+			return HttpResponse::InternalServerError($result->GetError());
 		
-		return new HTMLResponse(
-			'',
+		$book = $result->GetResult();
+
+		if ($book === null)
+			return HttpResponse::NotFound();
+
+		return new JsonResponse(
 			[
-				"book" => $book
-			]
+				'book' => $book,
+			],
 		);
 	}
 
 
 	#[Post('/')]
-	public function new(): Response {
-		$book = new Book();
+	public function new(
 
+	): Response {
+		$book = new Book;
+		
 		$book->title = "Lord of the donut";
 
-		$book->save();
+		$result = (new BookService)->Save($book);
 
-		return new RouteRedirectionResponse("/book/{$book->id}");
+		if ($result->IsFailure())
+			return HttpResponse::InternalServerError($result->GetError());
+
+		return HttpResponse::Created(); 
 	}
 
 
 	#[Patch('/{id}')]
-	public function edit(int $id): void {
-		$book = Book::TryFind($id);
+	public function edit(int $id): Response {
+		$BookService = new BookService;
 
-		if ($book === null)
-			throw new \Exception("Book not found");
+		$book = Book::Find($id);
 
-		$book->title = "Lord of the donut";
+		if (!$book->Exist())
+			return HttpResponse::NotFound("Book not found with id = {$id}");
 
-		$book->save();
+		$result = $BookService->Save($book);
+
+		if ($result->IsFailure())
+			return HttpResponse::InternalServerError($result->GetError());
+
+		return HttpResponse::Ok();
 	}
 
 
 	#[Delete('/{id}')]
-	public function delete(int $id): void {
+	public function delete(int $id): Response {
 		$book = Book::TryFind($id);
 
-		if ($book === null)
-			throw new \Exception("Book not found");
+		if (!$book)
+			return HttpResponse::NotFound();
 
-		$book->Delete();
+		$result = (new BookService)->Delete($book);
+
+		if ($result->IsFailure())
+			return HttpResponse::InternalServerError($result->GetError());
+		
+		return HttpResponse::Ok();
 	}
 }

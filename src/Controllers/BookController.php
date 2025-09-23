@@ -1,15 +1,16 @@
 <?php
 namespace Src\Controllers;
 
-use Core\Responses\HTMLResponse;
-use Core\Responses\Response;
-use Core\Responses\RouteRedirectionResponse;
-use Modules\Http\HttpResponse;
+use Modules\Http\Responses\ActionRedirectionResponse;
+use Modules\Http\Responses\HTMLResponse;
+use Modules\Http\Responses\Response;
+use Modules\Http\Responses\URIRedirectionResponse;
 use Modules\Routing\Controller\Controller;
 use Modules\Routing\Route\Get;
 use Modules\Routing\Route\Post;
 use Modules\Routing\Route\Patch;
 use Modules\Routing\Route\Delete;
+use Services\BookService;
 use Src\Records\Book;
 
 #[Controller('book')]
@@ -17,7 +18,18 @@ final class BookController
 {
 	#[Get('/')]
 	public function index(): Response {
-		$books = Book::FindAll();
+		$result = (new BookService)->ReadAll();
+
+		if ($result->IsFailure())
+			return new HTMLResponse(
+				'', 
+				[
+					'error' => 'Impossible to find the books',
+					'book' => null
+				]
+			);
+
+		$books = $result->GetResult();
 
 		return new HTMLResponse(
 			'',
@@ -30,7 +42,19 @@ final class BookController
 
 	#[Get('/{id}')]
 	public function show(int $id): Response {
-		$book = Book::TryFind($id);
+		$result = (new BookService)->ReadAll();
+
+		if ($result->IsFailure())
+			return new HTMLResponse(
+				'', 
+				[
+					'error' => 'Impossible to find the book',
+					'book' => null
+				]
+			);
+
+		$book = $result->GetResult();
+
 		
 		return new HTMLResponse(
 			'',
@@ -49,7 +73,9 @@ final class BookController
 
 		$book->save();
 
-		return new RouteRedirectionResponse("/book/{$book->id}");
+		return new URIRedirectionResponse(
+			"/book/{$book->id}"
+		);
 	}
 
 
@@ -67,12 +93,16 @@ final class BookController
 
 
 	#[Delete('/{id}')]
-	public function delete(int $id): void {
+	public function delete(int $id): Response {
 		$book = Book::TryFind($id);
 
 		if ($book === null)
 			throw new \Exception("Book not found");
 
 		$book->Delete();
+
+		return new URIRedirectionResponse(
+			"/book"
+		);
 	}
 }
