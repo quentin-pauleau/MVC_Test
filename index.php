@@ -24,4 +24,4 @@ use Core\Core;
 Core::Init();
 
 // Start the app
-Core::StartController();
+Core::StartApp();
