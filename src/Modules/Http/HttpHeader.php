@@ -174,26 +174,16 @@ final class HttpHeader implements IteratorAggregate, Countable
 	 */
 	public function Send(bool $replace = true, ?int $responseCode = null): void
 	{
+		http_response_code($responseCode ?? 200);
+
 		foreach ($this->headers as $name => $values) {
-			if ($values === []) {
-				if ($responseCode !== null) {
-					header($name . ':', $replace, $responseCode);
-					$responseCode = null; // only once
-				} else {
-					header($name . ':', $replace);
-				}
-				continue;
-			}
-
-			foreach ($values as $i => $value) {
-				$isFirstOfHeader = ($i === 0);
-				$doReplace = $replace && $isFirstOfHeader;
-
-				if ($responseCode !== null && $isFirstOfHeader) {
-					header($name . ': ' . $value, $doReplace, $responseCode);
-					$responseCode = null; // apply code only once
-				} else {
-					header($name . ': ' . $value, $doReplace);
+			if ($values === [])
+				header("{$name}:", $replace);
+			else {
+				$replace2 = $replace;
+				foreach ($values as $value) {
+					header("{$name}:{$value}", $replace2);
+					$replace2 = false;
 				}
 			}
 		}
@@ -206,9 +196,9 @@ final class HttpHeader implements IteratorAggregate, Countable
 	public function ContentType(string $mime, ?string $charset = null): self
 	{
 		$value = $mime;
-		if ($charset !== null && $charset !== '') {
-			$value .= '; charset=' . $charset;
-		}
+		if ($charset !== null && $charset !== '')
+			$value .= "; charset={$charset};";
+		
 		return $this->With('Content-Type', $value);
 	}
 
