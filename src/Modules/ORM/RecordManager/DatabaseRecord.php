@@ -39,8 +39,14 @@ trait DatabaseRecord
 	}
 
 
-	public function Save(): void {
+	public function Exist(): bool {
+		return self::Any($this->id);
+	}
+
+
+	public function Save(): bool {
 		self::GetManager()->Save($this);
+		return true;
 	}
 
 	public function New(): self {
@@ -50,11 +56,11 @@ trait DatabaseRecord
 	}
 
 	public function Update(): bool {
-		return self::GetManager()->Update($this) ?? false;
+		return self::GetManager()->Update($this);
 	}
 
 	public function TryUpdate(): bool {
-		return self::GetManager()->TryUpdate($this) ?? false;
+		return self::GetManager()->TryUpdate($this);
 	}
 
 	public function Delete(): bool {

@@ -301,7 +301,7 @@ final class RecordManager
 	 * @throws Exception If the record doesn't exist in the context
 	 * @throws Exception If there was not field to update
 	 * @throws Exception If the update affacted more than one record
-	 * @return void
+	 * @return bool
 	 */
 	public function Update(DatabaseRecord $record): bool
 	{
@@ -335,7 +335,7 @@ final class RecordManager
 	 * Try to update a given record in the context
 	 * @param DatabaseRecord $record
 	 * @throws Exception If the update affacted more than one record
-	 * @return void
+	 * @return bool
 	 */
 	public function TryUpdate(DatabaseRecord $record): bool
 	{
