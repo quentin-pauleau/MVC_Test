@@ -1,5 +1,5 @@
 <?php
-namespace Core\Responses;
+namespace Modules\Http\Responses;
 
 use Modules\Http\HttpHeader;
 
