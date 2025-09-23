@@ -18,9 +18,20 @@ final class HttpClient
 		$this->defaultHeaders = $defaultHeaders;
 	}
 
-	public function withTimeout(int $seconds): self { $this->timeoutSeconds = max(0, $seconds); return $this; }
-	public function withTLSVerification(bool $verify): self { $this->verifyTLS = $verify; return $this; }
-	public function withDefaultHeaders(HttpHeader $headers): self { $this->defaultHeaders = $headers; return $this; }
+	public function withTimeout(int $seconds): self {
+		$this->timeoutSeconds = max(0, $seconds);
+		return $this;
+	}
+
+	public function withTLSVerification(bool $verify): self {
+		$this->verifyTLS = $verify;
+		return $this;
+	}
+
+	public function withDefaultHeaders(HttpHeader $headers): self {
+		$this->defaultHeaders = $headers;
+		return $this;
+	}
 
 	/**
 	 * Core request method
@@ -29,22 +40,19 @@ final class HttpClient
 	 * @param null|string|array $body string for raw body, or array for form fields / json
 	 * @param ?HttpHeader $headers additional headers to merge with defaults
 	 */
-	public function Request(HttpMethods $method, string $url, null|string|array $body = null, ?HttpHeader $headers = null): HttpResponse
+	public function Request(HttpMethods $method, string $url, null|string|array $body = null, ?HttpHeader $headers = null): HttpClientResponse
 	{
 		$ch = curl_init();
 		$allHeaders = new HttpHeader();
 
-		if ($this->defaultHeaders) {
+		if ($this->defaultHeaders)
 			$allHeaders->Replace($this->defaultHeaders->ToArray());
-		}
-		if ($headers) {
-			foreach ($headers->ToArray() as $k => $values) {
-				foreach ($values as $v) {
+		
+		if ($headers)
+			foreach ($headers->ToArray() as $k => $values)
+				foreach ($values as $v)
 					$allHeaders->Add($k, $v);
-				}
-			}
-		}
-
+		
 		$curlHeaders = [];
 		foreach ($allHeaders->ToHeaderLines() as $line)
 			$curlHeaders[] = $line;
@@ -109,31 +117,31 @@ final class HttpClient
 
 		$respHeaders = HttpHeader::FromHeaderLines($lines);
 
-		return new HttpResponse($status, $reason, $respHeaders, (string)$bodyStr, (string)$finalUrl);
+		return new HttpClientResponse($status, $reason, $respHeaders, (string)$bodyStr, (string)$finalUrl);
 	}
 
 	// Convenience methods
-	public function Get(string $url, ?HttpHeader $headers = null): HttpResponse
+	public function Get(string $url, ?HttpHeader $headers = null): HttpClientResponse
 	{
 		return $this->Request(HttpMethods::GET, $url, null, $headers);
 	}
 
-	public function Post(string $url, null|string|array $body = null, ?HttpHeader $headers = null): HttpResponse
+	public function Post(string $url, null|string|array $body = null, ?HttpHeader $headers = null): HttpClientResponse
 	{
 		return $this->Request(HttpMethods::POST, $url, $body, $headers);
 	}
 
-	public function Put(string $url, null|string|array $body = null, ?HttpHeader $headers = null): HttpResponse
+	public function Put(string $url, null|string|array $body = null, ?HttpHeader $headers = null): HttpClientResponse
 	{
 		return $this->Request(HttpMethods::PUT, $url, $body, $headers);
 	}
 
-	public function Patch(string $url, null|string|array $body = null, ?HttpHeader $headers = null): HttpResponse
+	public function Patch(string $url, null|string|array $body = null, ?HttpHeader $headers = null): HttpClientResponse
 	{
 		return $this->Request(HttpMethods::PATCH, $url, $body, $headers);
 	}
 
-	public function Delete(string $url, null|string|array $body = null, ?HttpHeader $headers = null): HttpResponse
+	public function Delete(string $url, null|string|array $body = null, ?HttpHeader $headers = null): HttpClientResponse
 	{
 		return $this->Request(HttpMethods::DELETE, $url, $body, $headers);
 	}
