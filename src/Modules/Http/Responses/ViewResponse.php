@@ -6,7 +6,7 @@ use Modules\Http\HttpHeader;
 /**
  * Display a php/html view, based on its path and the given data
  */
-class HTMLResponse extends Response
+class ViewResponse extends Response
 {
 	private string $path = '';
 	private array $data = [];
