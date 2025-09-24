@@ -8,12 +8,18 @@ use Modules\Http\HttpHeader;
  */
 class HTMLResponse extends Response
 {
+	private string $path = '';
+	private array $data = [];
+	private ?HttpHeader $headers = null;
+	private int $statusCode = 200;
 
-	public function __construct(
-		private string $content = '',
-		private ?HttpHeader $headers = null,
-		private int $statusCode = 200,
-	) {}
+	public function __construct(string $path, array $data = [], ?HttpHeader $headers = null, int $statusCode = 200)
+	{
+		$this->path = $path;
+		$this->data = $data;
+		$this->headers = $headers;
+		$this->statusCode = $statusCode;
+	}
 
 	/**
 	 * Unset all variables and display the template with all
@@ -24,7 +30,8 @@ class HTMLResponse extends Response
 		$header->Html();
 		$header->Send(true, $this->statusCode);
 
-		echo $this->content;
+		extract($this->data);
+		require_once $this->path;
 		exit;
 	}
 }
