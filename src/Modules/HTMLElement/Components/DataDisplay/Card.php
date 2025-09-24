@@ -15,20 +15,24 @@ class Card extends HTMLElement
 	public function __construct(
 		?string $id = null,
 		ComponentSize $size = ComponentSize::DEFAULT,
-		bool $hasBorder = true
+		bool $hasBorder = true,
+		array $childs = []
 	)
 	{
-		$this->id = $id;
 		$this->size = $size;
 		$this->hasBorder = $hasBorder;
+
+		parent::__construct($id, $childs);
 	}
 
 
 	public function __toString(): string
 	{
-		return <<<HTML
-		<div class="card {$this->getSizeClass()}">
+		$content = implode('', array_map(fn($item) => (string)$item, $this->childs));
 
+		return <<<HTML
+		<div id="{$this->getId()} class="card {$this->getSizeClass()} {$this->getBorderSizeClass()}">
+			{$content}
 		</div>
 		HTML;
 	}
