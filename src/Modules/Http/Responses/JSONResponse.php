@@ -2,24 +2,20 @@
 namespace Modules\Http\Responses;
 
 use Modules\Http\HttpHeader;
+use Modules\Serialisation\Json;
 
 /**
  * Display json data
  */
 class JsonResponse extends Response
 {
-	protected $data;
-	protected ?HttpHeader $headers;
-	protected int $statusCode;
+	public function __construct(
+		protected array|object $data, 
+		protected ?HttpHeader $headers = null, 
+		protected int $statusCode = 200
+	) {}
 
-	public function __construct($data, ?HttpHeader $headers = null, int $statusCode = 200)
-	{
-		$this->data = $data;
-		$this->headers = $headers;
-		$this->statusCode = $statusCode;
-	}
-
-	public function Process(): void
+	public function Send(): void
 	{
 		$header = $this->headers ?? HttpHeader::Create()->Json();
 
@@ -27,7 +23,11 @@ class JsonResponse extends Response
 			$header->Json();
 
 		$header->Send(true, $this->statusCode);
-		echo json_encode($this->data);
+		
+		if (!($this->data instanceof Json))
+			$this->data = Json::Serialize($this->data);
+		
+		echo $this->data;
 		exit;
 	}
 }

@@ -25,7 +25,7 @@ class ViewResponse extends Response
 	 * Unset all variables and display the template with all
 	 * @return never
 	 */
-	public function Process(): void {
+	public function Send(): void {
 		$header = $this->headers ?? HttpHeader::Create();
 		$header->Html();
 		$header->Send(true, $this->statusCode);

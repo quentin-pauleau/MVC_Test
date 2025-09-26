@@ -6,30 +6,60 @@ use Modules\Http\HttpHeader;
 /**
  * Redirect the user to another route or URI
  */
-abstract class RedirectionResponse extends Response
+final class RedirectionResponse extends Response
 {
-	protected ?string $uri = null;
-	protected int $statusCode = 302;
-	protected ?HttpHeader $headers = null;
 
-	public function __construct(?string $uri = null, int $statusCode = 302, ?HttpHeader $headers = null)
-	{
-		$this->uri = $uri;
-		$this->statusCode = $statusCode;
-		$this->headers = $headers;
-	}
+	public function __construct(
+		protected ?string $uri = null,
+		protected ?HttpHeader $header = null,
+		protected string $body = '',
+	) {}
 
 	/**
-	 * Process the redirection
+	 * Send the redirection
 	 * @return never
 	 */
-	final public function Process(): void {
-		$header = $this->headers ?? HttpHeader::Create();
-		
-		if ($this->uri)
-			$header->Location($this->uri);
-		
-		$header->Send(true, $this->statusCode);
+	public function Send(): void {
+		(HttpResponse::TemporaryRedirect(
+			$this->body,
+			$this->header
+		))->Send();
 		exit;
+	}
+
+	public static function Rewind(
+		?HttpHeader $header = null,
+		string $body = '',
+	): RedirectionResponse
+	{
+		return new self(
+			$_SERVER['HTTP_REFERER'],
+			$header,
+			$body,
+		);
+	}
+
+	public static function Back(
+		?HttpHeader $header = null,
+		string $body = '',
+	): RedirectionResponse
+	{
+		return new self(
+			null,
+			$header,
+			$body,
+		);
+	}
+
+	public static function FromAction(
+		?HttpHeader $header = null,
+		string $body = '',
+	): RedirectionResponse
+	{
+		return new self(
+			null,
+			$header,
+			$body,
+		);
 	}
 }

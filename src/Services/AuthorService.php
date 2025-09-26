@@ -3,12 +3,12 @@ namespace Services;
 
 use Modules\DatabaseConnection\DatabaseConnection;
 use Modules\Result\Result;
-use Src\Records\Book;
+use Src\Records\Author;
 
 /**
- * Book CRUD service class.
+ * Author CRUD service class.
  */
-class BookService
+class AuthorService
 {
 	private static DatabaseConnection $connection;
 
@@ -19,46 +19,46 @@ class BookService
 
 	/**
 	 * Summary of ReadAll
-	 * @return Result<Book[], string>
+	 * @return Result<Author[], string>
 	 */
 	public function ReadAll(): Result
 	{
 		return Result::FromCallable(
-			fn (): array => Book::FindAll()
+			fn (): array => Author::FindAll()
 		);
 	}
 
 	/**
 	 * @param int $id
-	 * @return Result<Book|null, string>
+	 * @return Result<Author|null, string>
 	 */
 	public function ReadById(int $id): Result
 	{
 		return Result::FromCallable(
-			fn (): Book => Book::TryFind($id)
+			fn (): Author => Author::TryFind($id)
 		);
 	}
 
 	/**
-	 * @param \Src\Records\Book $book
+	 * @param \Src\Records\Author $Author
 	 * @return Result<true, string>
 	 */
-	public function Save(Book $book): Result
+	public function Save(Author $Author): Result
 	{
 		return Result::FromCallable(
-			fn (): bool => $book->Save()
+			fn (): bool => $Author->Save()
 		);
 	}
 
 
 	/**
-	 * @param \Src\Records\Book $book
+	 * @param \Src\Records\Author $Author
 	 * @return Result<true, string>
 	 */
-	public function Delete(Book $book): Result
+	public function Delete(Author $Author): Result
 	{
 		return Result::FromCallable(
-			fn (): bool => $book->Delete()
+			fn (): bool => $Author->Delete()
 		);
 	}
 
@@ -69,7 +69,7 @@ class BookService
 	public function DeleteById(int $id): Result
 	{
 		return Result::FromCallable(
-			fn (): bool => Book::Find($id)->Delete()
+			fn (): bool => Author::Find($id)->Delete()
 		);
 	}
 }

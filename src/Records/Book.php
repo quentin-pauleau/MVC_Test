@@ -6,7 +6,7 @@ use Modules\ORM\Attributes\BindField;
 use Modules\ORM\Attributes\BindTable;
 use Modules\ORM\RecordManager\DatabaseRecord;
 use Modules\ORM\RecordManager\RecordManager;
-
+use Modules\Serialisation\Serialisable;
 
 #[BindTable(name: "books")]
 class Book // extends DatabaseRecord
@@ -21,6 +21,9 @@ class Book // extends DatabaseRecord
 	#[BindField(
 		name: "title",
 		type: "varchar",
+	)]
+	#[Serialisable(
+		
 	)]
 	public string $title;
 

@@ -1,11 +1,6 @@
-<?php
 
-/**
- * @var Src\Records\Book[] $books
- * 
- */
 
-?>
+
 
 
 <main>

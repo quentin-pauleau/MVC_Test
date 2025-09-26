@@ -1,17 +1,15 @@
 <?php
 namespace Src\Controllers;
 
-use Exception;
-use Modules\DatabaseConnection\DatabaseConnection;
 use Modules\Http\Responses\JsonResponse;
 use Modules\Http\Responses\Response;
-use Modules\Http\Responses\RouteRedirectionResponse;
 use Modules\Http\Responses\HttpResponse;
 use Modules\Routing\Controller\Controller;
 use Modules\Routing\Route\Get;
 use Modules\Routing\Route\Post;
 use Modules\Routing\Route\Patch;
 use Modules\Routing\Route\Delete;
+use Modules\Serialisation\Json;
 use Services\BookService;
 use Src\Records\Book;
 
@@ -28,9 +26,7 @@ final class BookController
 		$books = $result->GetResult();
 
 		return new JsonResponse(
-			[
-				'books' => $books,
-			],
+			$books
 		);
 	}
 
@@ -49,7 +45,7 @@ final class BookController
 
 		return new JsonResponse(
 			[
-				'book' => $book,
+				$book,
 			],
 		);
 	}
@@ -57,18 +53,21 @@ final class BookController
 
 	#[Post('/')]
 	public function new(
-
+		
 	): Response {
 		$book = new Book;
+		$BookService = new BookService;
 		
 		$book->title = "Lord of the donut";
 
-		$result = (new BookService)->Save($book);
+		$result = $BookService->Save($book);
 
 		if ($result->IsFailure())
 			return HttpResponse::InternalServerError($result->GetError());
 
-		return HttpResponse::Created(); 
+		return HttpResponse::Created(
+			Json::Serialize($book)
+		); 
 	}
 
 
