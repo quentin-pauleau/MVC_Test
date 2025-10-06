@@ -1,33 +1,35 @@
 <?php
 namespace Src\Controllers;
 
-use Modules\Http\Responses\JsonResponse;
+
 use Modules\Http\Responses\Response;
 use Modules\Http\Responses\HttpResponse;
 use Modules\Routing\Controller\Controller;
+use Modules\Routing\Controller\JsonApiController;
+use Modules\Routing\Param\BodyParam;
+use Modules\Routing\Param\UrlParam;
 use Modules\Routing\Route\Get;
 use Modules\Routing\Route\Post;
 use Modules\Routing\Route\Patch;
 use Modules\Routing\Route\Delete;
-use Modules\Serialisation\Json;
 use Services\BookService;
 use Src\Records\Book;
 
-#[Controller('api/book')]
+#[Controller('BooksApi', 'api/book')]
 final class BookController
 {
-	#[Get('/')]
+	use JsonApiController;
+
+	#[Get]
 	public function index(): Response {
 		$result = (new BookService)->ReadAll();
 
 		if ($result->IsFailure())
-			return HttpResponse::InternalServerError();
+			return $this->InternalServerError($result->GetError());
 
 		$books = $result->GetResult();
 
-		return new JsonResponse(
-			$books
-		);
+		return $this->Ok($books);
 	}
 
 
@@ -36,71 +38,65 @@ final class BookController
 		$result = (new BookService)->ReadById($id);
 
 		if ($result->IsFailure())
-			return HttpResponse::InternalServerError($result->GetError());
+			return $this->InternalServerError($result->GetError());
 		
 		$book = $result->GetResult();
 
 		if ($book === null)
 			return HttpResponse::NotFound();
 
-		return new JsonResponse(
-			[
-				$book,
-			],
-		);
+		return $this->Ok($book);
 	}
 
 
 	#[Post('/')]
 	public function new(
-		
+		#[BodyParam("book")] Book|false $book
 	): Response {
-		$book = new Book;
-		$BookService = new BookService;
+		if (!($book instanceof Book))
+			return $this->UnProcessableEntity("Invalid book data.");
 		
-		$book->title = "Lord of the donut";
-
-		$result = $BookService->Save($book);
+		$result = (new BookService)->Save($book);
 
 		if ($result->IsFailure())
-			return HttpResponse::InternalServerError($result->GetError());
+			return $this->InternalServerError($result->GetError());
 
-		return HttpResponse::Created(
-			Json::Serialize($book)
-		); 
+		return $this->Created($book); 
 	}
 
 
 	#[Patch('/{id}')]
-	public function edit(int $id): Response {
-		$BookService = new BookService;
+	public function edit(
+		#[UrlParam("id")] int $id,
+		#[BodyParam("book")] Book|false $book
+	): Response {
+		if (!($book instanceof Book))
+			return $this->UnProcessableEntity("Invalid book data.");
 
-		$book = Book::Find($id);
+		if (Book::Any($id))
+			return $this->NotFound();
 
-		if (!$book->Exist())
-			return HttpResponse::NotFound("Book not found with id = {$id}");
+		$book->id = $id;
 
-		$result = $BookService->Save($book);
+		$result = (new BookService)->Save($book);
 
 		if ($result->IsFailure())
-			return HttpResponse::InternalServerError($result->GetError());
+			return $this->InternalServerError($result->GetError());
 
-		return HttpResponse::Ok();
+		return $this->Ok($book);
 	}
 
 
 	#[Delete('/{id}')]
 	public function delete(int $id): Response {
-		$book = Book::TryFind($id);
+		if (!Book::Any($id))
+			return $this->NotFound();
 
-		if (!$book)
-			return HttpResponse::NotFound();
-
-		$result = (new BookService)->Delete($book);
+		$result = (new BookService)->DeleteById($id);
 
 		if ($result->IsFailure())
-			return HttpResponse::InternalServerError($result->GetError());
+			return $this->InternalServerError($result->GetError());
 		
-		return HttpResponse::Ok();
+		return $this->NoContent();
 	}
 }

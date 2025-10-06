@@ -15,8 +15,7 @@ namespace Modules\Http\Responses;
 abstract class Response
 {
 	/**
-	 * Send the response
-	 * @return never this function must end the program
+	 * Send the response to the client
 	 */
 	abstract public function Send(): void;
 }
