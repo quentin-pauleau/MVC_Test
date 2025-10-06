@@ -227,7 +227,7 @@ final class HttpHeader implements IteratorAggregate, Countable
 		$parts = [$type];
 		if ($filename !== null && $filename !== '') {
 			$quoted = '"' . str_replace('"', '\\"', $filename) . '"';
-			$parts[] = 'filename=' . $quoted;
+			$parts[] = "filename=$quoted";
 		}
 		if ($filenameStar !== null && $filenameStar !== '') {
 			$enc = rawurlencode($filenameStar);
