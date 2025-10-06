@@ -7,6 +7,6 @@ use Attribute;
 abstract class Route
 {
 	public function __construct(
-		public string $path,
+		public string $path = '',
 	) {}
 }
