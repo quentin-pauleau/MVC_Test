@@ -17,14 +17,13 @@ final class RedirectionResponse extends Response
 
 	/**
 	 * Send the redirection
-	 * @return never
+	 * @return void
 	 */
 	public function Send(): void {
-		(HttpResponse::TemporaryRedirect(
+		HttpResponse::TemporaryRedirect(
 			$this->body,
 			$this->header
-		))->Send();
-		exit;
+		)->Send();
 	}
 
 	public static function Rewind(
