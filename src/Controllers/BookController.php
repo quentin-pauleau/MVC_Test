@@ -5,7 +5,9 @@ use Modules\Http\Responses\Response;
 use Modules\Http\Responses\RedirectionResponse;
 use Modules\Http\Responses\ViewResponse;
 use Modules\Routing\Controller\Controller;
+use Modules\Routing\Controller\WebController;
 use Modules\Routing\Param\BodyParam;
+use Modules\Routing\Param\UrlParam;
 use Modules\Routing\Route\Get;
 use Modules\Routing\Route\Post;
 use Modules\Routing\Route\Patch;
@@ -14,10 +16,12 @@ use Modules\Serialisation\Json;
 use Services\BookService;
 use Src\Records\Book;
 
-#[Controller('book')]
+#[Controller('Book')]
 final class BookController
 {
-	#[Get('/')]
+	use WebController;
+
+	#[Get]
 	public function index(): Response {
 		$result = (new BookService)->ReadAll();
 
@@ -32,7 +36,7 @@ final class BookController
 
 		$books = $result->GetResult();
 
-		return new ViewResponse(
+		return $this->RenderView(
 			'',
 			[
 				"books" => $books
@@ -42,7 +46,9 @@ final class BookController
 
 
 	#[Get('/{id}')]
-	public function show(int $id): Response {
+	public function show(
+		#[UrlParam] int $id,
+	): Response {
 		$result = (new BookService)->ReadById($id);
 
 		if ($result->IsFailure())
@@ -56,7 +62,7 @@ final class BookController
 
 		$book = $result->GetResult();
 		
-		return new ViewResponse(
+		return $this->RenderView(
 			'/book/show',
 			[
 				"book" => $book
@@ -67,9 +73,12 @@ final class BookController
 
 	#[Get('/new')]
 	public function newPage(
-		#[BodyParam('book')] ?Book $book = null,
+		#[BodyParam('book')] Book|null|false $book = null,
 	): Response {
-		return new ViewResponse(
+		if (!($book instanceof Book))
+			$book = new Book;
+
+		return $this->RenderView(
 			'/book/new',
 			[
 				'error' => '',
@@ -82,7 +91,7 @@ final class BookController
 	#[Post('/')]
 	#[Post('/new')]
 	public function new(
-		#[BodyParam('book')] Book $book
+		#[BodyParam] Book|null $book,
 	): Response {
 		$book->title = "Lord of the donut";
 
@@ -99,14 +108,16 @@ final class BookController
 				]),
 			);
 
-		return new RedirectionResponse(
+		return $this->Redirect(
 			"/book/{$book->id}"
 		);
 	}
 
 
 	#[Patch('/{id}')]
-	public function edit(int $id): void {
+	public function edit(
+		#[UrlParam] int $id,
+	): Response {
 		$book = Book::TryFind($id);
 
 		if ($book === null)
@@ -115,15 +126,21 @@ final class BookController
 		$book->title = "Lord of the donut";
 
 		$book->save();
+
+		return $this->Redirect(
+			"/book/{$id}"
+		);
 	}
 
 
 	#[Delete('/{id}')]
-	public function delete(int $id): Response {
+	public function delete(
+		#[UrlParam] int $id,
+	): Response {
 		$result = (new BookService)->DeleteById($id);
 
 		if ($result->IsFailure())
-			return new ViewResponse(
+			return $this->RenderView(
 				'',
 				[
 					'error' => 'Impossible to delete the book',
@@ -131,7 +148,7 @@ final class BookController
 				]
 			);
 
-		return new RedirectionResponse(
+		return $this->Redirect(
 			"/book"
 		);
 	}
