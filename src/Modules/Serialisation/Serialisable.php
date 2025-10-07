@@ -4,7 +4,7 @@ namespace Modules\Serialisation;
 use Attribute;
 
 #[Attribute(Attribute::TARGET_PROPERTY)]
-readonly class Serialisable
+final readonly class Serialisable
 {
 	public function __construct(
 		/**
