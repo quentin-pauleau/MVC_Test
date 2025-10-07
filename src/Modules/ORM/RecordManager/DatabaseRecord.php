@@ -16,7 +16,10 @@ trait DatabaseRecord
 	private static RecordManager $recordManager;
 
 
-	abstract public static function GetManager(): RecordManager;
+	public static function GetManager(): RecordManager {
+		return RecordManager::Get(self::class);
+	}
+
 
 	public static function TryFind(int $id): self|null {
 		return self::GetManager()->TryFind($id);

@@ -1,8 +1,4 @@
 
-
-
-
-
 <main>
 	<section class="container">
 		<h1>Books</h1>

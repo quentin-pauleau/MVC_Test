@@ -12,12 +12,7 @@ use Modules\Serialisation\Serialisable;
 class Book // extends DatabaseRecord
 {
 	use DatabaseRecord;
-
-	public static function GetManager(): RecordManager {
-		return RecordManager::Get(self::class);
-	}
-
-
+	
 	#[
 		BindField(type: "varchar"),
 		Serialisable
@@ -33,7 +28,7 @@ class Book // extends DatabaseRecord
 
 
 	#[BindField()]
-	public array $author;
+	public Author $author;
 
 
 	#[
