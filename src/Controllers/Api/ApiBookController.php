@@ -15,8 +15,8 @@ use Modules\Routing\Route\Delete;
 use Services\BookService;
 use Src\Records\Book;
 
-#[Controller('BooksApi', 'api/book')]
-final class BookController
+#[Controller('BookApi', 'api/book')]
+final class ApiBookController
 {
 	use JsonApiController;
 
