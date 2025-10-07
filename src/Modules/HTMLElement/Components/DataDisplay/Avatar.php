@@ -30,14 +30,14 @@ class Avatar extends HTMLElement
 
 	/**
 	 * Summary of __construct
-	 * @param string $id
+	 * @param ?string $id
 	 * @param string $url
 	 * @param int $size
 	 * @param "circle"|"square"|"rounded"|"heart"|"hexagon"|"" $shape
 	 * @param bool|null $presenceIndicator
 	 */
 	public function __construct(
-		string $id, 
+		?string $id = null, 
 		string $url, 
 		int $size = 24,
 		string $shape = 'circle',

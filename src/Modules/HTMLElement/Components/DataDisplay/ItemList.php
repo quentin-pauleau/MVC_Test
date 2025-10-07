@@ -14,10 +14,10 @@ class ItemList extends HTMLElement
 	 * @param ItemListRow[] $items
 	 * @param mixed $id
 	 */
-	public function __construct(array $items, ?string $id = null)
+	public function __construct(?string $id = null, array $items)
 	{
-		$this->childs = $items;
 		$this->id = $id;
+		$this->childs = $items;
 	}
 
 

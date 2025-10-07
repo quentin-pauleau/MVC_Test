@@ -14,20 +14,20 @@ class ItemListRow extends HTMLElement
 
 	/**
 	 * Summary of __construct
-	 * @param HTMLElement[]|string[] $childs
 	 * @param string $id
+	 * @param HTMLElement[]|string[] $childs
 	 * @param ?int $wrappingIndex Child of the item that should be pushed to the next line
 	 * @param int $growingIndex Child of the item that should be extended to fill the remaining space, by default the 2nd child (index = 1)
 	 */
 	public function __construct(
-		array $childs = [], 
 		?string $id = null,
+		array $childs = [], 
 		?int $wrappingIndex = null,
 		int $growingIndex = 1,
 	)
 	{
-		$this->childs = $childs;
 		$this->id = $id;
+		$this->childs = $childs;
 		$this->wrappingIndex = $wrappingIndex;
 		$this->growingIndex = $growingIndex;
 	}
