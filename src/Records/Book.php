@@ -18,40 +18,34 @@ class Book // extends DatabaseRecord
 	}
 
 
-	#[BindField(
-		name: "title",
-		type: "varchar",
-	)]
-	#[Serialisable(
-		
-	)]
+	#[
+		BindField(type: "varchar"),
+		Serialisable
+	]
 	public string $title;
 
 
-	#[BindField(
-		name: "description",
-		type: "text",
-	)]
+	#[
+		BindField(type: "text",),
+		Serialisable
+	]
 	public string $description = '';
 
 
-	#[BindField(
-		name: "author",
-		type: "varchar"
-	)]
-	public string $author;
+	#[BindField()]
+	public array $author;
 
 
-	#[BindField(
-		name: "publication_date",
-		type: "date"
-	)]
+	#[
+		BindField(type: "date"),
+		Serialisable
+	]
 	public DateTime $publicationDate;
 
 
-	#[BindField(
-		name: "price",
-		type: "float"
-	)]
+	#[
+		BindField(type: "float"),
+		Serialisable
+	]
 	public float $price;
 }
