@@ -22,7 +22,8 @@ final readonly class Xml
 	 */
 	public static function Serialize(array|object $data, string $rootNodeName = 'root'): self
 	{
-		$arrayData = is_object($data) ? self::objectToArray($data) : $data;
+		is_array($data) 
+			?: $arrayData = (array)$data;
 
 		if (!is_array($arrayData))
 			throw new \InvalidArgumentException('XML serialization expects array|object');
@@ -43,44 +44,36 @@ final readonly class Xml
 	 */
 	public function Deserialize(?string $class = null): mixed
 	{
-		$simple = @simplexml_load_string($this->xml, 'SimpleXMLElement', LIBXML_NOCDATA);
-		if ($simple === false)
-			throw new \RuntimeException('XML deserialization failed');
+		class_exists($class)
+			?: throw new \InvalidArgumentException("Class {$class} does not exist");
+			
 
-		$json = json_encode($simple, JSON_THROW_ON_ERROR | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
-		$array = json_decode($json, true, 512, JSON_THROW_ON_ERROR);
-
-		if ($class === null)
-			return $array;
-
-		// Reuse Json hydrator logic by wrapping
-		$jsonVo = new Json(json_encode($array, JSON_THROW_ON_ERROR));
-		return $jsonVo->DeserializeObject($class);
+		$simpleXml = simplexml_load_string($this->xml)
+			?: throw new \RuntimeException('Invalid XML');
+		
+		$data = self::xmlToArray($simpleXml);
+		
+		if ($class !== null) {
+			$obj = new $class();
+			foreach ($data as $key => $value)
+				if (property_exists($obj, $key))
+					$obj->$key = $value;
+			
+			return $obj;
+		}
+		
+		return $data;
 	}
 
 	public function __toString(): string
 	{
 		return $this->xml;
 	}
-
-	// --- helpers ---
-
-	private static function objectToArray(object $obj): array
-	{
-		// Convert public properties (and nested objects) into an array
-		return json_decode(
-			json_encode($obj, JSON_THROW_ON_ERROR),
-			true,
-			512,
-			JSON_THROW_ON_ERROR
-		);
-	}
-
 	private static function arrayToXml(array $data, \SimpleXMLElement $xml): void
 	{
 		foreach ($data as $key => $value) {
 			// Ensure valid XML tag names
-			$tag = is_string($key) && self::isValidXmlTag($key) ? $key : 'item';
+			$tag = is_string($key) && self::isValidXmlTag(name: $key) ? $key : 'item';
 
 			if (is_array($value)) {
 				// Lists vs associative arrays
@@ -121,5 +114,37 @@ final readonly class Xml
 	{
 		// Basic validation: start with letter or underscore, then letters/digits/._-
 		return (bool)preg_match('/^[A-Za-z_][A-Za-z0-9_\.-]*$/', $name);
+	}
+
+	private static function xmlToArray(\SimpleXMLElement $xml): mixed
+	{
+		$children = $xml->children();
+		$attributes = $xml->attributes();
+		if (count($children) == 0 && count($attributes) == 0) {
+			return (string)$xml;
+		}
+		$array = [];
+		// group children by tag name
+		$grouped = [];
+		foreach ($children as $child) {
+			$tag = $child->getName();
+			if (!isset($grouped[$tag])) $grouped[$tag] = [];
+			$grouped[$tag][] = $child;
+		}
+		foreach ($grouped as $tag => $nodes) {
+			if (count($nodes) == 1) {
+				$array[$tag] = self::xmlToArray($nodes[0]);
+			} else {
+				$array[$tag] = array_map([self::class, 'xmlToArray'], $nodes);
+			}
+		}
+		// attributes
+		if (count($attributes) > 0) {
+			$array['@attributes'] = [];
+			foreach ($attributes as $attr => $val) {
+				$array['@attributes'][$attr] = (string)$val;
+			}
+		}
+		return $array;
 	}
 }

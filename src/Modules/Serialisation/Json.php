@@ -26,43 +26,43 @@ final readonly class Json implements SerializerInterface
 		return new self($json);
 	}
 
-	public function Deserialize(?string $class = null): array
+	public function Deserialize(?string $class = null): mixed
 	{
-		$decoded = json_decode($this->json, true, 512, JSON_THROW_ON_ERROR);
-
 		if ($class === null)
-			return $decoded;
+			return $this->DeserializeScalaire();
 
 		return $this->DeserializeObject($class);
 	}
 
 
-	public function DeserializeObject(string $class): object|array|null
+	public function DeserializeScalaire(): mixed
 	{
-		if (!class_exists($class))
-			throw new \InvalidArgumentException("Class '{$class}' does not exist");
+		return json_decode($this->json, true, 512, JSON_THROW_ON_ERROR);
+	}
 
-		$decoded = json_decode($this->json, true, 512, JSON_THROW_ON_ERROR);
 
-		if ($decoded === null)
-			return null;
+	private function DeserializeObject(string $class): object|array|null
+	{
+		class_exists($class) 
+			?: throw new \InvalidArgumentException("Class '{$class}' does not exist");
 
-		if (is_array($decoded)) {
-			if (array_is_list($decoded)) {
-				$result = [];
-				foreach ($decoded as $item) {
-					if (!is_array($item))
-						throw new \UnexpectedValueException('List item is not an object/associative array');
-					
-					$result[] = self::hydrateArrayToClass($item, $class);
-				}
-				return $result;
-			}
+		$decoded = json_decode($this->json, true, 512, JSON_THROW_ON_ERROR)
+			?? throw new \JsonException('Failed to decode JSON');
 
+		is_array($decoded)
+			?: throw new \UnexpectedValueException('Deserialized value is neither an object or a list of object');
+
+		if (!array_is_list($decoded))
 			return self::hydrateArrayToClass($decoded, $class);
-		}
 
-		throw new \UnexpectedValueException('Deserialized value is neither an array nor an object');
+		$result = [];
+		foreach ($decoded as $item) {
+			is_array($item)
+				?: throw new \UnexpectedValueException('List item is not an object/associative array');
+			
+			$result[] = self::hydrateArrayToClass($item, $class);
+		}
+		return $result;
 	}
 
 
@@ -71,21 +71,19 @@ final readonly class Json implements SerializerInterface
 		$ref = new \ReflectionClass($class);
 
 		// Try constructor-first hydration
-		$ctor = $ref->getConstructor();
-		if ($ctor && $ctor->getNumberOfParameters() > 0) {
+		$constructor = $ref->getConstructor();
+		if ($constructor && $constructor->getNumberOfParameters() > 0) {
 			$args = [];
-		foreach ($ctor->getParameters() as $param) {
-			$name = $param->getName();
-				if (array_key_exists($name, $data)) {
-					$args[] = $data[$name];
-				} elseif ($param->isDefaultValueAvailable()) {
-					$args[] = $param->getDefaultValue();
-				} else {
-				// If param is required but missing, pass null (common in DTOs) – user code can validate later
-				$args[] = null;
+			foreach ($constructor->getParameters() as $param) {
+				$name = $param->getName();
+
+				$args[] = match (true) {
+					isset($data[$name]) => $data[$name],
+					$param->isDefaultValueAvailable() => $param->getDefaultValue(),
+					default => null,
+				};
 			}
-		}
-		return $ref->newInstanceArgs($args);
+			return $ref->newInstanceArgs($args);
 		}
 
 		// Fallback to property assignment (public properties only)
@@ -93,9 +91,9 @@ final readonly class Json implements SerializerInterface
 		foreach ($data as $k => $v) {
 			if ($ref->hasProperty($k)) {
 				$prop = $ref->getProperty($k);
-				if ($prop->isPublic()) {
-				$obj->$k = $v;
-				}
+
+				if ($prop->isPublic())
+					$obj->$k = $v;
 			}
 		}
 		return $obj;
