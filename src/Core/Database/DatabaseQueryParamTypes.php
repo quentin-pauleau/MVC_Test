@@ -41,9 +41,9 @@ class DatabaseQueryParamTypes
 
 	/**
 	 * Convert to PDO::PARAM_STR while checking if value is : 
-	 *  - datetime
-	 *  - timestamp
-	 *  - y-m-d H:i:s string
+	 * - datetime
+	 * - timestamp
+	 * - y-m-d H:i:s string
 	 * @var int
 	 */
 	public const DATETIME = 5;
@@ -56,9 +56,9 @@ class DatabaseQueryParamTypes
 
 	/**
 	 * Convert to PDO::PARAM_STR while checking if value is a : 
-	 *  - datetime
-	 *  - timestamp
-	 *  - y-m-d H:i:s string
+	 * - datetime
+	 * - timestamp
+	 * - y-m-d H:i:s string
 	 * @var int
 	 */
 	public const TIMESTAMP = 7;

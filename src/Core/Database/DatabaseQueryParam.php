@@ -82,15 +82,13 @@ class DatabaseQueryParam
 		return true;
 	}
 
-        public static function isBindPossibleString(PDOStatement $Statement, string $bind): bool {
-		if ($Statement->queryString === null) {
+	public static function isBindPossibleString(PDOStatement $Statement, string $bind): bool {
+		if ($Statement->queryString === null)
 			throw new Exception("La requête n'est pas dénfinie", 1);
-		}
 
-		if (!str_starts_with2($bind, ":")) {
+		if (!str_starts_with2($bind, ":"))
 			$bind = ":$bind";
-		}
-                
+		
 		return str_contains2($Statement->queryString, $bind);
 	}
 }
