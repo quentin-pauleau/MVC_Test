@@ -178,7 +178,7 @@ final class HttpResponse extends Response
 		return new self(417, $header, $body, '');
 	}
 	public static function ImATeapot(string $body = "I'm a teapot", ?HttpHeader $header = null): self {
-		return new self(418,  $header, $body, '');
+		return new self(418, $header, $body, '');
 	}
 	public static function MisdirectedRequest(string $body = 'Misdirected Request', ?HttpHeader $header = null): self {
 		return new self(421, $header, $body, '');
