@@ -2,54 +2,52 @@
 namespace Src\Records;
 
 use DateTime;
-use Modules\ORM\Attributes\BindField;
-use Modules\ORM\Attributes\BindTable;
+use Modules\ORM\Binding\BindField;
+use Modules\ORM\Binding\BindForeignRecord;
+use Modules\ORM\Binding\BindPrimaryField;
+use Modules\ORM\Binding\BindTable;
+use Modules\ORM\Enums\DatabaseTypes;
 use Modules\ORM\RecordManager\DatabaseRecord;
-use Modules\ORM\RecordManager\RecordManager;
-use Modules\Serialisation\Serialisable;
 
+use Modules\Serialisation\Serialisable;
+use Modules\Serialisation\SerialisableRecord;
+use Modules\UUID\UuidV7;
 
 #[BindTable('authors')]
 final class Author
 {
 	use DatabaseRecord;
+	use SerialisableRecord;
 
-	public static function GetManager(): RecordManager
-	{
-		return new RecordManager(self::class);
-	}
 
-	#[
-		BindField('first_name'), 
-		Serialisable
-	]
+	#[BindPrimaryField]
+	public UuidV7 $id;
+
+
+	#[BindField]
+	#[Serialisable]
 	public string $firstName;
 
-	#[
-		BindField('last_name'), 
-		Serialisable
-	]
+	#[BindField]
+	#[Serialisable]
 	public string $lastName;
 
-	#[
-		BindField('birthDate', 'text'),
-		Serialisable
-	]
+	#[BindField(type: DatabaseTypes::DATETIME)]
+	#[Serialisable]
 	public DateTime $birthDate;
 
-	#[
-		BindField('bio', 'text',), 
-		Serialisable
-	]
+	#[BindField(type: DatabaseTypes::TEXT)]
+	#[Serialisable]
 	public string $bio = '';
 
 
-	#[
-		BindField('profilePictureUrl', 'varchar')
-	]
+	#[BindField(type: DatabaseTypes::URL)]
+	#[Serialisable]
 	public ?string $profilePictureUrl;
 
-	
+
+	#[BindForeignRecord(targetRecord: Book::class, targetRecordFieldName: 'authorId')]
+	#[Serialisable]
 	public array $books;
 
 

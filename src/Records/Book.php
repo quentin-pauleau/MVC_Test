@@ -4,43 +4,53 @@ namespace Src\Records;
 use DateTime;
 use Modules\ORM\Attributes\BindField;
 use Modules\ORM\Attributes\BindTable;
+use Modules\ORM\Binding\BindForeignField;
+use Modules\ORM\Enums\DatabaseTypes;
 use Modules\ORM\RecordManager\DatabaseRecord;
 use Modules\ORM\RecordManager\RecordManager;
 use Modules\Serialisation\Serialisable;
+use Modules\UUID\Uuid;
+use Modules\UUID\UUID_V7;
 
 #[BindTable(name: "books")]
-class Book // extends DatabaseRecord
+class Book
 {
 	use DatabaseRecord;
-	
-	#[
-		BindField(type: "varchar"),
-		Serialisable
-	]
+
+	#[BindField]
+	#[Serialisable]
+	public Uuid $id;
+
+	#[BindField]
+	#[Serialisable]
 	public string $title;
 
-
-	#[
-		BindField(type: "text",),
-		Serialisable
-	]
+	#[BindField(type: DatabaseTypes::TEXT)]
+	#[Serialisable]
 	public string $description = '';
 
+	#[BindForeignField(
+		isNullable: true,
+		foreignRecord: Author::class,
+		foreignRecordField: 'id',
+		foreignRecordAlias: 'author',
+		
+	)]
+	#[Serialisable]
+	public Uuid $authorId;
 
-	#[BindField()]
+	#[Serialisable]
 	public Author $author;
 
-
-	#[
-		BindField(type: "date"),
-		Serialisable
-	]
+	#[BindField]
+	#[Serialisable]
 	public DateTime $publicationDate;
 
+	#[BindField]
+	#[Serialisable]
+	public int $pages;
 
-	#[
-		BindField(type: "float"),
-		Serialisable
-	]
+	#[BindField]
+	#[Serialisable]
 	public float $price;
 }

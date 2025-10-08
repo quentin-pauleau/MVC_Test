@@ -12,6 +12,8 @@ use Modules\Routing\Route\Get;
 use Modules\Routing\Route\Post;
 use Modules\Routing\Route\Patch;
 use Modules\Routing\Route\Delete;
+use Modules\UUID\UUID;
+use Modules\UUID\UuidV1;
 use Services\BookService;
 use Src\Records\Book;
 
@@ -67,7 +69,7 @@ final class ApiBookController
 
 	#[Patch('/{id}')]
 	public function edit(
-		#[UrlParam("id")] int $id,
+		#[UrlParam("id")] UUID $id,
 		#[BodyParam("book")] Book|false $book
 	): Response {
 		if (!($book instanceof Book))
