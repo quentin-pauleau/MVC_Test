@@ -3,7 +3,6 @@ namespace Modules\HTMLElement\Components;
 
 use Modules\HTMLElement\Elements\Span;
 use Modules\HTMLElement\HTMLElement;
-use Core\UUID;
 
 class Alert extends HTMLElement
 {
@@ -59,7 +58,7 @@ class Alert extends HTMLElement
 		string $style = 'default',
 	) {
 		$this->childs = $childs;
-		$this->id = $id ?? UUID::Generate();
+		$this->id = $id;
 		$this->type = $type;
 		$this->hasIcon = $hasIcon;
 		$this->style = $style;
