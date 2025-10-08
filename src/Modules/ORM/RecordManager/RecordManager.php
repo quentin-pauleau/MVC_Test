@@ -8,6 +8,7 @@ use Core\Database\Database;
 use Core\Database\DatabaseQueryParam;
 use Core\Database\ListDatabaseQueryParam;
 use Modules\ORM\Attributes\BindField;
+use Modules\ORM\Attributes\KeyPrimary;
 
 final class RecordManager
 {
@@ -34,7 +35,8 @@ final class RecordManager
 		$this->tableName = strtolower($this->tableName);
 
 		//* set the id field
-		$this->idField = strtoupper($this->tableName).'_ID';
+		$id = $reflection->getAttributes(KeyPrimary::class)[0]->getArguments();
+		$this->idField = '';
 
 		//* set the fields bindings
 		$this->fields = [];
@@ -138,11 +140,11 @@ final class RecordManager
 
 	/**
 	 * Find the record matching the id in the context
-	 * @param int $id
+	 * @param mixed $id
 	 * @throws Exception If there is no record with the given id in the context
 	 * @return DatabaseRecord
 	 */
-	public function Find(int $id): DatabaseRecord {
+	public function Find(mixed $id): DatabaseRecord {
 		$query = <<<SQL
 		SELECT {$this->GetFieldSelection()}
 		FROM `{$this->tableName}`
@@ -165,10 +167,10 @@ final class RecordManager
 
 	/**
 	 * Find the record matching the id in the context
-	 * @param int $id
+	 * @param mixed $id
 	 * @return DatabaseRecord|null
 	 */
-	public function TryFind(int $id): DatabaseRecord|null {
+	public function TryFind(mixed $id): DatabaseRecord|null {
 		$query = <<<SQL
 		SELECT {$this->GetFieldSelection()}
 		FROM `{$this->tableName}`
@@ -206,10 +208,10 @@ final class RecordManager
 
 	/**
 	 * Verify if an enity exists with the given ID
-	 * @param int $id
+	 * @param mixed $id
 	 * @return bool
 	 */
-	public function Any(int $id): bool {
+	public function Any(mixed $id): bool {
 		$query = <<<SQL
 		SELECT `{$this->idField}`
 		FROM `{$this->tableName}`
@@ -431,7 +433,7 @@ final class RecordManager
 	}
 
 
-	public function DeleteById(int $id): bool {
+	public function DeleteById(mixed $id): bool {
 		$query = <<<SQL
 		DELETE INTO {$this->tableName}
 		WHERE `{$this->idField}` = :id
