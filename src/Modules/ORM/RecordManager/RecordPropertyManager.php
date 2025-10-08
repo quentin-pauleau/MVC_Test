@@ -4,7 +4,7 @@ namespace Modules\ORM\RecordManager;
 use Exception;
 use Modules\ORM\Attributes\BindTable;
 use Modules\ORM\Attributes\BindField;
-use Feature\EntityToDatabase\Attributes\NullableField;
+use Modules\ORM\Attributes\NullableField;
 use ReflectionClass;
 use ReflectionProperty;
 

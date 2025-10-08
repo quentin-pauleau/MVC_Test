@@ -1,5 +1,5 @@
 <?php
-namespace Feature\EntityToDatabase\Attributes;
+namespace Modules\ORM\Attributes;
 
 use Attribute;
 

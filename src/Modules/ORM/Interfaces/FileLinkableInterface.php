@@ -1,5 +1,5 @@
 <?php
-namespace Feature\EntityToDatabase\Interfaces;
+namespace Modules\ORM\Interfaces;
 
 use Core\UUID;
 

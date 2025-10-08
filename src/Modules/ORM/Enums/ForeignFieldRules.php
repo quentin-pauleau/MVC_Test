@@ -1,5 +1,5 @@
 <?php
-namespace Feature\EntityToDatabase\Enums;
+namespace Modules\ORM\Enums;
 
 
 enum ForeignFieldRules : int

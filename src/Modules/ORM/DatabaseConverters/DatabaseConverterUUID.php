@@ -1,5 +1,5 @@
 <?php
-namespace Feature\EntityToDatabase\DatabaseConverters;
+namespace Modules\ORM\DatabaseConverters;
 
 use Core\UUID;
 

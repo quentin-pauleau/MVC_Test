@@ -1,8 +1,8 @@
 <?php
-namespace Feature\EntityToDatabase\Attributes;
+namespace Modules\ORM\Attributes;
 
 use Attribute;
-use Feature\EntityToDatabase\Enums\ForeignFieldRules;
+use Modules\ORM\Enums\ForeignFieldRules;
 
 #[Attribute(Attribute::TARGET_PROPERTY)]
 final class ForeignFieldOnUpdate
