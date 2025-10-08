@@ -2,7 +2,7 @@
 namespace Modules\UUID;
 
 /** UUID v7: Unix epoch milliseconds + random (RFC 9562) */
-class UuidV7 extends AbstractUuid
+class UuidV7 extends Uuid
 {
 	protected static function versionDigit(): string { return '7'; }
 

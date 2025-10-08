@@ -1,45 +1,86 @@
 <?php
 namespace Modules\UUID;
 
+use InvalidArgumentException;
+
 /**
- * Facade for UUID/ULID generation and validation.
- * Delegates to version-specific classes while keeping a simple static API.
+ * Base class for UUID value objects.
+ * Provides validation, comparison, and common utilities.
  */
-class UUID
+abstract class Uuid
 {
-	// Generation (strings)
-	public static function v1(): string { return UuidV1::generate()->toString(); }
-	public static function v3(string $namespaceUuid, string $name): string { return UuidV3::generate($namespaceUuid, $name)->toString(); }
-	public static function v4(): string { return UuidV4::generate()->toString(); }
-	public static function v5(string $namespaceUuid, string $name): string { return UuidV5::generate($namespaceUuid, $name)->toString(); }
-	public static function v7(): string { return UuidV7::generate()->toString(); }
-	public static function ulid(): string { return Ulid::generate()->toString(); }
+	protected string $value;
 
-	// Validation
-	public static function isValidUuid(string $uuid): bool
+	protected function __construct(string $value)
 	{
-		return (bool) preg_match('/^[0-9a-f]{8}-[0-9a-f]{4}-[13457][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i', $uuid);
+		static::assertValid($value);
+		$this->value = strtolower($value);
 	}
 
-	public static function getUuidVersion(string $uuid): ?int
+	// ----- Instance API -----
+
+	public function toString(): string { return $this->value; }
+	public function __toString(): string { return $this->value; }
+
+	public function equals(self|string $other): bool
 	{
-		if (!self::isValidUuid($uuid)) return null;
+		$a = $this->value;
+		$b = $other instanceof self ? $other->value : strtolower($other);
+		return $a === $b;
+	}
+
+	// ----- Static API -----
+
+	public static function fromString(string $uuid): static
+	{
+		return new static($uuid);
+	}
+
+	public static function isValid(string $uuid): bool
+	{
+		$v = static::versionDigit();
+		return (bool) preg_match("/^[0-9a-f]{8}-[0-9a-f]{4}-{$v}[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i", $uuid);
+	}
+
+	protected static function assertValid(string $uuid): void
+	{
+		if (!static::isValid($uuid)) {
+			throw new InvalidArgumentException('Invalid UUID v' . static::versionDigit() . ' string');
+		}
+	}
+
+	public static function compare(self|string $a, self|string $b): int
+	{
+		$as = $a instanceof self ? $a->value : strtolower($a);
+		$bs = $b instanceof self ? $b->value : strtolower($b);
+		return $as <=> $bs;
+	}
+
+	public static function version(): int { return (int) static::versionDigit(); }
+	protected static function versionDigit(): string { return 'x'; }
+
+	// ----- Helpers for subclasses -----
+
+	protected static function uuidToBytes(string $uuid): string
+	{
 		$hex = strtolower(str_replace('-', '', $uuid));
-		return hexdec($hex[12]);
+		if (strlen($hex) !== 32 || !ctype_xdigit($hex))
+			throw new InvalidArgumentException('Invalid UUID input');
+		
+		$bin = hex2bin($hex);
+
+		if ($bin === false)
+			throw new InvalidArgumentException('Invalid UUID hex');
+		
+		return $bin;
 	}
 
-	public static function compareUuid(string $a, string $b): int
+	protected static function bytesToUuid(string $bytes): string
 	{
-		$a = strtolower($a); $b = strtolower($b); return $a <=> $b;
-	}
-
-	public static function isValidUlid(string $ulid): bool
-	{
-		return Ulid::isValid($ulid);
-	}
-
-	public static function compareUlid(string $a, string $b): int
-	{
-		return Ulid::compare($a, $b);
+		if (strlen($bytes) !== 16)
+			throw new InvalidArgumentException('UUID binary length must be 16 bytes');
+		
+		$hex = bin2hex($bytes);
+		return strtolower(vsprintf('%s%s-%s-%s-%s-%s%s%s', str_split($hex, 4)));
 	}
 }

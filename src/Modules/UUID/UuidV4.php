@@ -2,7 +2,7 @@
 namespace Modules\UUID;
 
 /** UUID v4: random */
-class UuidV4 extends AbstractUuid
+class UuidV4 extends Uuid
 {
 	protected static function versionDigit(): string { return '4'; }
 

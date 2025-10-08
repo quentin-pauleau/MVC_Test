@@ -2,11 +2,11 @@
 namespace Modules\UUID;
 
 /** UUID v1: time-based */
-class UuidV1 extends AbstractUuid
+class UuidV1 extends Uuid
 {
 	protected static function versionDigit(): string { return '1'; }
 
-	public static function generate(): self
+	public static function Generate(): self
 	{
 		$uuidEpoch = 0x01B21DD213814000; // 122192928000000000
 		$now100ns = (int) (microtime(true) * 10000000);

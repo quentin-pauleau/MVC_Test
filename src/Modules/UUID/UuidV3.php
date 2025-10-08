@@ -4,7 +4,7 @@ namespace Modules\UUID;
 use InvalidArgumentException;
 
 /** UUID v3: name-based MD5 */
-class UuidV3 extends AbstractUuid
+class UuidV3 extends Uuid
 {
 	protected static function versionDigit(): string { return '3'; }
 

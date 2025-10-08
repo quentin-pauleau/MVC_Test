@@ -2,7 +2,7 @@
 namespace Modules\UUID;
 
 /** UUID v5: name-based SHA-1 */
-class UuidV5 extends AbstractUuid
+class UuidV5 extends Uuid
 {
 	protected static function versionDigit(): string { return '5'; }
 
