@@ -38,8 +38,8 @@ $card->add(new Paragraph('Lorem ipsum dolor sit amet consectetur adipisicing eli
 echo $heading;
 /*
 <div class="card">
-    <h1>This is a Heading Title</h1>
-    <p>This is a paragraph</p>
+	<h1>This is a Heading Title</h1>
+	<p>This is a paragraph</p>
 </div>
 */
 ```
@@ -55,8 +55,8 @@ echo $card;
 
 /*
 <div class="card">
-    <h1>This is a Heading Title</h1>
-    <p>This is a paragraph</p>
+	<h1>This is a Heading Title</h1>
+	<p>This is a paragraph</p>
 </div>
 */
 ```
@@ -95,8 +95,8 @@ echo userCard($user);
 
 /*
 <div class="card">
-    <h1>John Doe</h1>
-    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
+	<h1>John Doe</h1>
+	<p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
 </div>
 */
 ```
@@ -147,8 +147,8 @@ echo UserComponents::card($user);
 
 /*
 <div class="card">
-    <h1>John Doe</h1>
-    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
+	<h1>John Doe</h1>
+	<p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
 </div>
 */
 ```
