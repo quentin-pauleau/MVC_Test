@@ -8,8 +8,6 @@ use Traits\AutoIncrementedId;
  */
 trait DatabaseRecord
 {
-	use AutoIncrementedId;
-
 	public function __construct() {}
 
 
@@ -21,11 +19,11 @@ trait DatabaseRecord
 	}
 
 
-	public static function TryFind(int $id): self|null {
+	public static function TryFind(mixed $id): self|null {
 		return self::GetManager()->TryFind($id);
 	}
 
-	public static function Find(int $id): self {
+	public static function Find(mixed $id): self {
 		return self::GetManager()->Find($id);
 	}
 
@@ -37,7 +35,7 @@ trait DatabaseRecord
 		return self::GetManager()->FindMatch($params);
 	}
 
-	public static function Any(int $id): bool {
+	public static function Any(mixed $id): bool {
 		return self::GetManager()->Any($id);
 	}
 
