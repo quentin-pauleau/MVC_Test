@@ -1,7 +1,7 @@
 <?php
 namespace Modules\ORM\DatabaseConverters;
 
-class DatabaseConverterFloat extends DatabaseConverter
+final readonly class DatabaseConverterFloat extends DatabaseConverter
 {
 	private const DEFAULT_VALUE = 0;
 

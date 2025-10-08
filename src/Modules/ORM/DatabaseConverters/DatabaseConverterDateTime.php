@@ -4,12 +4,11 @@ namespace Modules\ORM\DatabaseConverters;
 use DateTime;
 use DateTimeImmutable;
 use DateTimeInterface;
-use Core\Database\Database;
 
-class DatabaseConverterString extends DatabaseConverter
+final readonly class DatabaseConverterDateTime extends DatabaseConverter
 {
-	private const DEFAULT_VALUE = '';
-	private const DATE_FORMAT = self::DATE_FORMAT;
+	private const DEFAULT_VALUE = 'NOW()';
+	private const DATE_FORMAT = 'Y-m-d H:i:s';
 
 	/**
 	 * Import the value from the database
@@ -18,7 +17,7 @@ class DatabaseConverterString extends DatabaseConverter
 	 * @param bool $convertToUTF8
 	 * @return string
 	 */
-	public static function Import($data, $asImmuable = false): DateTime|DateTimeImmutable {
+	public static function Import($data, bool $asImmuable = false): DateTime|DateTimeImmutable {
 		if ($asImmuable)
 			return DateTimeImmutable::createFromFormat(self::DATE_FORMAT, $data);
 

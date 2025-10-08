@@ -1,7 +1,7 @@
 <?php
 namespace Modules\ORM\DatabaseConverters;
 
-class DatabaseConverterFloat extends DatabaseConverter
+final readonly class DatabaseConverterFloat extends DatabaseConverter
 {
 	private const DEFAULT_VALUE = 0;
 
@@ -12,7 +12,7 @@ class DatabaseConverterFloat extends DatabaseConverter
 	 * @return float
 	 */
 	public static function Import($data): float {
-		return intval($data);
+		return floatval($data);
 	}
 
 
@@ -26,6 +26,6 @@ class DatabaseConverterFloat extends DatabaseConverter
 		if ($data === null)
 			return $isNullable ? self::DATABASE_NULL : self::DEFAULT_VALUE;
 
-		return intval($data);
+		return floatval($data);
 	}
 }

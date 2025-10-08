@@ -1,9 +1,11 @@
 <?php
 namespace Modules\ORM\DatabaseConverters;
 
-use Core\UUID;
+use Core\UUID as CoreUUID;
+use Modules\UUID\Uuid;
+use Modules\UUID\UuidFacade;
 
-class DatabaseConverterUUID extends DatabaseConverter
+final class DatabaseConverterUUID extends DatabaseConverter
 {
 	private const DEFAULT_VALUE = '';
 
@@ -14,8 +16,17 @@ class DatabaseConverterUUID extends DatabaseConverter
 	 * @param bool $convertToUTF8
 	 * @return string
 	 */
-	public static function Import($data): UUID {
-		return UUID::FromString(Convert_encoding_to_utf8(strval($data)));
+	public static function Import($data): ?Uuid {
+		$data = strval($data);
+		try
+		{
+			$class = UuidFacade::GetUuidClass($data);
+		}
+		catch (\Throwable $e)
+		{
+			return null;
+		}
+		return $class::FromString($data);
 	}
 
 
@@ -29,12 +40,9 @@ class DatabaseConverterUUID extends DatabaseConverter
 		if ($data === null)
 			return $isNullable ? self::DATABASE_NULL : self::DEFAULT_VALUE;
 		
-		if ($data instanceof UUID)
-			return Convert_encoding_to_iso($data->GetUUID());
-		
 		if (!UUID::IsValid($data))
-			throw new \Exception("Invalid UUID: " . strval($data));
+			throw new \Exception("Invalid UUID: $data");
 
-		return Convert_encoding_to_iso($data);
+		return strval($data);
 	}
 }

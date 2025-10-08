@@ -4,7 +4,7 @@ namespace Modules\ORM\DatabaseConverters;
 use Traits\StaticClass;
 
 
-abstract class DatabaseConverter
+abstract readonly class DatabaseConverter
 {
 	use StaticClass;
 
