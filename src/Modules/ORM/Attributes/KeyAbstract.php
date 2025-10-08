@@ -4,7 +4,7 @@ namespace Modules\ORM\Attributes;
 use Attribute;
 
 #[Attribute(Attribute::TARGET_PROPERTY)]
-final readonly class KeyUnique
+abstract readonly class KeyAbstract
 {
 	public function __construct(
 		/**
