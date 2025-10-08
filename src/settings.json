@@ -1,0 +1,15 @@
+{
+	"databaseConnections": {
+		"default": {
+			"host": "localhost",
+			"port": 3306,
+			"user": "root",
+			"password": "",
+			"database_name": ""
+		}
+	},
+
+	"serverPort": {
+		"default": 8081
+	}
+}
