@@ -7,7 +7,7 @@ use Modules\ORM\Binding\BindField;
 use ReflectionClass;
 use ReflectionProperty;
 
-final class RecordPropertyManager
+abstract readonly class AbstractFieldManager
 {
 	private string $recordClass;
 	private string $converterClass;

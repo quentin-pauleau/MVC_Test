@@ -7,7 +7,7 @@ use Modules\ORM\Binding\BindField;
 use ReflectionClass;
 use ReflectionProperty;
 
-final class RecordPropertyManager
+final readonly class ForeignFieldManager extends AbstractFieldManager
 {
 	private string $recordClass;
 	private string $converterClass;
@@ -29,13 +29,12 @@ final class RecordPropertyManager
 
 	public function __construct(string $recordClass, string $propertyName) {
 		if (!is_subclass_of($recordClass, DatabaseRecord::class))
-			throw new Exception("'$recordClass' does not extend 'Entity'");
+			throw new Exception("'{$recordClass}' does not extend 'Entity'");
 		
 		$this->recordClass = $recordClass;
 
-		$Reflexion = (new ReflectionClass($recordClass))->getAttributes(BindTable::class)[0];
-		if (!$Reflexion)
-			throw new Exception("'$recordClass' has no bind table attribute");
+		$Reflexion = (new ReflectionClass($recordClass))->getAttributes(BindTable::class)[0]
+			?? throw new Exception("'{$recordClass}' has no bind table attribute");
 
 		$tableName = $Reflexion->getArguments()[0]; // 0 = table name arg
 
@@ -50,7 +49,7 @@ final class RecordPropertyManager
 		$this->fieldName = strtoupper($bind->getArguments()[0]); // 0 = field name arg
 
 		if (!str_starts_with($this->fieldName, strtoupper($tableName)))
-			$this->fieldName = "$tableName\_$this->fieldName";
+			$this->fieldName = "{$tableName}_{$this->fieldName}";
 
 		//* get the field type
 		$this->fieldType = $bind->getArguments()[1]; // 1 = type arg
@@ -59,10 +58,10 @@ final class RecordPropertyManager
 
 
 		//* get the converter class coresponding to the right type
-		$this->converterClass = "DatabaseConverter$this->fieldType";
+		$this->converterClass = "DatabaseConverter{$this->fieldType}";
 		
-		if (!file_exists("./DatabaseConverters/$this->converterClass.php"))
-			throw new Exception("No converter found for type '$this->fieldType'");
+		if (!file_exists("./DatabaseConverters/{$this->converterClass}.php"))
+			throw new Exception("No converter found for type '{$this->fieldType}'");
 
 		require_once "./DatabaseConverters/$this->converterClass.php";
 

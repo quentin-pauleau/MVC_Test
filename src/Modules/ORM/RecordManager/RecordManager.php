@@ -1,14 +1,16 @@
 <?php
 namespace Modules\ORM\RecordManager;
 
-use Exception;
+use Modules\ORM\Binding\BindAbstractField;
 use PDO;
 use ReflectionClass;
+use Exception;
+use Modules\ORM\Binding\BindPrimaryField;
+use Modules\ORM\Binding\BindField;
 use Core\Database\Database;
 use Core\Database\DatabaseQueryParam;
 use Core\Database\ListDatabaseQueryParam;
-use Modules\ORM\Attributes\BindField;
-use Modules\ORM\Attributes\KeyPrimary;
+
 
 final class RecordManager
 {
@@ -35,18 +37,18 @@ final class RecordManager
 		$this->tableName = strtolower($this->tableName);
 
 		//* set the id field
-		$id = $reflection->getAttributes(KeyPrimary::class)[0]->getArguments();
+		$id = $reflection->getAttributes(BindPrimaryField::class)[0]->getArguments()[0];
 		$this->idField = '';
 
 		//* set the fields bindings
 		$this->fields = [];
 		foreach ($reflection->getProperties() as $property) {
-			$field = $property->getAttributes(BindField::class);
+			$field = $property->getAttributes(BindAbstractField::class);
 
 			if (count($field) == 0)
 				continue; //* property isnt bind to a field in the database
 
-			$this->fields[] = new RecordPropertyManager(
+			$this->fields[] = FieldManagerFactory::Create(
 				$this->recordClass,
 				$property->getName(),
 			);

@@ -7,7 +7,7 @@ use Modules\ORM\Binding\BindField;
 use ReflectionClass;
 use ReflectionProperty;
 
-final class RecordPropertyManager
+final readonly class FieldManager extends AbstractFieldManager
 {
 	private string $recordClass;
 	private string $converterClass;
@@ -33,9 +33,8 @@ final class RecordPropertyManager
 		
 		$this->recordClass = $recordClass;
 
-		$Reflexion = (new ReflectionClass($recordClass))->getAttributes(BindTable::class)[0];
-		if (!$Reflexion)
-			throw new Exception("'$recordClass' has no bind table attribute");
+		$Reflexion = (new ReflectionClass($recordClass))->getAttributes(BindTable::class)[0]
+			?? throw new Exception("'$recordClass' has no bind table attribute");
 
 		$tableName = $Reflexion->getArguments()[0]; // 0 = table name arg
 
@@ -44,7 +43,8 @@ final class RecordPropertyManager
 
 		$ReflectionProperty = new ReflectionProperty($this->$recordClass, $this->propertyName);
 		
-		$bind = $ReflectionProperty->getAttributes(BindField::class)[0];
+		$bind = $ReflectionProperty->getAttributes(BindField::class)[0]
+			?? throw new Exception("'$recordClass::$propertyName' has no bind field attribute");
 
 		//* get the field name
 		$this->fieldName = strtoupper($bind->getArguments()[0]); // 0 = field name arg
