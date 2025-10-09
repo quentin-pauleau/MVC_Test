@@ -3,6 +3,7 @@ namespace Services;
 
 use Modules\DatabaseConnection\DatabaseConnection;
 use Modules\Result\Result;
+use Modules\UUID\Uuid;
 use Src\Records\Book;
 
 /**
@@ -18,7 +19,6 @@ class BookService
 	}
 
 	/**
-	 * Summary of ReadAll
 	 * @return Result<Book[], string>
 	 */
 	public function ReadAll(): Result
@@ -40,7 +40,7 @@ class BookService
 	}
 
 	/**
-	 * @param \Src\Records\Book $book
+	 * @param Book $book
 	 * @return Result<true, string>
 	 */
 	public function Save(Book $book): Result
@@ -52,7 +52,7 @@ class BookService
 
 
 	/**
-	 * @param \Src\Records\Book $book
+	 * @param Book $book
 	 * @return Result<true, string>
 	 */
 	public function Delete(Book $book): Result
@@ -63,10 +63,10 @@ class BookService
 	}
 
 	/**
-	 * @param int $id
+	 * @param Uuid $id
 	 * @return Result<true, string>
 	 */
-	public function DeleteById(int $id): Result
+	public function DeleteById(Uuid $id): Result
 	{
 		return Result::FromCallable(
 			fn (): bool => Book::Find($id)->Delete()

@@ -21,6 +21,7 @@ final class Author
 
 
 	#[BindPrimaryField]
+	#[Serialisable]
 	public UuidV7 $id;
 
 
@@ -28,13 +29,16 @@ final class Author
 	#[Serialisable]
 	public string $firstName;
 
+
 	#[BindField]
 	#[Serialisable]
 	public string $lastName;
 
+
 	#[BindField(type: DatabaseTypes::DATETIME)]
 	#[Serialisable]
 	public DateTime $birthDate;
+
 
 	#[BindField(type: DatabaseTypes::TEXT)]
 	#[Serialisable]

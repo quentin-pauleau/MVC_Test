@@ -3,19 +3,24 @@ namespace Src\Records;
 
 use DateTime;
 use Modules\ORM\Binding\BindField;
-use Modules\ORM\Binding\BindForeignField;
+use Modules\ORM\Binding\BindManyRelation;
 use Modules\ORM\Binding\BindPrimaryField;
 use Modules\ORM\Binding\BindTable;
+use Modules\ORM\Enums\DatabaseTypes;
 use Modules\ORM\RecordManager\DatabaseRecord;
 use Modules\Serialisation\Serialisable;
+use Modules\Serialisation\SerialisableRecord;
 use Modules\UUID\UuidV7;
 
 #[BindTable('users')]
 class User
 {
 	use DatabaseRecord;
+	use SerialisableRecord;
 
-	#[BindPrimaryField]
+	#[BindPrimaryField(
+		defaultValueGenerator: fn() => UuidV7::generate(),
+	)]
 	#[Serialisable]
 	public UuidV7 $id;
 
@@ -27,7 +32,7 @@ class User
 	#[Serialisable]
 	public string $password;
 
-	#[BindField(type: 'varchar(250)')]
+	#[BindField(type: DatabaseTypes::EMAIL)]
 	#[Serialisable]
 	public string $email;
 
@@ -42,4 +47,8 @@ class User
 	#[BindField]
 	#[Serialisable]
 	public string $profilePicture;
+
+
+	#[BindManyRelation(target: Comment::class, targetField: 'id')]
+	public array $Comments;
 }

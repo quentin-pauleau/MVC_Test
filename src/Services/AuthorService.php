@@ -3,6 +3,7 @@ namespace Services;
 
 use Modules\DatabaseConnection\DatabaseConnection;
 use Modules\Result\Result;
+use Modules\UUID\Uuid;
 use Src\Records\Author;
 
 /**
@@ -18,7 +19,6 @@ class AuthorService
 	}
 
 	/**
-	 * Summary of ReadAll
 	 * @return Result<Author[], string>
 	 */
 	public function ReadAll(): Result
@@ -29,10 +29,10 @@ class AuthorService
 	}
 
 	/**
-	 * @param int $id
+	 * @param Uuid $id
 	 * @return Result<Author|null, string>
 	 */
-	public function ReadById(int $id): Result
+	public function ReadById(Uuid $id): Result
 	{
 		return Result::FromCallable(
 			fn (): Author => Author::TryFind($id)
@@ -40,7 +40,7 @@ class AuthorService
 	}
 
 	/**
-	 * @param \Src\Records\Author $Author
+	 * @param Author $Author
 	 * @return Result<true, string>
 	 */
 	public function Save(Author $Author): Result
@@ -52,7 +52,7 @@ class AuthorService
 
 
 	/**
-	 * @param \Src\Records\Author $Author
+	 * @param Author $Author
 	 * @return Result<true, string>
 	 */
 	public function Delete(Author $Author): Result
@@ -63,10 +63,10 @@ class AuthorService
 	}
 
 	/**
-	 * @param int $id
+	 * @param Uuid $id
 	 * @return Result<true, string>
 	 */
-	public function DeleteById(int $id): Result
+	public function DeleteById(Uuid $id): Result
 	{
 		return Result::FromCallable(
 			fn (): bool => Author::Find($id)->Delete()
