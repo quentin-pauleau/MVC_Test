@@ -64,25 +64,25 @@ final readonly class BindForeignField extends BindKeyField
 	public ForeignFieldRules|null $OnUpdate;
 
 	/**
-	 * @param string $name Name of the field in the database table
-	 * @param \Modules\ORM\Enums\DatabaseTypes|string|null $type Type of the field in the database
-	 * @param string|null $keyName Name of the key constraint on this column. Defaults to "fk_{tableName}_{fieldName}".
+	 * @param string|null $name Name of the field in the database table
+	 * @paramDatabaseTypes|string|null $type Type of the field in the database
+	 * @param string|null $keyName Name of the key constraint on this column
 	 * @param bool $isNullable Whether or not the field can be nullable (null)
 	 * @param mixed $default Default value for the field if no value is provided when creating a new record
 	 * @param string $foreignRecord Record class name this foreign key is pointing to
-	 * @param string|null $foreignField Name of the field in the foreign table
-	 * @param string|null $foreignRecordAlias Alias used in queries for avoid ambiguity and conficts with other foreign keys
-	 * @param \Modules\ORM\Enums\ForeignFieldRules|null $OnDelete Behavior when deleting records from the foreign table
-	 * @param \Modules\ORM\Enums\ForeignFieldRules|null $OnUpdate Behavior when updating records from the foreign table
+	 * @param string $foreignField Name of the field in the foreign table
+	 * @param string|null $foreignRecordAlias Alias used in queries to avoid ambiguity and conficts with other foreign keys
+	 * @param ForeignFieldRules|null $OnDelete Behavior when deleting records from the foreign table
+	 * @param ForeignFieldRules|null $OnUpdate Behavior when updating records from the foreign table
 	 */
 	public function __construct(
 		string $name,
 		DatabaseTypes|string|null $type = null,
-		bool $isNullable = false,
+		bool $isNullable = true,
 		mixed $default = null,
 		string|null $keyName = null,
 		string $foreignRecord,
-		string|null $foreignRecordField = null,
+		string $foreignRecordField,
 		string|null $foreignRecordAlias = null,
 		ForeignFieldRules|null $OnDelete = null,
 		ForeignFieldRules|null $OnUpdate = null,
@@ -99,6 +99,7 @@ final readonly class BindForeignField extends BindKeyField
 		$this->foreignRecord = $foreignRecord;
 		$this->foreignRecordField = $foreignRecordField;
 		$this->foreignRecordAlias = $foreignRecordAlias;
+
 		$this->OnDelete = $OnDelete;
 		$this->OnUpdate = $OnUpdate;
 	}
