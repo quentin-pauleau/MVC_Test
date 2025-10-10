@@ -2,9 +2,9 @@
 namespace Modules\UUID;
 
 /** UUID v1: time-based */
-class UuidV1 extends Uuid
+final readonly class UuidV1 extends Uuid
 {
-	protected static function versionDigit(): string { return '1'; }
+	public static function version(): int { return 1; }
 
 	public static function Generate(): self
 	{

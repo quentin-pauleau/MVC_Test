@@ -10,12 +10,12 @@ use InvalidArgumentException;
 class UuidFacade
 {
 	// Generation (strings)
-	public static function v1(): string { return UuidV1::generate()->toString(); }
-	public static function v3(string $namespaceUuid, string $name): string { return UuidV3::generate($namespaceUuid, $name)->toString(); }
-	public static function v4(): string { return UuidV4::generate()->toString(); }
-	public static function v5(string $namespaceUuid, string $name): string { return UuidV5::generate($namespaceUuid, $name)->toString(); }
-	public static function v7(): string { return UuidV7::generate()->toString(); }
-	public static function ulid(): string { return Ulid::generate()->toString(); }
+	public static function v1(): string { return UuidV1::generate(); }
+	public static function v3(string $namespaceUuid, string $name): string { return UuidV3::generate($namespaceUuid, $name); }
+	public static function v4(): string { return UuidV4::generate(); }
+	public static function v5(string $namespaceUuid, string $name): string { return UuidV5::generate($namespaceUuid, $name); }
+	public static function v7(): string { return UuidV7::generate(); }
+	public static function ulid(): string { return Ulid::generate(); }
 
 	// Validation
 	public static function isValidUuid(string $uuid): bool
@@ -40,7 +40,7 @@ class UuidFacade
 			4 => UuidV4::class,
 			5 => UuidV5::class,
 			7 => UuidV7::class,
-			default => throw new InvalidArgumentException("Unknown supported uuid version: $v")
+			default => throw new InvalidArgumentException("Unsupported uuid version: $v")
 		};
 	}
 

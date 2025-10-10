@@ -2,9 +2,9 @@
 namespace Modules\UUID;
 
 /** UUID v5: name-based SHA-1 */
-class UuidV5 extends Uuid
+final readonly class UuidV5 extends Uuid
 {
-	protected static function versionDigit(): string { return '5'; }
+	public static function version(): int { return 5; }
 
 	public static function generate(string $namespaceUuid, string $name): self
 	{

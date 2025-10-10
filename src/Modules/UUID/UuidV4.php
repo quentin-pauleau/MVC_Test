@@ -2,9 +2,9 @@
 namespace Modules\UUID;
 
 /** UUID v4: random */
-class UuidV4 extends Uuid
+final readonly class UuidV4 extends Uuid
 {
-	protected static function versionDigit(): string { return '4'; }
+	public static function version(): int { return 4; }
 
 	public static function generate(): self
 	{

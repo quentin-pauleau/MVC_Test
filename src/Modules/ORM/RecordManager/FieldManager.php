@@ -50,7 +50,7 @@ final readonly class FieldManager extends AbstractFieldManager
 		$this->fieldName = strtoupper($bind->getArguments()[0]); // 0 = field name arg
 
 		if (!str_starts_with($this->fieldName, strtoupper($tableName)))
-			$this->fieldName = "$tableName\_$this->fieldName";
+			$this->fieldName = "{$tableName}_{$this->fieldName}";
 
 		//* get the field type
 		$this->fieldType = $bind->getArguments()[1]; // 1 = type arg
@@ -59,6 +59,8 @@ final readonly class FieldManager extends AbstractFieldManager
 
 
 		//* get the converter class coresponding to the right type
+		$ConverterReflection = (new ReflectionClass($this->fieldType));
+
 		$this->converterClass = "DatabaseConverter$this->fieldType";
 		
 		if (!file_exists("./DatabaseConverters/$this->converterClass.php"))
@@ -81,6 +83,10 @@ final readonly class FieldManager extends AbstractFieldManager
 			$this->propertyGetterName = "get_$property";
 		else
 			$this->propertyGetterName = null;
+	}
+
+	private function InitConverter() {
+
 	}
 
 

@@ -4,9 +4,9 @@ namespace Modules\UUID;
 use InvalidArgumentException;
 
 /** UUID v3: name-based MD5 */
-class UuidV3 extends Uuid
+final readonly class UuidV3 extends Uuid
 {
-	protected static function versionDigit(): string { return '3'; }
+	public static function version(): int { return 3; }
 
 	public static function generate(string $namespaceUuid, string $name): self
 	{

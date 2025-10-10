@@ -7,57 +7,49 @@ use InvalidArgumentException;
  * Base class for UUID value objects.
  * Provides validation, comparison, and common utilities.
  */
-abstract class Uuid
+readonly abstract class Uuid
 {
 	protected string $value;
 
-	protected function __construct(string $value)
+	final protected function __construct(string $value)
 	{
-		static::assertValid($value);
+		if (static::isValid($value) == false)
+			throw new InvalidArgumentException("Invalid UUID: {$value}");
+
 		$this->value = strtolower($value);
 	}
 
 	// ----- Instance API -----
 
-	public function toString(): string { return $this->value; }
-	public function __toString(): string { return $this->value; }
+	final public function __toString(): string { return $this->value; }
 
-	public function equals(self|string $other): bool
+	final public function equals(self|string $other): bool
 	{
-		$a = $this->value;
-		$b = $other instanceof self ? $other->value : strtolower($other);
-		return $a === $b;
+		$otherValue = $other instanceof self ? $other->value : strtolower($other);
+		return $this->value === $otherValue;
 	}
 
 	// ----- Static API -----
 
-	public static function fromString(string $uuid): static
+	final public static function fromString(string $uuid): static
 	{
 		return new static($uuid);
 	}
 
-	public static function isValid(string $uuid): bool
+	final public static function isValid(string $uuid): bool
 	{
-		$v = static::versionDigit();
+		$v = static::version();
 		return (bool) preg_match("/^[0-9a-f]{8}-[0-9a-f]{4}-{$v}[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i", $uuid);
 	}
 
-	protected static function assertValid(string $uuid): void
-	{
-		if (!static::isValid($uuid)) {
-			throw new InvalidArgumentException('Invalid UUID v' . static::versionDigit() . ' string');
-		}
-	}
-
-	public static function compare(self|string $a, self|string $b): int
+	final public static function compare(self|string $a, self|string $b): int
 	{
 		$as = $a instanceof self ? $a->value : strtolower($a);
 		$bs = $b instanceof self ? $b->value : strtolower($b);
 		return $as <=> $bs;
 	}
 
-	public static function version(): int { return (int) static::versionDigit(); }
-	protected static function versionDigit(): string { return 'x'; }
+	abstract public static function version(): int;
 
 	// ----- Helpers for subclasses -----
 
