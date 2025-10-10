@@ -13,6 +13,7 @@ use Modules\Routing\Route\Post;
 use Modules\Routing\Route\Patch;
 use Modules\Routing\Route\Delete;
 use Modules\Serialisation\Json;
+use Modules\UUID\Uuid;
 use Services\BookService;
 use Src\Records\Book;
 
@@ -47,7 +48,7 @@ final class BookController
 
 	#[Get('/{id}')]
 	public function show(
-		#[UrlParam] int $id,
+		#[UrlParam] Uuid $id,
 	): Response {
 		$result = (new BookService)->ReadById($id);
 
@@ -135,7 +136,7 @@ final class BookController
 
 	#[Delete('/{id}')]
 	public function delete(
-		#[UrlParam] int $id,
+		#[UrlParam] Uuid $id,
 	): Response {
 		$result = (new BookService)->DeleteById($id);
 

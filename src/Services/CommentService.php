@@ -4,13 +4,12 @@ namespace Services;
 use Modules\DatabaseConnection\DatabaseConnection;
 use Modules\Result\Result;
 use Modules\UUID\Uuid;
-use Modules\UUID\UuidV7;
-use Src\Records\Book;
+use Src\Records\Comment;
 
 /**
- * Book CRUD service class.
+ * Comment CRUD service class.
  */
-class BookService
+class CommentService
 {
 	private static DatabaseConnection $connection;
 
@@ -20,46 +19,54 @@ class BookService
 	}
 
 	/**
-	 * @return Result<Book[], string>
+	 * @return Result<Comment[], string>
 	 */
 	public function ReadAll(): Result
 	{
 		return Result::FromCallable(
-			fn (): array => Book::FindAll()
+			fn (): array => Comment::FindAll()
 		);
 	}
 
 	/**
 	 * @param Uuid $id
-	 * @return Result<Book|null, string>
+	 * @return Result<Comment|null, string>
 	 */
 	public function ReadById(Uuid $id): Result
 	{
 		return Result::FromCallable(
-			fn (): Book => Book::TryFind($id)
-		);
-	}
-
-	/**
-	 * @param Book $book
-	 * @return Result<true, string>
-	 */
-	public function Save(Book $book): Result
-	{
-		return Result::FromCallable(
-			fn (): bool => $book->Save()
+			fn (): Comment => Comment::TryFind($id)
 		);
 	}
 
 
-	/**
-	 * @param Book $book
-	 * @return Result<true, string>
-	 */
-	public function Delete(Book $book): Result
+	public function ReadByUser(Uuid $userId): Result
 	{
 		return Result::FromCallable(
-			fn (): bool => $book->Delete()
+			fn (): array => Comment::FindMatch(['ownerId'])
+		);
+	}
+
+	/**
+	 * @param Comment $Comment
+	 * @return Result<true, string>
+	 */
+	public function Save(Comment $Comment): Result
+	{
+		return Result::FromCallable(
+			fn (): bool => $Comment->Save()
+		);
+	}
+
+
+	/**
+	 * @param Comment $Comment
+	 * @return Result<true, string>
+	 */
+	public function Delete(Comment $Comment): Result
+	{
+		return Result::FromCallable(
+			fn (): bool => $Comment->Delete()
 		);
 	}
 
@@ -70,7 +77,7 @@ class BookService
 	public function DeleteById(Uuid $id): Result
 	{
 		return Result::FromCallable(
-			fn (): bool => Book::Find($id)->Delete()
+			fn (): bool => Comment::Find($id)->Delete()
 		);
 	}
 }

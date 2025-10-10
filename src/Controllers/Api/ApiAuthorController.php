@@ -12,6 +12,7 @@ use Modules\Routing\Route\Get;
 use Modules\Routing\Route\Post;
 use Modules\Routing\Route\Patch;
 use Modules\Routing\Route\Delete;
+use Modules\UUID\UuidV7;
 use Services\AuthorService;
 use Src\Records\Author;
 
@@ -35,7 +36,7 @@ final class ApiAuthorController
 
 	#[Get('/{id}')]
 	public function show(
-		#[BodyParam] int $id
+		#[BodyParam] UuidV7 $id
 	): Response {
 		$result = (new AuthorService)->ReadById($id);
 
@@ -69,7 +70,7 @@ final class ApiAuthorController
 
 	#[Patch('/{id}')]
 	public function edit(
-		#[UrlParam] int $id,
+		#[UrlParam] UuidV7 $id,
 		#[BodyParam] Author|false $author
 	): Response {
 		if (!($author instanceof Author))
@@ -90,7 +91,7 @@ final class ApiAuthorController
 	
 	#[Delete('/{id}')]
 	public function delete(
-		#[UrlParam] int $id,
+		#[UrlParam] UuidV7 $id,
 	): Response {
 		if (!Author::Any($id))
 			return $this->NotFound();

@@ -14,6 +14,7 @@ use Modules\Routing\Route\Patch;
 use Modules\Routing\Route\Delete;
 use Modules\UUID\UUID;
 use Modules\UUID\UuidV1;
+use Modules\UUID\UuidV7;
 use Services\BookService;
 use Src\Records\Book;
 
@@ -36,7 +37,9 @@ final class ApiBookController
 
 
 	#[Get('/{id}')]
-	public function show(int $id): Response {
+	public function show(
+		#[UrlParam("id")] Uuid $id
+	): Response {
 		$result = (new BookService)->ReadById($id);
 
 		if ($result->IsFailure())
@@ -90,7 +93,9 @@ final class ApiBookController
 
 
 	#[Delete('/{id}')]
-	public function delete(int $id): Response {
+	public function delete(
+		#[UrlParam("id")] UuidV7 $id
+	): Response {
 		if (!Book::Any($id))
 			return $this->NotFound();
 

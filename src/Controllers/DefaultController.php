@@ -2,9 +2,7 @@
 namespace Src\Controllers;
 
 use Modules\Http\Responses\ViewResponse;
-use Modules\Http\Responses\HttpResponse;
 use Modules\Http\Responses\Response;
-use Modules\Http\Responses\TextResponse;
 use Modules\Routing\Action\Action;
 use Modules\Routing\Controller\AbstractController;
 use Modules\Routing\Controller\Controller;

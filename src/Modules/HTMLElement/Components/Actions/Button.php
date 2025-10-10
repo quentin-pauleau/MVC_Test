@@ -1,7 +1,6 @@
 <?php
 namespace Modules\HTMLElement\Components\DataDisplay;
 
-use Modules\HTMLElement\Components\Component;
 use Modules\HTMLElement\Components\ComponentColors;
 use Modules\HTMLElement\HTMLElement;
 
