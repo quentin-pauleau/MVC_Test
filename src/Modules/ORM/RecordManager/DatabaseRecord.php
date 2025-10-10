@@ -15,60 +15,66 @@ trait DatabaseRecord
 
 
 	public static function GetManager(): RecordManager {
-		return RecordManager::Get(self::class);
+		return RecordManager::Get(static::class);
 	}
 
 
-	public static function TryFind(mixed $id): self|null {
-		return self::GetManager()->TryFind($id);
+	public static function TryFind(mixed $id): static|null {
+		return static::GetManager()->TryFind($id);
 	}
 
-	public static function Find(mixed $id): self {
-		return self::GetManager()->Find($id);
+	public static function Find(mixed $id): static {
+		return static::GetManager()->Find($id);
 	}
 
 	public static function FindAll(): array {
-		return self::GetManager()->FindAll();
+		return static::GetManager()->FindAll();
 	}
 
 	public static function FindMatch(array $params): array {
-		return self::GetManager()->FindMatch($params);
+		return static::GetManager()->FindMatch($params);
 	}
 
 	public static function Any(mixed $id): bool {
-		return self::GetManager()->Any($id);
+		return static::GetManager()->Any($id);
 	}
 
 
 	public function Exist(): bool {
-		return self::Any($this->id);
+		return static::Any($this->id);
 	}
 
 
 	public function Save(): bool {
-		self::GetManager()->Save($this);
+		static::GetManager()->Save($this);
 		return true;
 	}
 
-	public function New(): self {
-		return self::Find(
-			self::GetManager()->New(clone $this)
+	public function New(): static {
+		return static::Find(
+			static::GetManager()->New(clone $this)
 		);
 	}
 
 	public function Update(): bool {
-		return self::GetManager()->Update($this);
+		return static::GetManager()->Update($this);
 	}
 
 	public function TryUpdate(): bool {
-		return self::GetManager()->TryUpdate($this);
+		return static::GetManager()->TryUpdate($this);
 	}
 
 	public function Delete(): bool {
-		return self::GetManager()->Delete($this);
+		return static::GetManager()->Delete($this);
 	}
 
 	public function TryDelete(): bool {
-		return self::GetManager()->TryDelete($this);
+		return static::GetManager()->TryDelete($this);
+	}
+
+	
+
+	public static function CreateQuery(): RecordManagerQuery {
+		return static::GetManager()->CreateQuery();
 	}
 }
