@@ -1,11 +1,10 @@
 <?php
 namespace Modules\ORM\DatabaseConverters;
 
-use Core\UUID as CoreUUID;
 use Modules\UUID\Uuid;
 use Modules\UUID\UuidFacade;
 
-final class DatabaseConverterUUID extends DatabaseConverter
+final readonly class DatabaseConverterUUID extends DatabaseConverter
 {
 	private const DEFAULT_VALUE = '';
 
@@ -40,7 +39,7 @@ final class DatabaseConverterUUID extends DatabaseConverter
 		if ($data === null)
 			return $isNullable ? self::DATABASE_NULL : self::DEFAULT_VALUE;
 		
-		if (!UUID::IsValid($data))
+		if (!Uuid::IsValid($data))
 			throw new \Exception("Invalid UUID: $data");
 
 		return strval($data);
