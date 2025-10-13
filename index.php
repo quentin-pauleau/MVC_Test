@@ -18,7 +18,7 @@ spl_autoload_register(function ($class): void {
 		require_once $file;
 });
 
-use Core\Core;
+use Modules\Eclipse\Core;
 
 // Initialise the app
 Core::Init();

@@ -9,7 +9,13 @@
 		}
 	},
 
-	"serverPort": {
-		"default": 8081
+	"Eclipse": {
+		"serverPort": {
+			"default": 8081
+		}
+	},
+
+	"Router": {
+		"controllerPath": "./src/controllers/"
 	}
 }

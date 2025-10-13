@@ -1,19 +1,7 @@
 <?php
-namespace Core;
+namespace Modules\Eclipse;
 
 use Exception;
-
-use Core\Responses\Response;
-use Core\Session\UserHelper;
-use Core\Session\DataHelper;
-use Core\Session\ErrorHelper;
-
-use Controllers\Controller;
-
-use Controllers\ControllerMenu;
-use Controllers\Actions\ActionsMenu;
-
-use Controllers\ControllerFormCDEClient;
 
 final class Core {
 
@@ -55,5 +43,12 @@ final class Core {
 	 * @return void
 	 */
 	public static function StartApp (): void {
+		$fullUri = explode('?', $_SERVER['REQUEST_URI'])[0];
+
+		$uri = explode('/', trim($fullUri, '/'));
+
+		
 	}
+
+	public static function
 }
