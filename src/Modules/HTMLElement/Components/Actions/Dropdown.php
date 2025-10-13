@@ -2,11 +2,14 @@
 namespace Modules\HTMLElement\Components\Actions;
 
 use Modules\HTMLElement\Components\Component;
+use Modules\HTMLElement\HasChilds;
 use Modules\HTMLElement\HTMLElement;
 use Modules\HTMLElement\Managers\TabIndexManager;
 
 class Dropdown extends Component
 {
+	use HasChilds;
+
 	public HTMLElement|string $buttonContent;
 
 	protected int $zIndex = 1;
@@ -36,7 +39,10 @@ class Dropdown extends Component
 		HTMLElement|string $buttonContent = '',
 		int $zIndex = 1,
 	) {
-		parent::__construct($id, $childs);
+		parent::__construct($id);
+
+		$this->setChild($childs);
+
 		$this->buttonContent = $buttonContent;
 		$this->zIndex = $zIndex;
 	}
@@ -44,11 +50,7 @@ class Dropdown extends Component
 
 	public function __toString(): string
 	{
-		$content = implode('', array_map(fn($item) => (string)$item, $this->childs));
-
 		$this->tabIndex = TabIndexManager::getManager()->getNewIndex();
-
-		// $this->buttonContent = new HTMLElement('span', ['class' => 'button-content'], $content);
 
 		return <<<HTML
 		<div id="{$this->id}" class="dropdown {$this->getDirectionClass()} {$this->getAlignmentClass()}">
@@ -56,7 +58,7 @@ class Dropdown extends Component
 				{$this->buttonContent}
 			</div>
 			<div tabindex="{$this->tabIndex}" class="dropdown-content z-{$this->zIndex}">
-				{$content}
+				{$this->getContent()}
 			</div>
 		</div>
 		HTML;
@@ -99,9 +101,9 @@ class Dropdown extends Component
 	/**
 	 * Set the alignment of the dropdown
 	 * @param 'start'|'center'|'end'|'' $alignment
-	 * @return Dropdown
+	 * @return static
 	 */
-	public function setAlignment(string $alignment): self
+	public function setAlignment(string $alignment): static
 	{
 		$this->alignment = $alignment;
 		return $this;
@@ -120,9 +122,9 @@ class Dropdown extends Component
 	/**
 	 * Set the direction the dropdown opens
 	 * @param 'top'|'bottom'|'left'|'right'|'' $direction
-	 * @return Dropdown
+	 * @return static
 	 */
-	public function setDirection(string $direction): self
+	public function setDirection(string $direction): static
 	{
 		$this->direction = $direction;
 		return $this;

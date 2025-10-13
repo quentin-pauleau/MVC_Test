@@ -9,6 +9,7 @@ use Modules\HTMLElement\HTMLElement;
  */
 class ItemList extends HTMLElement
 {
+	protected array $childs;
 
 	/**
 	 * @param ItemListRow[] $items
@@ -38,5 +39,12 @@ class ItemList extends HTMLElement
 			return null;
 
 		return $this->childs[$index];
+	}
+
+
+	public function addRow(ItemListRow ...$row): self
+	{
+		array_push($this->childs, ...$row);
+		return $this;
 	}
 }

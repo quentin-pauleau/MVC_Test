@@ -8,19 +8,26 @@ use Modules\HTMLElement\HTMLElement;
 class ChatBubble extends HTMLElement
 {
 	protected bool $isOnLeft;
-	protected string $color;
+	protected ComponentColors|null $Color = null;
 
-	protected ?Avatar $avatar;
+	protected Avatar|null $avatar = null;
 
-	protected ?string $authorName;
+	protected string|null $authorName = null;
 
 	protected string $message;
 
-	protected string|null $sentAt;
-	protected string|null $readAt;
+	protected string|null $sentAt = null;
+	protected string|null $readAt = null;
 
-	public function __construct(array $childs, ?string $id = null)
+	public function __construct(
+		string|null $id = null,
+		bool $isOnLeft = false,
+		ComponentColors|null $color = null,
+	)
 	{
+		parent::__construct($id);
+		$this->isOnLeft = $isOnLeft;
+		$this->Color = $color;
 		
 	}
 
@@ -74,48 +81,48 @@ class ChatBubble extends HTMLElement
 	}
 
 	
-	public function setPosition(bool $isOnLeft): self
+	public function setPosition(bool $isOnLeft): static
 	{
 		$this->isOnLeft = $isOnLeft;
 		return $this;
 	}
 
 
-	public function setColor(ComponentColors $color): self
+	public function setColor(ComponentColors $color): static
 	{
-		$this->color = $color->value;
+		$this->Color = $color;
 		return $this;
 	}
 
 
-	public function setAvatar(Avatar|null $avatar): self
+	public function setAvatar(Avatar|null $avatar): static
 	{
 		$this->avatar = $avatar;
 		return $this;
 	}
 
 
-	public function setAuthorName(string $authorName): self
+	public function setAuthorName(string $authorName): static
 	{
 		$this->authorName = $authorName;
 		return $this;
 	}
 
 
-	public function setMessage(string $message): self
+	public function setMessage(string $message): static
 	{
 		$this->message = $message;
 		return $this;
 	}
 
 
-	public function setHasDelivery(string $sentAt): self
+	public function setHasDelivery(string $sentAt): static
 	{
 		$this->sentAt = $sentAt;
 		return $this;
 	}
 
-	public function setHasReadAt(string $readAt): self
+	public function setHasReadAt(string $readAt): static
 	{
 		$this->readAt = $readAt;
 		return $this;
@@ -129,6 +136,6 @@ class ChatBubble extends HTMLElement
 
 	private function getColorClass(): string
 	{
-		return "chat-bubble-{$this->color}";
+		return "chat-bubble-{$this->Color}";
 	}
 }

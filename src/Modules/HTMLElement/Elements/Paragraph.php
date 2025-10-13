@@ -5,7 +5,7 @@ use Modules\HTMLElement\HTMLBaseElement;
 use Modules\HTMLElement\HTMLElement;
 use Modules\HTMLElement\HasChilds;
 
-class Span extends HTMLBaseElement
+class Paragraph extends HTMLBaseElement
 {
 	use HasChilds;
 
@@ -26,9 +26,15 @@ class Span extends HTMLBaseElement
 	public function __toString(): string
 	{
 		return <<<HTML
-		<span id="{$this->id}" class="{$this->getClassText()}"
+		<p id="{$this->id}" class="{$this->getClassText()}">
 			{$this->getContent()}
-		</span>
+		</p>
 		HTML;
+	}
+
+
+	public static function CreateText(string $text): Paragraph
+	{
+		return new Paragraph(null, [$text]);
 	}
 }

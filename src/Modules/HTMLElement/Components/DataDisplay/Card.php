@@ -1,28 +1,39 @@
 <?php
 namespace Modules\HTMLElement\Components\DataDisplay;
 
+use Modules\HTMLElement\HasChilds;
 use Modules\HTMLElement\HTMLElement;
 
 
 class Card extends HTMLElement
 {
-	protected ComponentSize $size = ComponentSize::DEFAULT;
+	use HasChilds;
+
+	protected ComponentSize|null $size = null;
 
 	protected bool $hasBorder = true;
 
 
-
+	/**
+	 * 
+	 * @param mixed $id
+	 * @param ComponentSize|null $size
+	 * @param bool $hasBorder
+	 * @param array<HTMLElement|string> $childs
+	 */
 	public function __construct(
-		?string $id = null,
-		ComponentSize $size = ComponentSize::DEFAULT,
+		string|null $id = null,
+		ComponentSize|null $size = null,
 		bool $hasBorder = true,
 		array $childs = []
 	)
 	{
+		parent::__construct($id);
+
 		$this->size = $size;
 		$this->hasBorder = $hasBorder;
 
-		parent::__construct($id, $childs);
+		$this->setChild($childs);
 	}
 
 
@@ -55,7 +66,7 @@ class Card extends HTMLElement
 		return $this->hasBorder ? 'card-border' : '';
 	}
 
-	public function setSize(ComponentSize $size): self
+	public function setSize(ComponentSize|null $size): static
 	{
 		$this->size = $size;
 		return $this;
@@ -63,19 +74,19 @@ class Card extends HTMLElement
 
 
 
-	public function enableBorder(): self
+	public function enableBorder(): static
 	{
 		$this->hasBorder = true;
 		return $this;
 	}
 
-	public function disableBorder(): self
+	public function disableBorder(): static
 	{
 		$this->hasBorder = false;
 		return $this;
 	}
 
-	public function setBorder(bool $hasBorder): self
+	public function setBorder(bool $hasBorder): static
 	{
 		$this->hasBorder = $hasBorder;
 		return $this;
@@ -86,7 +97,7 @@ class Card extends HTMLElement
 		return $this->hasBorder;
 	}
 
-	public static function createSimple(): self {
-		return new self();
+	public static function CreateEmpty(): self {
+		return new self;
 	}
 }

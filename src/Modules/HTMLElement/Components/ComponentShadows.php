@@ -1,8 +1,9 @@
 <?php
 namespace Modules\HTMLElement\Components\DataDisplay;
 
+use Stringable;
 
-enum ComponentShadows : string
+enum ComponentShadows : string implements Stringable
 {
 	case DEFAULT = '';
 
@@ -11,4 +12,9 @@ enum ComponentShadows : string
 	case MEDIUM = 'md';
 	case LARGE = 'lg';
 	case EXTRA_LARGE = 'xl';
+
+	public function __tostring(): string
+	{
+		return $this->value;
+	}
 }

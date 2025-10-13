@@ -2,20 +2,24 @@
 namespace Modules\HTMLElement\Components\DataDisplay;
 
 use Modules\HTMLElement\HTMLElement;
+use Modules\HTMLElement\HasChilds;
 
+use function PHPSTORM_META\map;
 
 /**
  * Row of an item list {@see ItemList}
  */
 class ItemListRow extends HTMLElement
 {
+	use HasChilds;
+
 	protected ?int $wrappingIndex = null;
 	protected int $growingIndex = 1;
 
 	/**
 	 * Summary of __construct
 	 * @param string $id
-	 * @param HTMLElement[]|string[] $childs
+	 * @param array<HTMLElement|string> $childs
 	 * @param ?int $wrappingIndex Child of the item that should be pushed to the next line
 	 * @param int $growingIndex Child of the item that should be extended to fill the remaining space, by default the 2nd child (index = 1)
 	 */
@@ -44,9 +48,9 @@ class ItemListRow extends HTMLElement
 
 	public function getItemCols(): string
 	{
-		$content = '';
-		for ($i = 0; $i < count($this->childs); $i++) {
-			$content .= match ($i) {
+		$cols = array_map(
+			fn ($i): HTMLElement|string => match ($i)
+			{
 				$this->wrappingIndex => <<<HTML
 					<div class="list-col-wrap">{$this->childs[$i]}</div>
 					HTML,
@@ -56,12 +60,16 @@ class ItemListRow extends HTMLElement
 					HTML,
 				
 				default => $this->childs[$i],
-			};
-		}
-		return $content;
+			},
+			array_keys($this->childs),
+		);
+		return implode(
+			"\n",
+			$cols
+		);
 	}
 
-	public function getWrappingIndex(): ?int
+	public function getWrappingIndex(): int|null
 	{
 		return $this->wrappingIndex;
 	}
@@ -70,9 +78,9 @@ class ItemListRow extends HTMLElement
 	/**
 	 * Set the child that should be pushed to the next line, null means no child will be pushed
 	 * @param mixed $wrappingIndex
-	 * @return ItemListRow
+	 * @return static
 	 */
-	public function setWrappingIndex(?int $wrappingIndex): self
+	public function setWrappingIndex(?int $wrappingIndex): static
 	{
 		$this->wrappingIndex = $wrappingIndex;
 		return $this;
@@ -86,9 +94,9 @@ class ItemListRow extends HTMLElement
 	/**
 	 * Set the child that should be extended to fill the remaining space
 	 * @param int $growingIndex
-	 * @return ItemListRow
+	 * @return static
 	 */
-	public function setGrowingIndex(int $growingIndex): self
+	public function setGrowingIndex(int $growingIndex): static
 	{
 		$this->growingIndex = $growingIndex;
 		return $this;
@@ -96,14 +104,14 @@ class ItemListRow extends HTMLElement
 
 
 	
-	public function setColumn(int $index, HTMLElement|string $content): self
+	public function setColumn(int $index, HTMLElement|string $content): static
 	{
 		$this->childs[$index] = $content;
 		return $this;
 	}
 
 
-	public function addColumn(HTMLElement|string $content): self
+	public function addColumn(HTMLElement|string $content): static
 	{
 		$this->childs[] = $content;
 		return $this;

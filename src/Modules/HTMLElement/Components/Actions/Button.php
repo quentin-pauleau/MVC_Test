@@ -2,12 +2,15 @@
 namespace Modules\HTMLElement\Components\DataDisplay;
 
 use Modules\HTMLElement\Components\ComponentColors;
+use Modules\HTMLElement\HasChilds;
 use Modules\HTMLElement\HTMLElement;
 
 
 
 class Button extends HTMLElement
 {
+	use HasChilds;
+
 	protected ComponentColors $Color = ComponentColors::NEUTRAL;
 	protected ComponentSize $Size = ComponentSize::DEFAULT;
 
@@ -26,7 +29,7 @@ class Button extends HTMLElement
 
 	/**
 	 * @param string|null $id
-	 * @param HTMLElement[]|string[] $childs
+	 * @param array<HTMLElement|string> $childs
 	 */
 	public function __construct(
 		string|null $id = null,
@@ -37,7 +40,10 @@ class Button extends HTMLElement
 		string|null $shape = null,
 		bool $isDisabled = false
 	) {
-		parent::__construct($id, $childs);
+		parent::__construct($id);
+
+		$this->setChild($childs);
+
 		$this->Color = $color;
 		$this->Size = $size;
 		$this->style = $style;
@@ -48,12 +54,11 @@ class Button extends HTMLElement
 
 	public function __toString(): string
 	{
-		$content = implode('', array_map(fn($item) => (string)$item, $this->childs));
 		$isDisabled = $this->isDisabled ? 'disabled' : '';
 
 		return <<<HTML
 		<button class="btn {$this->getColorClass()} {$this->getSizeClass()} {$this->getStyleClass()} {$this->getShapeClass()}" {$isDisabled}>
-			{$content}
+			{$this->getContent()}
 		</button>
 		HTML;
 	}
@@ -106,8 +111,12 @@ class Button extends HTMLElement
 		};
 	}
 
-
-	public function setSize(ComponentSize $size): self
+	/**
+	 * Set the size of the button
+	 * @param ComponentSize $size Size of the button. (xsmall, small, medium, large, xlarge)
+	 * @return static
+	 */
+	public function setSize(ComponentSize $size): static
 	{
 		$this->Size = $size;
 		return $this;
@@ -118,7 +127,7 @@ class Button extends HTMLElement
 		return $this->Size;
 	}
 
-	public function setColor(ComponentColors $color): self
+	public function setColor(ComponentColors $color): static
 	{
 		$this->Color = $color;
 		return $this;
@@ -133,9 +142,9 @@ class Button extends HTMLElement
 	/**
 	 * Set the style of the button
 	 * @param "dash" | "soft" | "outlined" | "ghost" | "link" | null $style
-	 * @return self
+	 * @return static
 	 */
-	public function setStyle(?string $style): self
+	public function setStyle(?string $style): static
 	{
 		$this->style = $style;
 		return $this;
@@ -156,7 +165,7 @@ class Button extends HTMLElement
 	 * @param "wide" | "block" | "square" | "circle" | null $shape
 	 * @return Button
 	 */
-	public function setShape(?string $shape): self
+	public function setShape(?string $shape): static
 	{
 		$this->shape = $shape;
 		return $this;
@@ -172,13 +181,13 @@ class Button extends HTMLElement
 	}
 	
 
-	public function enable(): self
+	public function enable(): static
 	{
 		$this->isDisabled = false;
 		return $this;
 	}
 
-	public function disable(): self
+	public function disable(): static
 	{
 		$this->isDisabled = true;
 		return $this;

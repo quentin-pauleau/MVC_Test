@@ -1,8 +1,9 @@
 <?php
 namespace Modules\HTMLElement\Components\DataDisplay;
 
+use Stringable;
 
-enum ComponentSize : string
+enum ComponentSize : string implements Stringable
 {
 	case DEFAULT = '';
 
@@ -11,4 +12,9 @@ enum ComponentSize : string
 	case MEDIUM = 'md';
 	case LARGE = 'lg';
 	case EXTRA_LARGE = 'xl';
+
+	public function __tostring(): string
+	{
+		return $this->value;
+	}
 }

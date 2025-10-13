@@ -2,10 +2,13 @@
 namespace Modules\HTMLElement\Components;
 
 use Modules\HTMLElement\Elements\Span;
+use Modules\HTMLElement\HasChilds;
 use Modules\HTMLElement\HTMLElement;
 
 class Alert extends HTMLElement
 {
+	use HasChilds;
+
 	private const ICON_INFO = <<<HTML
 	<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="h-6 w-6 shrink-0 stroke-current">
 		<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
@@ -94,7 +97,13 @@ class Alert extends HTMLElement
 	 * - success, s => to inform the user that an action has been successful
 	 * - warning, w => to warn the user about a potential problem
 	 * - error, e => to inform the user that an action has failed
+	 * 
 	 * @param "info"|"i"|"success"|"s"|"warning"|"w"|"error"|"e"|"default" $type
+	 * - default => to inform the user about something unimportant
+	 * - info, i => to inform the user about something important
+	 * - success, s => to inform the user that an action has been successful
+	 * - warning, w => to warn the user about a potential problem
+	 * - error, e => to inform the user that an action has failed
 	 * @return Alert
 	 */
 	public function setType(string $type): self
@@ -133,6 +142,18 @@ class Alert extends HTMLElement
 		};
 	}
 
+	/**
+	 * Change the type of alert.
+	 * 
+	 * @param "info"|"i"|"success"|"s"|"warning"|"w"|"error"|"e"|"default" $type
+	 * - default => to inform the user about something unimportant
+	 * - info, i => to inform the user about something important
+	 * - success, s => to inform the user that an action has been successful
+	 * - warning, w => to warn the user about a potential problem
+	 * - error, e => to inform the user that an action has failed
+	 * 
+	 * @return Alert
+	 */
 	public static function newSimple(string $type, string $message): self {
 		return new self(
 			childs: [
