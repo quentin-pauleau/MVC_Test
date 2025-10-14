@@ -49,6 +49,4 @@ final class Core {
 
 		
 	}
-
-	public static function
 }
