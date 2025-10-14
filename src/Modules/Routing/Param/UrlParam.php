@@ -14,6 +14,7 @@ final readonly class UrlParam extends RouteParam
 	 */
 	
 	public ?string $label;
+	
 	public function __construct(
 		string $name,
 		?string $label = null,
