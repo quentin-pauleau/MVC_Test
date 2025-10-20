@@ -53,8 +53,10 @@ readonly class RouteInfos {
 					if ($type instanceof ReflectionIntersectionType)
 						throw new Exception('A route cannot return an intersection of types');
 
+					$type;
 					if (
-						array_search(
+						$type instanceof ReflectionNamedType
+						&& array_search(
 							Response::class,
 							class_parents($type->getName())
 						) === false
