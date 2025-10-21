@@ -4,11 +4,11 @@ namespace Modules\FormHandling;
 class FormHandler
 {
 
+	private array $fields = [];
 
-	private array $fiels = [];
-
-	public function __construct()
-	{
-		
+	public function __construct(
+		array $fields,
+	) {
+		$this->fields = $fields;
 	}
 }

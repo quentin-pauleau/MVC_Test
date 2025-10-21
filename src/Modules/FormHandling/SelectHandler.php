@@ -3,21 +3,21 @@ namespace Modules\FormHandling;
 
 
 
-class InputTextHandler extends InputFieldHandler
+class SelectHandler extends InputFieldHandler
 {
 	private bool $allowMultiple = false;
-	private ?array $possibleValues;
+	private ?array $allowedValues;
 
 
-	public function SetPossibleValues(mixed ...$possibleValues): static
+	public function SetAllowedValues(mixed ...$allowedValues): static
 	{
-		$this->possibleValues = $possibleValues;
+		$this->allowedValues = $allowedValues;
 		return $this;
 	}
 
 	public function AddPossibleValue(mixed ...$possibleValue): static
 	{
-		array_push($this->possibleValues, ...$possibleValue);
+		array_push($this->allowedValues, ...$possibleValue);
 		return $this;
 	}
 
@@ -29,7 +29,7 @@ class InputTextHandler extends InputFieldHandler
 
 	public function AllowsValue(mixed $value): bool
 	{
-		return in_array($value, $this->possibleValues);
+		return in_array($value, $this->allowedValues);
 	}
 
 
@@ -43,9 +43,9 @@ class InputTextHandler extends InputFieldHandler
 		return parent::getValue($data);
 	}
 
-	public function GetPossibleValues(): array
+	public function GetAllowedValues(): array
 	{
-		return $this->possibleValues;
+		return $this->allowedValues;
 	}
 
 	public function verify(array $data): static
@@ -59,9 +59,14 @@ class InputTextHandler extends InputFieldHandler
 		return $this;
 	}
 
-	public function verifyValueIsPossible(mixed $value): bool
+	/**
+	 * Verify is the given value matches one of the allowed values
+	 * @param mixed $value
+	 * @return bool
+	 */
+	public function verifyAllowedValues(mixed $value): bool
 	{
-		if ($this->possibleValues === null)
+		if ($this->allowedValues === null)
 			return true;
 
 		if ($this->allowsValue($value))

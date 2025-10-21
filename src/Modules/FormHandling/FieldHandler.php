@@ -55,6 +55,12 @@ abstract class FieldHandler
 	{
 		return $this->isRequired;
 	}
+
+	final public function setIsRequired(bool $isRequired): static
+	{
+		$this->isRequired = $isRequired;
+		return $this;
+	}
 	
 	/**
 	 * Set the field as required

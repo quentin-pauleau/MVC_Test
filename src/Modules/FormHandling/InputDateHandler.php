@@ -4,7 +4,7 @@ namespace Modules\FormHandling;
 use DateTime;
 use DateTimeImmutable;
 
-class InputNumberHandler extends InputFieldHandler
+class DatePickerHandler extends InputFieldHandler
 {
 	private ?DateTimeImmutable $minDate;
 	private ?DateTimeImmutable $maxDate;
