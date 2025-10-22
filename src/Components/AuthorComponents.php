@@ -1,13 +1,13 @@
 <?php
 
-use Modules\HTMLElement\Components\Component;
-use Modules\HTMLElement\Components\DataDisplay\Avatar;
-use Modules\HTMLElement\Components\DataDisplay\ItemListRow;
+use Modules\DaisyUI\Component;
+use Modules\DaisyUI\DataDisplay\Avatar;
+use Modules\DaisyUI\DataDisplay\ItemListRow;
 use Src\Records\author;
 
-use Modules\HTMLElement\Components\DataDisplay\Card;
-use Modules\HTMLElement\Components\DataDisplay\ComponentSize;
-use Modules\HTMLElement\Components\DataDisplay\ItemList;
+use Modules\DaisyUI\DataDisplay\Card;
+use Modules\DaisyUI\DataDisplay\ComponentSize;
+use Modules\DaisyUI\DataDisplay\ItemList;
 
 final abstract class AuthorComponents
 {

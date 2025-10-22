@@ -2,10 +2,10 @@
 
 use Src\Records\User;
 
-use Modules\HTMLElement\Components\DataDisplay\Card;
-use Modules\HTMLElement\Components\DataDisplay\ComponentSize;
-use Modules\HTMLElement\Components\DataDisplay\ItemList;
-use Modules\HTMLElement\Components\DataDisplay\ItemListRow;
+use Modules\DaisyUI\DataDisplay\Card;
+use Modules\DaisyUI\DataDisplay\ComponentSize;
+use Modules\DaisyUI\DataDisplay\ItemList;
+use Modules\DaisyUI\DataDisplay\ItemListRow;
 
 
 final abstract class UserComponents

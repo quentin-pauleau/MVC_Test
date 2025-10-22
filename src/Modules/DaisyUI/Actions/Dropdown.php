@@ -1,7 +1,7 @@
 <?php
-namespace Modules\HTMLElement\Components\Actions;
+namespace Modules\DaisyUI\Actions;
 
-use Modules\HTMLElement\Components\Component;
+use Modules\DaisyUI\Component;
 use Modules\HTMLElement\HasChilds;
 use Modules\HTMLElement\HTMLElement;
 use Modules\HTMLElement\Managers\TabIndexManager;

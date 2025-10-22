@@ -1,7 +1,7 @@
 <?php
-namespace Modules\HTMLElement\Components\DataDisplay;
+namespace Modules\DaisyUI\DataDisplay;
 
-use Modules\HTMLElement\Components\ComponentColors;
+use Modules\DaisyUI\ComponentColors;
 use Modules\HTMLElement\HasChilds;
 use Modules\HTMLElement\HTMLElement;
 

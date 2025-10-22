@@ -1,5 +1,5 @@
 <?php
-namespace Modules\HTMLElement\Components;
+namespace Modules\DaisyUI;
 
 use Modules\HTMLElement\HTMLElement;
 
