@@ -5,31 +5,35 @@ use Modules\DaisyUI\ComponentColors;
 use Modules\HTMLElement\HTMLElement;
 
 /**
- * Link UI component, based on the DaisyUI library.
+ * Steps UI component, based on the DaisyUI library.
  * @see https://daisyui.com/components/steps/
- *
+ * 
+ * Represent a list of steps in a navigation process.
+ * Steps are represented by the StepsItem class
+ * 
  * @package Modules\DaisyUI\Navigation
  */
-class Link extends HTMLElement
+class Steps extends HTMLElement
 {
+	/**
+	 * @var StepItem[]
+	 */
 	private array $steps;
-	private ComponentColors $color;
 
 	private bool $isDirectionHorizontal = false;
 
 	/**
 	 * @param string|null $id
-	 * @param array<string|int, string> $steps different steps of navigation, where key is the icon and the value is the label, if the key isnt precised the step number is used instead
-	 * @param ComponentColors $color color of link
+	 * @param StepItem[] $steps different steps of navigation, where key is the icon and the value is the label, if the key isnt precised the step number is used instead
+	 * @param ComponentColors $color color of step
 	 * @param bool $isDirectionHorizontal if true, then horizontal direction will be used. Otherwise vertical direction is used
 	 */
 	public function __construct(
 		string|null $id = null,
 		array $steps,
-		ComponentColors $color = ComponentColors::PRIMARY,
 		bool $isDirectionHorizontal = false,
 	) {
-		parent::__construct($id);
+		$this->setId($id);
 		$this->steps = $steps;
 		$this->isDirectionHorizontal = $isDirectionHorizontal;
 	}
@@ -43,11 +47,6 @@ class Link extends HTMLElement
 		HTML;
 	}
 
-	public function setColor(ComponentColors $color): self
-	{
-		$this->color = $color;
-		return $this;
-	}
 
 	public function setDirection(bool $isDirectionHorizontal): self
 	{
@@ -67,34 +66,36 @@ class Link extends HTMLElement
 		return $this;
 	}
 
+	/**
+	 * 
+	 * @param StepItem[] $steps
+	 * @return Steps
+	 */
 	public function setSteps(array $steps): self
 	{
 		$this->steps = $steps;
 		return $this;
 	}
 
-	public function addStep(string $icon, string $label): self
+	public function addSteps(StepItem ...$step): self
 	{
-		$this->steps[$icon] = $label;
+		array_push($this->steps, ...$step);
 		return $this;
 	}
 
-	public function removeStep(int|string $key): self
+	public function removeSteps(int ...$index): self
 	{
-		unset($this->steps[$key]);
+		foreach ($index as $i)
+			unset($this->steps[$i]);
+		
 		return $this;
 	}
+
 
 	public function clearSteps(): self
 	{
 		$this->steps = [];
 		return $this;
-	}
-
-
-	public function getColor(): ComponentColors
-	{
-		return $this->color;
 	}
 
 	public function getSteps(): array
@@ -123,20 +124,6 @@ class Link extends HTMLElement
 	}
 
 
-	protected function GetColorClass(): string
-	{
-		return match ($this->color) {
-			ComponentColors::PRIMARY => 'step-primary',
-			ComponentColors::SECONDARY => 'step-secondary',
-			ComponentColors::ACCENT => 'step-accent',
-			ComponentColors::INFO => 'step-info',
-			ComponentColors::SUCCESS => 'step-success',
-			ComponentColors::WARNING => 'step-warning',
-			ComponentColors::ERROR => 'step-error',
-			default => '',
-		};
-	}
-
 	protected function getDirectionClass(): string
 	{
 		return $this->isDirectionHorizontal ? 'steps-vertical' : 'steps-horizontal';
@@ -144,18 +131,6 @@ class Link extends HTMLElement
 
 	protected function getContent(): string
 	{
-		return implode(
-			"\n",
-			array_map(
-				function (string $icon, string $label): string {
-					if (is_int($icon))
-						return "<li class=\"step {$this->GetColorClass()}\">{$label}</li>";
-					
-					return "<li class=\"step {$this->GetColorClass()}\"><span class=\"step-icon\">{$icon}</span>{$label}<li class=\"step\">";
-				},
-				array_keys($this->steps),
-				$this->steps
-			)
-		);
+		return implode("\n",$this->steps);
 	}
 }
