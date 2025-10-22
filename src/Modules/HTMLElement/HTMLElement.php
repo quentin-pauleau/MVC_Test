@@ -8,15 +8,6 @@ abstract class HTMLElement implements Stringable
 	use HasId;
 
 	/**
-	 * @param mixed $id
-	 */
-	public function __construct(
-		string|null $id = null,
-	) {
-		$this->id = $id;
-	}
-
-	/**
 	 * Display the component on the page
 	 * @return void
 	 */

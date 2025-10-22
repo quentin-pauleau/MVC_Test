@@ -26,7 +26,7 @@ class Link extends HTMLElement
 		string $text,
 		bool $underlineOnHoverOnly = false,
 	) {
-		parent::__construct($id);
+		$this->setId($id);
 		$this->text = $text;
 		$this->underlineOnHoverOnly = $underlineOnHoverOnly;
 	}

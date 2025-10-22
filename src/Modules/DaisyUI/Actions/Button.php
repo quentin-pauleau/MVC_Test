@@ -40,7 +40,7 @@ class Button extends HTMLElement
 		string|null $shape = null,
 		bool $isDisabled = false
 	) {
-		parent::__construct($id);
+		$this->setId($id);
 
 		$this->setChild($childs);
 

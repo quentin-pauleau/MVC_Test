@@ -39,7 +39,7 @@ class Dropdown extends Component
 		HTMLElement|string $buttonContent = '',
 		int $zIndex = 1,
 	) {
-		parent::__construct($id);
+		$this->setId($id);
 
 		$this->setChild($childs);
 

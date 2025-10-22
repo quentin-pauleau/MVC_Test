@@ -25,7 +25,7 @@ class ChatBubble extends HTMLElement
 		ComponentColors|null $color = null,
 	)
 	{
-		parent::__construct($id);
+		$this->setId($id);
 		$this->isOnLeft = $isOnLeft;
 		$this->Color = $color;
 		

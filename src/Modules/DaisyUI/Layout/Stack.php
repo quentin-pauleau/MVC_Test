@@ -30,7 +30,7 @@ class Stack extends HTMLElement
 		int|null $height = null,
 		int|null $width = null,
 	) {
-		parent::__construct($id);
+		$this->setId($id);
 
 		$this->setChild($childs);
 

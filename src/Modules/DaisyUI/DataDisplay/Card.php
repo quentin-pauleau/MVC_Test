@@ -28,7 +28,7 @@ class Card extends HTMLElement
 		array $childs = []
 	)
 	{
-		parent::__construct($id);
+		$this->setId($id);
 
 		$this->size = $size;
 		$this->hasBorder = $hasBorder;

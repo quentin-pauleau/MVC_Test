@@ -22,7 +22,7 @@ class Breadcrumbs extends HTMLElement
 		string|null $id = null,
 		array $childs = [],
 	) {
-		parent::__construct($id);
+		$this->setId($id);
 		$this->setChild($childs);
 	}
 
