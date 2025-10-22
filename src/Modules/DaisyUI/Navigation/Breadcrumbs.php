@@ -20,9 +20,10 @@ class Breadcrumbs extends HTMLElement
 	 */
 	public function __construct(
 		string|null $id = null,
-		array $childs = []
+		array $childs = [],
 	) {
 		parent::__construct($id);
+		$this->setChild($childs);
 	}
 
 
