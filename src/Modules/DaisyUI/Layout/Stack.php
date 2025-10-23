@@ -7,6 +7,12 @@ use Modules\HTMLElement\HasChilds;
 
 
 
+/**
+ * Stack UI component, based on the DaisyUI library.
+ * 
+ * Stacks its children vertically or horizontally.
+ * @see https://daisyui.com/components/join/ <br/>
+ */
 class Stack extends HTMLElement
 {
 	use HasChilds;
