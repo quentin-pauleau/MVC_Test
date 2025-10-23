@@ -3,7 +3,7 @@ namespace Modules\DaisyUI\Enums;
 
 use Stringable;
 
-enum ComponentSize : string implements Stringable
+enum ComponentSizes : string implements Stringable
 {
 	case DEFAULT = '';
 

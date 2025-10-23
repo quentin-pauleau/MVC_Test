@@ -1,7 +1,7 @@
 <?php
 namespace Modules\DaisyUI\Components\DataDisplay;
 
-use Modules\DaisyUI\Enums\ComponentSize;
+use Modules\DaisyUI\Enums\ComponentSizes;
 use Modules\HTMLElement\HasChilds;
 use Modules\HTMLElement\HTMLElement;
 
@@ -10,7 +10,7 @@ class Card extends HTMLElement
 {
 	use HasChilds;
 
-	protected ComponentSize|null $size = null;
+	protected ComponentSizes|null $size = null;
 
 	protected bool $hasBorder = true;
 
@@ -18,13 +18,13 @@ class Card extends HTMLElement
 	/**
 	 * 
 	 * @param mixed $id
-	 * @param ComponentSize|null $size
+	 * @param ComponentSizes|null $size
 	 * @param bool $hasBorder
 	 * @param array<HTMLElement|string> $childs
 	 */
 	public function __construct(
 		string|null $id = null,
-		ComponentSize|null $size = null,
+		ComponentSizes|null $size = null,
 		bool $hasBorder = true,
 		array $childs = []
 	)
@@ -53,11 +53,11 @@ class Card extends HTMLElement
 	protected function getSizeClass(): string
 	{
 		return match ($this->size) {
-			ComponentSize::EXTRA_SMALL => 'card-xs',
-			ComponentSize::SMALL => 'card-sm',
-			ComponentSize::MEDIUM => 'card-md',
-			ComponentSize::LARGE => 'card-lg',
-			ComponentSize::EXTRA_LARGE => 'card-xl',
+			ComponentSizes::EXTRA_SMALL => 'card-xs',
+			ComponentSizes::SMALL => 'card-sm',
+			ComponentSizes::MEDIUM => 'card-md',
+			ComponentSizes::LARGE => 'card-lg',
+			ComponentSizes::EXTRA_LARGE => 'card-xl',
 			default => '',
 		};
 	}
@@ -67,7 +67,7 @@ class Card extends HTMLElement
 		return $this->hasBorder ? 'card-border' : '';
 	}
 
-	public function setSize(ComponentSize|null $size): static
+	public function setSize(ComponentSizes|null $size): static
 	{
 		$this->size = $size;
 		return $this;

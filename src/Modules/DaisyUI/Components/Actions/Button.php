@@ -2,7 +2,7 @@
 namespace Modules\DaisyUI\Components\DataDisplay;
 
 use Modules\DaisyUI\Enums\ComponentColors;
-use Modules\DaisyUI\Enums\ComponentSize;
+use Modules\DaisyUI\Enums\ComponentSizes;
 use Modules\HTMLElement\HasChilds;
 use Modules\HTMLElement\HTMLElement;
 
@@ -13,7 +13,7 @@ class Button extends HTMLElement
 	use HasChilds;
 
 	protected ComponentColors $Color = ComponentColors::NEUTRAL;
-	protected ComponentSize $Size = ComponentSize::DEFAULT;
+	protected ComponentSizes $Size = ComponentSizes::DEFAULT;
 
 	/**
 	 * @var "dash" | "soft" | "outlined" | "ghost" | "link" | null
@@ -36,7 +36,7 @@ class Button extends HTMLElement
 		string|null $id = null,
 		array $childs = [],
 		ComponentColors $color = ComponentColors::NEUTRAL,
-		ComponentSize $size = ComponentSize::DEFAULT,
+		ComponentSizes $size = ComponentSizes::DEFAULT,
 		string|null $style = null,
 		string|null $shape = null,
 		bool $isDisabled = false
@@ -81,11 +81,11 @@ class Button extends HTMLElement
 	protected function getSizeClass(): string
 	{
 		return match ($this->Size) {
-			ComponentSize::EXTRA_SMALL => 'btn-xs',
-			ComponentSize::SMALL => 'btn-sm',
-			ComponentSize::MEDIUM => 'btn-md',
-			ComponentSize::LARGE => 'btn-lg',
-			ComponentSize::EXTRA_LARGE => 'btn-xl',
+			ComponentSizes::EXTRA_SMALL => 'btn-xs',
+			ComponentSizes::SMALL => 'btn-sm',
+			ComponentSizes::MEDIUM => 'btn-md',
+			ComponentSizes::LARGE => 'btn-lg',
+			ComponentSizes::EXTRA_LARGE => 'btn-xl',
 			default => ''
 		};
 	}
@@ -114,16 +114,16 @@ class Button extends HTMLElement
 
 	/**
 	 * Set the size of the button
-	 * @param ComponentSize $size Size of the button. (xsmall, small, medium, large, xlarge)
+	 * @param ComponentSizes $size Size of the button. (xsmall, small, medium, large, xlarge)
 	 * @return static
 	 */
-	public function setSize(ComponentSize $size): static
+	public function setSize(ComponentSizes $size): static
 	{
 		$this->Size = $size;
 		return $this;
 	}
 
-	public function getSize(): ComponentSize
+	public function getSize(): ComponentSizes
 	{
 		return $this->Size;
 	}

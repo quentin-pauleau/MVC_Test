@@ -6,14 +6,14 @@ use Modules\DaisyUI\Components\DataDisplay\Card;
 use Modules\DaisyUI\Components\DataDisplay\ItemList;
 use Modules\DaisyUI\Components\DataDisplay\ItemListRow;
 
-use Modules\DaisyUI\Enums\ComponentSize;
+use Modules\DaisyUI\Enums\ComponentSizes;
 
 
 final abstract class UserComponents
 {
 	public static function Card(
 		User $user,
-		ComponentSize $size = ComponentSize::DEFAULT,
+		ComponentSizes $size = ComponentSizes::DEFAULT,
 		bool $hasBorder = true
 	): Card {
 		return new Card(

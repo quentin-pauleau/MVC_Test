@@ -7,14 +7,14 @@ use Src\Records\Author;
 use Modules\DaisyUI\Components\DataDisplay\Card;
 use Modules\DaisyUI\Components\DataDisplay\ItemList;
 
-use Modules\DaisyUI\Enums\ComponentSize;
+use Modules\DaisyUI\Enums\ComponentSizes;
 
 final abstract class AuthorComponents
 {
 	public static function Card(
 		Author $author,
 		?string $id = null,
-		ComponentSize $size = ComponentSize::DEFAULT,
+		ComponentSizes $size = ComponentSizes::DEFAULT,
 		bool $hasBorder = true
 	): Card {
 		return new Card(
