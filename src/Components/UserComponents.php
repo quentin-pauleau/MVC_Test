@@ -3,9 +3,10 @@
 use Src\Records\User;
 
 use Modules\DaisyUI\Components\DataDisplay\Card;
-use Modules\DaisyUI\Components\DataDisplay\ComponentSize;
 use Modules\DaisyUI\Components\DataDisplay\ItemList;
 use Modules\DaisyUI\Components\DataDisplay\ItemListRow;
+
+use Modules\DaisyUI\Enums\ComponentSize;
 
 
 final abstract class UserComponents
