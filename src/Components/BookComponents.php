@@ -1,12 +1,12 @@
 <?php
 
-use Modules\DaisyUI\Component;
+use Modules\DaisyUI\Components\Component;
 use Src\Records\Book;
 
-use Modules\DaisyUI\DataDisplay\Card;
-use Modules\DaisyUI\DataDisplay\ComponentSize;
-use Modules\DaisyUI\DataDisplay\ItemList;
-use Modules\DaisyUI\DataDisplay\ItemListRow;
+use Modules\DaisyUI\Components\DataDisplay\Card;
+use Modules\DaisyUI\Components\DataDisplay\ComponentSize;
+use Modules\DaisyUI\Components\DataDisplay\ItemList;
+use Modules\DaisyUI\Components\DataDisplay\ItemListRow;
 
 final abstract class BookComponents
 {

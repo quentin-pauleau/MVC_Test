@@ -1,5 +1,5 @@
 <?php
-namespace Modules\DaisyUI;
+namespace Modules\DaisyUI\Enums;
 
 use Stringable;
 

@@ -1,5 +1,5 @@
 <?php
-namespace Modules\DaisyUI\Layout;
+namespace Modules\DaisyUI\Components\Layout;
 
 use ComponentDirections;
 use Modules\HTMLElement\HTMLElement;
@@ -18,7 +18,7 @@ use Modules\HTMLElement\HasChilds;
  * @experimental This class is experimental and is intended to be change in future versions <br/>
  * As of now, this class will join all childs are joined together, unlike the original concept that only join defined elements.
  * 
- * @package Modules\DaisyUI\Navigation
+ * @package Modules\DaisyUI\Components\Navigation
  */
 class Join extends HTMLElement
 {

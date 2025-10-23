@@ -1,12 +1,11 @@
 <?php
-namespace Modules\DaisyUI\Actions;
+namespace Modules\DaisyUI\Components\Actions;
 
-use Modules\DaisyUI\Component;
 use Modules\HTMLElement\HasChilds;
 use Modules\HTMLElement\HTMLElement;
 use Modules\HTMLElement\Managers\TabIndexManager;
 
-class Dropdown extends Component
+class Dropdown extends HTMLElement
 {
 	use HasChilds;
 

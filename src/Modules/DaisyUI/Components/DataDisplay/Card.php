@@ -1,6 +1,7 @@
 <?php
-namespace Modules\DaisyUI\DataDisplay;
+namespace Modules\DaisyUI\Components\DataDisplay;
 
+use Modules\DaisyUI\Enums\ComponentSize;
 use Modules\HTMLElement\HasChilds;
 use Modules\HTMLElement\HTMLElement;
 

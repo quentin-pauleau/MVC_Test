@@ -1,14 +1,14 @@
 <?php
-namespace Modules\DaisyUI\Navigation;
+namespace Modules\DaisyUI\Components\Navigation;
 
-use Modules\DaisyUI\ComponentColors;
+use Modules\DaisyUI\Enums\ComponentColors;
 use Modules\HTMLElement\HTMLElement;
 
 /**
  * Link UI component, based on the DaisyUI library.
  * @see https://daisyui.com/components/link/
  *
- * @package Modules\DaisyUI\Navigation
+ * @package Modules\DaisyUI\Components\Navigation
  */
 class Link extends HTMLElement
 {

@@ -1,5 +1,5 @@
 <?php
-namespace Modules\DaisyUI\DataDisplay;
+namespace Modules\DaisyUI\Components\DataDisplay;
 
 use Modules\HTMLElement\HTMLElement;
 use Modules\HTMLElement\HasChilds;

@@ -1,7 +1,7 @@
 <?php
-namespace Modules\DaisyUI\Navigation;
+namespace Modules\DaisyUI\Components\Navigation;
 
-use Modules\DaisyUI\ComponentColors;
+use Modules\DaisyUI\Enums\ComponentColors;
 use Modules\HTMLElement\HTMLElement;
 
 /**
@@ -12,7 +12,7 @@ use Modules\HTMLElement\HTMLElement;
  *
  * @see https://daisyui.com/components/steps/
  *
- * @package Modules\DaisyUI\Navigation
+ * @package Modules\DaisyUI\Components\Navigation
  */
 class StepItem extends HTMLElement
 {

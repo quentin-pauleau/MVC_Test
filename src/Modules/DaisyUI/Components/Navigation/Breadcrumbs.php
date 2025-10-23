@@ -1,5 +1,5 @@
 <?php
-namespace Modules\DaisyUI\Navigation;
+namespace Modules\DaisyUI\Components\Navigation;
 
 use Modules\HTMLElement\HasChilds;
 use Modules\HTMLElement\HTMLElement;
@@ -8,7 +8,7 @@ use Modules\HTMLElement\HTMLElement;
  * Breadcrumbs UI component, based on the DaisyUI library.
  * @see https://daisyui.com/components/breadcrumbs/
  *
- * @package Modules\DaisyUI\Navigation
+ * @package Modules\DaisyUI\Components\Navigation
  */
 class Breadcrumbs extends HTMLElement
 {

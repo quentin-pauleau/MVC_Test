@@ -1,7 +1,7 @@
 <?php
-namespace Modules\DaisyUI\Navigation;
+namespace Modules\DaisyUI\Components\Navigation;
 
-use Modules\DaisyUI\ComponentColors;
+use Modules\DaisyUI\Enums\ComponentColors;
 use Modules\HTMLElement\HTMLElement;
 
 /**
@@ -11,7 +11,7 @@ use Modules\HTMLElement\HTMLElement;
  * Represent a list of steps in a navigation process.
  * Steps are represented by the StepsItem class
  * 
- * @package Modules\DaisyUI\Navigation
+ * @package Modules\DaisyUI\Components\Navigation
  */
 class Steps extends HTMLElement
 {

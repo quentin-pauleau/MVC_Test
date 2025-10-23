@@ -1,7 +1,7 @@
 <?php
-namespace Modules\DaisyUI\Layout;
+namespace Modules\DaisyUI\Components\Layout;
 
-use ComponentDirections;
+use Modules\DaisyUI\Enums\ComponentDirections;
 use Modules\HTMLElement\HTMLElement;
 use Modules\HTMLElement\HasChilds;
 

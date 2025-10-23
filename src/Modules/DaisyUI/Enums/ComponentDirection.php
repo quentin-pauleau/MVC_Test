@@ -1,4 +1,7 @@
 <?php
+namespace Modules\DaisyUI\Enums;
+
+use Stringable;
 
 enum ComponentDirections : string implements Stringable
 {
