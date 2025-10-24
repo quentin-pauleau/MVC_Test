@@ -1,12 +1,15 @@
 <?php
 namespace Modules\DaisyUI;
 
+use Modules\DaisyUI\Enums\ComponentInfoTypes;
+use Modules\DaisyUI\Traits\HasInfoType;
 use Modules\HTMLElement\Elements\Span;
 use Modules\HTMLElement\HasChilds;
 use Modules\HTMLElement\HTMLElement;
 
 class Alert extends HTMLElement
 {
+	use HasInfoType;
 	use HasChilds;
 
 	private const ICON_INFO = <<<HTML
@@ -33,137 +36,100 @@ class Alert extends HTMLElement
 	HTML;
 
 
-	/**
-	 * - default => to inform the user about something unimportant
-	 * - info, i => to inform the user about something important
-	 * - success, s => to inform the user that an action has been successful
-	 * - warning, w => to warn the user about a potential problem
-	 * - error, e => to inform the user that an action has failed
-	 * @var "info"|"i"|"success"|"s"|"warning"|"w"|"error"|"e"|null
-	 */
-	public string $type = 'default';
 	public bool $hasIcon = true;
-	public string $style = 'default';
+	public string|null $style = null;
 
 
 	/**
-	 * @param string|null $id
 	 * @param HTMLElement[] $childs
-	 * @param "info"|"i"|"success"|"s"|"warning"|"w"|"error"|"e"|"default" $type
+	 * @param ComponentInfoTypes|null $type
 	 * @param bool $hasIcon
 	 * @param "soft"|"outline"|"dash"|"default" $style
 	 */
 	public function __construct(
-		string|null $id = null,
 		array $childs = [],
-		string $type = 'default',
+		ComponentInfoTypes|null $type = null,
 		bool $hasIcon = true,
-		string $style = 'default',
+		string|null $style = 'default',
 	) {
-		$this->childs = $childs;
-		$this->id = $id;
-		$this->type = $type;
+		$this->setChild($childs);
+		$this->infoType = $type;
 		$this->hasIcon = $hasIcon;
 		$this->style = $style;
 	}
 
 	public function __toString(): string
 	{
-		$content = '';
-		if ($this->hasIcon)
-			$content .= $this->getTypeIcon();
-
-		foreach ($this->childs as $child)
-			$content .= (string)$child;
-
 		return <<<HTML
 		<div id="{$this->id}" role="alert" class="alert {$this->getStyleClass()} {$this->getTypeClass()}">
-			{$content}
+			{$this->GetTypeIcon()} {$this->GetContent()}
 		</div>
 		HTML;
 	}
 
-	public function setHasIcon(bool $hasIcon): self
+	public function setHasIcon(bool $hasIcon): static
 	{
 		$this->hasIcon = $hasIcon;
 		return $this;
 	}
 
-	/**
-	 * Change the type of alert.
-	 * 
-	 * - default => to inform the user about something unimportant
-	 * - info, i => to inform the user about something important
-	 * - success, s => to inform the user that an action has been successful
-	 * - warning, w => to warn the user about a potential problem
-	 * - error, e => to inform the user that an action has failed
-	 * 
-	 * @param "info"|"i"|"success"|"s"|"warning"|"w"|"error"|"e"|"default" $type
-	 * - default => to inform the user about something unimportant
-	 * - info, i => to inform the user about something important
-	 * - success, s => to inform the user that an action has been successful
-	 * - warning, w => to warn the user about a potential problem
-	 * - error, e => to inform the user that an action has failed
-	 * @return Alert
-	 */
-	public function setType(string $type): self
+	public function setType(ComponentInfoTypes|null $infoType): static
 	{
-		$this->type = $type;
+		$this->infoType = $infoType;
 		return $this;
 	}
 
-	private function getTypeIcon(): string {
-		return match($this->type) {
-			'info', 'i' => self::ICON_INFO,
-			'success', 's' => self::ICON_SUCCESS,
-			'warning', 'w' => self::ICON_WARNING,
-			'error', 'e' => self::ICON_ERROR,
-			default => self::ICON_INFO
+	private function GetTypeIcon(): string {
+		if (!$this->hasIcon)
+			return '';
+
+		return match($this->infoType) {
+			null => static::ICON_INFO,
+			ComponentInfoTypes::INFO => static::ICON_INFO,
+			ComponentInfoTypes::SUCCESS => static::ICON_SUCCESS,
+			ComponentInfoTypes::WARNING => static::ICON_WARNING,
+			ComponentInfoTypes::ERROR => static::ICON_ERROR,
+			default => throw new \Exception("Unsupported info type : $this->infoType"),
 		};
 	}
 	
 
 	private function getStyleClass(): string {
 		return match($this->style) {
+			null => '',
 			'soft' => 'alert-soft',
 			'outline' => 'alert-outline',
 			'dash' => 'alert-dashed',
-			default => ''
+			default => throw new \Exception("Unsupported style : $this->style"),
 		};
 	}
 
 	private function getTypeClass(): string {
-		return match($this->style) {
-			'info', 'i' => 'alert-info',
-			'success', 's' => 'alert-success',
-			'warning', 'w' => 'alert-warning',
-			'error', 'e' => 'alert-error',
-			default => ''
+		return match($this->infoType) {
+			null => '',
+			ComponentInfoTypes::INFO => 'alert-info',
+			ComponentInfoTypes::SUCCESS => 'alert-success',
+			ComponentInfoTypes::WARNING => 'alert-warning',
+			ComponentInfoTypes::ERROR => 'alert-error',
+			default => throw new \Exception("Unsupported info type : $this->infoType"),
 		};
 	}
 
 	/**
 	 * Change the type of alert.
-	 * 
-	 * @param "info"|"i"|"success"|"s"|"warning"|"w"|"error"|"e"|"default" $type
-	 * - default => to inform the user about something unimportant
-	 * - info, i => to inform the user about something important
-	 * - success, s => to inform the user that an action has been successful
-	 * - warning, w => to warn the user about a potential problem
-	 * - error, e => to inform the user that an action has failed
-	 * 
+	 * @param ComponentInfoTypes|null $type
 	 * @return Alert
 	 */
-	public static function newSimple(string $type, string $message): self {
-		return new self(
-			childs: [
+	public static function newSimple(ComponentInfoTypes|null $type, string $message): static {
+		return new static(
+			[
 				new Span(
 					childs: [
 						$message
 					],
 				),
 			],
-			type: $type,
+			$type,
 		);
 	}
 }
