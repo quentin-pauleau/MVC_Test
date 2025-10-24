@@ -1,7 +1,6 @@
 <?php
 namespace Modules\DaisyUI\Traits;
 
-use Modules\DaisyUI\Enums\ComponentColor;
 use Modules\DaisyUI\Enums\ComponentColors;
 
 trait HasColor
