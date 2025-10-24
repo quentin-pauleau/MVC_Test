@@ -62,15 +62,15 @@ If you dont have this module setup, follow the instructions in the `Add The Modu
 
 #### Feedback Components
 
-| Component Name  |                  Class                   |       Description        |                       DaisyUI Documentation                        |
-| :-------------: | :--------------------------------------: | :----------------------: | :----------------------------------------------------------------: |
-|      Alert      | [Alert](./components/Feedback/Alert.php) | Contextual alert banner. |           [Alert](https://daisyui.com/components/alert/)           |
-|     Loading     |         **Not Implemented Yet**          |   Not implemented yet.   |         [Loading](https://daisyui.com/components/loading/)         |
-|    Progress     |         **Not Implemented Yet**          |   Not implemented yet.   |        [Progress](https://daisyui.com/components/progress/)        |
-| Radial progress |         **Not Implemented Yet**          |   Not implemented yet.   | [Radial Progress](https://daisyui.com/components/radial-progress/) |
-|    Skeleton     |         **Not Implemented Yet**          |   Not implemented yet.   |        [Skeleton](https://daisyui.com/components/skeleton/)        |
-|      Toast      |         **Not Implemented Yet**          |   Not implemented yet.   |           [Toast](https://daisyui.com/components/toast/)           |
-|     Tooltip     |         **Not Implemented Yet**          |   Not implemented yet.   |         [Tooltip](https://daisyui.com/components/tooltip/)         |
+| Component Name  |                     Class                      |       Description        |                       DaisyUI Documentation                        |
+| :-------------: | :--------------------------------------------: | :----------------------: | :----------------------------------------------------------------: |
+|      Alert      |    [Alert](./components/Feedback/Alert.php)    | Contextual alert banner. |           [Alert](https://daisyui.com/components/alert/)           |
+|     Loading     |  [Loading](./components/Feedback/Loading.php)  |   Not implemented yet.   |         [Loading](https://daisyui.com/components/loading/)         |
+|    Progress     | [Progress](./components/Feedback/Progress.php) |   Not implemented yet.   |        [Progress](https://daisyui.com/components/progress/)        |
+| Radial progress |            **Not Implemented Yet**             |   Not implemented yet.   | [Radial Progress](https://daisyui.com/components/radial-progress/) |
+|    Skeleton     |                     **X**                      |   Not implemented yet.   |        [Skeleton](https://daisyui.com/components/skeleton/)        |
+|      Toast      |            **Not Implemented Yet**             |   Not implemented yet.   |           [Toast](https://daisyui.com/components/toast/)           |
+|     Tooltip     |            **Not Implemented Yet**             |   Not implemented yet.   |         [Tooltip](https://daisyui.com/components/tooltip/)         |
 
 
 #### Data Input Components

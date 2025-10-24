@@ -3,7 +3,7 @@ namespace Modules\DaisyUI\Traits;
 
 use Modules\DaisyUI\Enums\ComponentPlacements;
 
-trait HasPosition
+trait HasPlacement
 {
 	private ComponentPlacements|null $placement;
 
